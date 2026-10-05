@@ -282,9 +282,20 @@
           <input name="name" placeholder="Ditt namn" required autocomplete="name">
           <input name="contact" placeholder="Mejl eller mobil" required>
           <input name="ref" placeholder="Värvad av (valfritt)">
+          <input name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
           <button class="btn btn-light" type="submit">Ställ mig i kön</button>
         </form>
-        <p class="drop-ref"><strong>Värva 3 kompisar till kön – få din Deluxe gratis.</strong> Be dem skriva ditt namn i "Värvad av".</p>
+        <div class="wait-done" id="waitDone" hidden>
+          <p class="wait-done-title">Du står i kön, <span id="waitName"></span>.</p>
+          <p>Vi hör av oss innan droppen öppnar. Skicka din länk till kompisarna – när tre av dem står i kön är din Deluxe gratis.</p>
+          <div class="wait-share">
+            <input id="waitLink" readonly aria-label="Din värvningslänk">
+            <button class="btn btn-light" type="button" id="waitCopy">Kopiera länken</button>
+          </div>
+        </div>
+        <p class="wait-status" id="waitStatus" role="status" aria-live="polite"></p>
+        <p class="drop-ref"><strong>Värva 3 kompisar till kön – få din Deluxe gratis.</strong> Be dem skriva ditt namn i "Värvad av", eller skicka din länk.</p>
+        <p class="wait-legal">Vi sparar bara namn, kontakt och vem som värvade dig, för att kunna höra av oss om droppen. Vill du bli borttagen räcker ett mejl.</p>
       </div>
     </section>
 

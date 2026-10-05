@@ -541,6 +541,15 @@ html.lenis, html.lenis body { height: auto; }
 .wait-form input:focus, .order-form input:focus, .order-form select:focus { outline: none; border-color: var(--lime); }
 .drop-ref { margin: 22px 0 0; color: var(--muted); }
 .drop-ref strong { color: var(--cream); }
+.wait-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.wait-done { max-width: 40em; margin: 0 auto; color: #cfc8d4; }
+.wait-done-title { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--cream); margin: 0 0 8px; }
+.wait-share { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-top: 18px; }
+.wait-share input { padding: 15px 18px; border: 1px solid var(--line); border-radius: 999px; background: rgba(0,0,0,.4); color: var(--cream); font: inherit; min-width: 0; }
+.wait-status { min-height: 1.4em; margin: 14px 0 0; color: var(--cream); }
+.wait-status:empty { display: none; }
+.link-btn { background: none; border: 0; padding: 0; color: var(--lime); font: inherit; text-decoration: underline; cursor: pointer; }
+.wait-legal { margin: 10px auto 0; max-width: 36em; font-size: .8rem; color: var(--muted); }
 
 /* ===== FAQ ===== */
 .faq { max-width: 920px; border-top: 1px solid var(--line); }
@@ -627,7 +636,7 @@ html.lenis, html.lenis body { height: auto; }
   .price-grid, .builder, .biz-top { grid-template-columns: 1fr; }
   .builder-preview { position: static; order: -1; }
   .builder-preview .deluxe, .builder-preview .sheet { width: min(76%, 360px); }
-  .wait-form { grid-template-columns: 1fr; }
+  .wait-form, .wait-share { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
   body { font-size: 16px; }
