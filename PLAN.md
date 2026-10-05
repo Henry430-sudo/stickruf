@@ -1,4 +1,4 @@
-# Stickruf UF – planen
+# Stickr UF – planen
 
 > **Gör stickers coola igen.**
 > Premium-stickers i A4 för nästan inga pengar. Varje målgrupp får sin egen värld, och alla kan göra sin egen.

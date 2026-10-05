@@ -1,6 +1,6 @@
-# Stickruf UF
+# Stickr UF
 
-**Gör stickers coola igen.** Hemsidan för Stickruf UF: premium-stickers i A4, oskurna eller utskurna.
+Hemsidan för Stickr UF: premium-stickers i A4, oskurna eller utskurna.
 
 👉 Affärsplanen finns i [`PLAN.md`](PLAN.md).
 
@@ -20,7 +20,7 @@ Sidan är byggd med ren HTML, CSS och JavaScript. Ingen installation och inget b
 
 - **Priser:** `CONFIG` högst upp i `js/main.js` (ark, custom, utskärning, holo, frakt, klass-deal).
 - **Världarna och deras stickers:** `WORLDS` i `js/main.js`. Varje sticker har en typ (`pill`, `word`, `tag`, `ticket`, `seal`, `star`, `emoji`, `ghost`), en text, en position (`x`/`y` i %), en rotation (`r`), en storlek (`s`) och färger (`bg`/`fg`). Lägg till en ny värld så dyker den upp både i scroll-resan och i butiken.
-- **Mejl:** `orderEmail` i `CONFIG`, och `hej@stickruf.se` i `index.html`.
+- **Mejl:** `orderEmail` i `CONFIG`, och `hej@stickr.se` i `index.html`.
 - **Sociala medier:** länkarna i footern i `index.html`.
 
 ## Beställningar

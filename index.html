@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stickruf UF – Gör stickers coola igen</title>
-  <meta name="description" content="Stickruf UF gör premium-stickers i A4. Färdiga världar eller din egen design – oskuret eller utskuret. Gör stickers coola igen.">
+  <title>Stickr UF – Sticker Deluxe. Ett helt A4. En enda sticker.</title>
+  <meta name="description" content="Sticker Deluxe från Stickr UF: ett helt A4 som en enda sticker. Schemat på skåpet, kollaget på datorn, posten på väggen. Gör din egen eller välj en värld.">
   <meta name="theme-color" content="#0b0a0c">
   <script>document.documentElement.classList.add("js");</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;800&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;800&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Anton&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23f4efe6'/><text x='50' y='68' font-size='54' text-anchor='middle' font-family='Georgia' font-style='italic' fill='%230b0a0c'>S</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='12' y='4' width='76' height='92' rx='8' fill='%23f4efe6'/><text x='50' y='68' font-size='54' text-anchor='middle' font-family='Georgia' font-style='italic' fill='%230b0a0c'>S</text></svg>">
 </head>
 <body>
 
   <!-- ===== Preloader ===== -->
   <div class="loader" id="loader" aria-hidden="true">
-    <div class="loader-word"><span>S</span><span>t</span><span>i</span><span>c</span><span>k</span><span>r</span><span>u</span><span>f</span></div>
+    <div class="loader-word"><span>S</span><span>t</span><span>i</span><span>c</span><span>k</span><span>r</span></div>
     <div class="loader-count"><span id="loaderNum">0</span>%</div>
   </div>
 
@@ -26,68 +26,69 @@
 
   <!-- ===== Header ===== -->
   <header class="site-header">
-    <a href="#top" class="logo" aria-label="Stickruf UF – till toppen">
-      <em>Stickruf</em><sup>UF</sup>
-    </a>
+    <a href="#top" class="logo" aria-label="Stickr UF – till toppen"><em>Stickr</em><sup>UF</sup></a>
     <nav class="nav" aria-label="Huvudmeny">
+      <a href="#anvand">Användning</a>
       <a href="#varldar">Världar</a>
-      <a href="#process">Så görs de</a>
-      <a href="#priser">Priser</a>
       <a href="#bygg">Skapa egen</a>
+      <a href="#business">För UF-företag</a>
+      <a href="#drop" class="nav-drop">Drop 01</a>
     </nav>
-    <button class="cart-btn magnetic" id="cartBtn" data-cursor="Korg">
-      Korg <span class="cart-count" id="cartCount">0</span>
-    </button>
+    <button class="cart-btn magnetic" id="cartBtn" data-cursor="Korg">Korg <span class="cart-count" id="cartCount">0</span></button>
   </header>
 
   <main id="top">
 
     <!-- ===== Hero ===== -->
     <section class="hero" id="hero">
-      <div class="hero-stickers" id="heroStickers"></div>
-
-      <h1 class="hero-title">
-        <span class="title-line"><span class="split">Gör stickers</span></span>
-        <span class="title-line"><em class="split">coola</em> <span class="split">igen.</span></span>
-      </h1>
-
-      <div class="holo-wrap">
-        <div class="holo" id="holo" data-cursor="Vrid">
-          <div class="holo-inner">
-            <span class="holo-top">EST. 2026 · UF</span>
-            <span class="holo-mark"><em>S</em></span>
-            <span class="holo-name">Stickruf</span>
-            <span class="holo-bottom">Premium sticker sheets</span>
-          </div>
-          <div class="holo-foil"></div>
-          <div class="holo-glare"></div>
+      <div class="hero-copy">
+        <p class="eyebrow">Stickr UF presenterar</p>
+        <h1 class="hero-title">
+          <span class="title-line"><span class="split">Sticker</span></span>
+          <span class="title-line"><em class="split">Deluxe.</em></span>
+        </h1>
+        <p class="hero-lead"><strong>Ett helt A4. En enda sticker.</strong> Schemat på skåpet, kollaget på datorn, posten på väggen – tryckt, laminerad och klar att klistra.</p>
+        <div class="hero-cta">
+          <a href="#bygg" class="btn btn-light magnetic" data-cursor="Kör">Designa din Deluxe</a>
+          <a href="#drop" class="btn btn-line magnetic">Säkra din plats i Drop 01</a>
         </div>
       </div>
 
-      <div class="hero-foot">
-        <p class="hero-lead">Premium-stickers i A4. Färdiga världar eller din egen idé – tryckt, laminerad och, om du vill, utskuren åt dig.</p>
-        <div class="hero-cta">
-          <a href="#bygg" class="btn btn-light magnetic" data-cursor="Kör">Skapa din egen</a>
-          <a href="#varldar" class="btn btn-line magnetic">Utforska världarna</a>
-        </div>
+      <div class="hero-visual">
+        <div class="hero-stickers" id="heroStickers"></div>
+        <div class="hero-deluxe" id="heroDeluxe" data-cursor="Vrid"></div>
       </div>
 
       <div class="scroll-cue" aria-hidden="true"><span></span>Scrolla</div>
     </section>
 
-    <!-- ===== Manifest ===== -->
+    <!-- ===== Statement ===== -->
     <section class="manifest">
-      <p class="eyebrow">Manifest</p>
+      <p class="eyebrow">Varför Deluxe</p>
       <p class="manifest-text" id="manifestText">
-        Stickers var aldrig barnsliga. De var det första sättet att visa vem du är –
-        på datorn, skåpet, flaskan. Vi gör dem till något man faktiskt vill visa upp.
-        <em>Allt</em> kan bli en sticker. Din grej också.
+        Du har inte plats för fyrtio små stickers.
+        Du har plats för <em>en riktigt bra.</em>
+        Den täcker hela baksidan av datorn, håller ditt schema på skåpet
+        och säger vem du är innan du hunnit säga något.
       </p>
+      <div class="facts">
+        <div><strong>A4</strong><span>210 × 297 mm – en enda sticker</span></div>
+        <div><strong>99 kr</strong><span>din egen design, tryckt och laminerad</span></div>
+        <div><strong>5 dagar</strong><span>från beställning till ditt skåp</span></div>
+      </div>
+    </section>
+
+    <!-- ===== Användningsområden (horisontell scroll) ===== -->
+    <section class="uses" id="anvand" aria-label="Användningsområden">
+      <div class="uses-head">
+        <p class="eyebrow">Användning</p>
+        <h2>Fem ställen där <em>en</em> sticker ändrar allt.</h2>
+      </div>
+      <div class="uses-track" id="usesTrack"></div>
     </section>
 
     <!-- ===== Världar (pinnad scroll-resa) ===== -->
-    <section class="worlds" id="varldar" aria-label="Sticker-världar">
-      <!-- Fylls av js/main.js från WORLDS -->
+    <section class="worlds" id="varldar" aria-label="Världar">
       <div class="worlds-hud" aria-hidden="true">
         <span class="hud-num"><span id="hudNum">01</span> / <span id="hudTotal">05</span></span>
         <span class="hud-bar"><span id="hudBar"></span></span>
@@ -97,8 +98,8 @@
     <!-- ===== Marquee ===== -->
     <div class="marquee" id="marquee" aria-hidden="true">
       <div class="marquee-track">
-        <span>Laptopen <i>✦</i> Skåpet <i>✦</i> Flaskan <i>✦</i> Mobilskalet <i>✦</i> Skateboarden <i>✦</i> Gitarrfodralet <i>✦</i> Kylskåpet <i>✦</i>&nbsp;</span>
-        <span>Laptopen <i>✦</i> Skåpet <i>✦</i> Flaskan <i>✦</i> Mobilskalet <i>✦</i> Skateboarden <i>✦</i> Gitarrfodralet <i>✦</i> Kylskåpet <i>✦</i>&nbsp;</span>
+        <span>Skåpet <i>✦</i> Laptopen <i>✦</i> Pärmen <i>✦</i> Väggen <i>✦</i> Gymskåpet <i>✦</i> Montern <i>✦</i> Studentflaket <i>✦</i>&nbsp;</span>
+        <span>Skåpet <i>✦</i> Laptopen <i>✦</i> Pärmen <i>✦</i> Väggen <i>✦</i> Gymskåpet <i>✦</i> Montern <i>✦</i> Studentflaket <i>✦</i>&nbsp;</span>
       </div>
     </div>
 
@@ -106,12 +107,12 @@
     <section class="process" id="process">
       <div class="process-stage">
         <div class="process-copy">
-          <p class="eyebrow">Från idé till ark</p>
+          <p class="eyebrow">Sticker Sheets – för den som vill ha många</p>
           <ol class="process-steps">
-            <li class="pstep is-active"><span>01</span><h3>Du väljer</h3><p>En färdig värld – eller ladda upp din egen bild.</p></li>
+            <li class="pstep is-active"><span>01</span><h3>Du väljer</h3><p>En värld – eller ladda upp dina egna bilder.</p></li>
             <li class="pstep"><span>02</span><h3>Vi trycker &amp; laminerar</h3><p>Skarpa färger och en yta som tål regn, spill och vardag.</p></li>
-            <li class="pstep"><span>03</span><h3>Vi skär ut <em>+20 kr</em></h3><p>Vill du slippa saxen? Vi konturskär varje sticker åt dig.</p></li>
-            <li class="pstep"><span>04</span><h3>Dra av. Klistra.</h3><p>Hämta i skolan eller få det på posten. Klart.</p></li>
+            <li class="pstep"><span>03</span><h3>Vi skär ut <em>+20 kr</em></h3><p>Slipp saxen. Vi konturskär varje sticker åt dig.</p></li>
+            <li class="pstep"><span>04</span><h3>Dra av. Klistra.</h3><p>Hämta i skolan eller få det på posten.</p></li>
           </ol>
         </div>
         <div class="process-visual">
@@ -124,52 +125,17 @@
       </div>
     </section>
 
-    <!-- ===== Priser ===== -->
-    <section class="section pricing" id="priser">
-      <div class="section-head">
-        <p class="eyebrow">Priser</p>
-        <h2 class="reveal-title">Lyx <em>behöver inte</em> kosta.</h2>
-      </div>
-      <div class="price-grid">
-        <article class="price-card">
-          <p class="price-kicker">Arket</p>
-          <p class="price-num"><span>49</span> kr</p>
-          <p class="price-desc">Ett helt A4-ark, tryckt och laminerat. Du klipper själv – perfekt om du gillar att pyssla.</p>
-          <ul>
-            <li>Helt A4 fullt med stickers</li>
-            <li>Vattentåligt laminat</li>
-            <li>Custom: 79 kr</li>
-          </ul>
-        </article>
-        <article class="price-card price-card--hero">
-          <span class="price-flag">Populärast</span>
-          <p class="price-kicker">Utskuret</p>
-          <p class="price-num"><span>69</span> kr</p>
-          <p class="price-desc">Vi konturskär varje sticker åt dig. Bara att dra av och klistra – direkt.</p>
-          <ul>
-            <li>Allt i Arket</li>
-            <li>Konturskuret, +20 kr</li>
-            <li>Custom: 99 kr</li>
-          </ul>
-        </article>
-        <article class="price-card">
-          <p class="price-kicker">Klass-deal</p>
-          <p class="price-num"><span>−10</span> %</p>
-          <p class="price-desc">Beställ 10 ark eller fler tillsammans – klassen, laget, kören eller kompisgänget.</p>
-          <ul>
-            <li>Från 10 ark</li>
-            <li>Gratis upphämtning i skolan</li>
-            <li>Holo-finish: +20 kr</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
     <!-- ===== Butik ===== -->
     <section class="section shop" id="butik">
-      <div class="section-head">
-        <p class="eyebrow">Drop 01</p>
-        <h2 class="reveal-title">Välj din <em>värld.</em></h2>
+      <div class="section-head section-head--row">
+        <div>
+          <p class="eyebrow">Butik</p>
+          <h2 class="reveal-title">Välj din <em>värld.</em></h2>
+        </div>
+        <div class="tabs" id="shopTabs" role="group" aria-label="Format">
+          <button type="button" class="is-active" data-format="deluxe">Deluxe · 79 kr</button>
+          <button type="button" data-format="sheet">Sheets · 49 kr</button>
+        </div>
       </div>
       <div class="shop-grid" id="shopGrid"></div>
     </section>
@@ -177,23 +143,41 @@
     <!-- ===== Bygg egen ===== -->
     <section class="section build" id="bygg">
       <div class="section-head">
-        <p class="eyebrow">Custom</p>
-        <h2 class="reveal-title">Om du kan <em>tänka</em> det,<br>kan vi trycka det.</h2>
-        <p class="section-sub">Ladda upp en bild – ditt lag, din katt, ditt band, klassens insidesskämt – och se arket ta form.</p>
+        <p class="eyebrow">Skapa egen</p>
+        <h2 class="reveal-title">Din design.<br><em>Ditt</em> A4.</h2>
+        <p class="section-sub">Ladda upp bilder till ett kollage, skriv in ditt schema direkt på stickern, eller låt en enda bild ta hela arket.</p>
       </div>
 
       <div class="builder">
         <div class="builder-controls">
+          <fieldset class="opt">
+            <legend>Format</legend>
+            <div class="seg seg-2" id="formatSeg">
+              <button type="button" data-format="deluxe" class="is-active">Sticker Deluxe<small>Ett A4 · en sticker</small></button>
+              <button type="button" data-format="sheet">Sticker Sheet<small>Ett A4 · många stickers</small></button>
+            </div>
+          </fieldset>
+
+          <fieldset class="opt" id="tplOpt">
+            <legend>Mall</legend>
+            <div class="seg" id="tplSeg">
+              <button type="button" data-template="kollage" class="is-active">Kollage<small>1–6 bilder</small></button>
+              <button type="button" data-template="schema">Schema<small>Skriv på stickern</small></button>
+              <button type="button" data-template="helbild">Helbild<small>En bild, hela arket</small></button>
+            </div>
+          </fieldset>
+
           <label class="dropzone" id="dropzone" for="fileInput" data-cursor="Ladda upp">
             <input type="file" id="fileInput" accept="image/*" multiple hidden>
             <span class="dz-plus" aria-hidden="true">+</span>
             <span class="dz-title">Släpp dina bilder här</span>
-            <span class="dz-sub">eller klicka · PNG/JPG · max 6 motiv</span>
+            <span class="dz-sub">eller klicka · PNG/JPG · max 6 bilder</span>
           </label>
           <div class="thumbs" id="thumbs"></div>
+          <p class="hint schema-hint" id="schemaHint" hidden>Klicka på en lektion i förhandsvisningen och skriv. Färgen ändras efter ämnet.</p>
 
-          <fieldset class="opt">
-            <legend>Storlek</legend>
+          <fieldset class="opt" id="sizeOpt" hidden>
+            <legend>Storlek per sticker</legend>
             <div class="seg" id="sizeSeg">
               <button type="button" data-size="s">Liten<small>~4 cm · 30 st</small></button>
               <button type="button" data-size="m" class="is-active">Mellan<small>~6 cm · 12 st</small></button>
@@ -204,8 +188,8 @@
           <fieldset class="opt">
             <legend>Skärning</legend>
             <div class="seg seg-2" id="cutSeg">
-              <button type="button" data-cut="no" class="is-active">Oskuret<small>Du klipper själv</small></button>
-              <button type="button" data-cut="yes">Utskuret<small>Vi skär · +20 kr</small></button>
+              <button type="button" data-cut="no" class="is-active"><span id="cutNoLabel">Rak kant</span><small id="cutNoSub">Rak A4-kant</small></button>
+              <button type="button" data-cut="yes"><span id="cutYesLabel">Konturskuren</span><small>Vi skär · +20 kr</small></button>
             </div>
           </fieldset>
 
@@ -219,10 +203,7 @@
           </fieldset>
 
           <div class="builder-total">
-            <div>
-              <span class="muted">Totalt</span>
-              <strong id="customPrice">79 kr</strong>
-            </div>
+            <div><span class="muted">Totalt</span><strong id="customPrice">99 kr</strong></div>
             <div class="qty">
               <button type="button" id="qtyMinus" aria-label="Minska antal">−</button>
               <span id="qtyVal">1</span>
@@ -233,12 +214,77 @@
           <p class="hint" id="customHint">Ladda upp minst en bild för att fortsätta.</p>
         </div>
 
-        <div class="builder-preview">
-          <div class="sheet sheet--builder finish-matt" id="a4">
-            <div class="a4-grid size-m" id="a4Grid"></div>
-            <span class="sheet-label">A4 · 210 × 297 mm</span>
+        <div class="builder-preview" id="builderPreview"></div>
+      </div>
+    </section>
+
+    <!-- ===== Priser ===== -->
+    <section class="section pricing" id="priser">
+      <div class="section-head">
+        <p class="eyebrow">Priser</p>
+        <h2 class="reveal-title">Lyx <em>behöver inte</em> kosta.</h2>
+      </div>
+      <div class="price-grid">
+        <article class="price-card">
+          <p class="price-kicker">Sticker Sheet</p>
+          <p class="price-num"><span>49</span> kr</p>
+          <p class="price-desc">Ett A4 fullt med stickers från en värld. Egna bilder: 79 kr.</p>
+          <ul><li>Oskuret – du klipper</li><li>Utskuret: +20 kr</li><li>Holo: +20 kr</li></ul>
+        </article>
+        <article class="price-card price-card--hero">
+          <span class="price-flag">Huvudrollen</span>
+          <p class="price-kicker">Sticker Deluxe</p>
+          <p class="price-num"><span>79</span> kr</p>
+          <p class="price-desc">Ett helt A4 som en enda sticker. Din egen design – kollage, schema eller helbild: 99 kr.</p>
+          <ul><li>Rak kant ingår</li><li>Konturskuren: +20 kr</li><li>Holo: +20 kr</li></ul>
+        </article>
+        <article class="price-card">
+          <p class="price-kicker">Klass-deal</p>
+          <p class="price-num"><span>−10</span> %</p>
+          <p class="price-desc">Beställ 10 eller fler tillsammans – klassen, laget, kören eller kompisgänget.</p>
+          <ul><li>Från 10 st</li><li>Gratis upphämtning i skolan</li><li>Post: 15 kr</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== Stickr Business ===== -->
+    <section class="business" id="business">
+      <div class="section">
+        <div class="biz-top">
+          <div class="section-head">
+            <p class="eyebrow">Stickr Business</p>
+            <h2 class="reveal-title">Ert UF-företag förtjänar <em>merch.</em></h2>
+            <p class="section-sub">Montern ser likadan ut som alla andras. Er logga på 200 laptops gör det inte. Vi trycker stickers och Deluxe-skyltar åt andra UF-företag – snabbt, billigt och i er stil.</p>
+            <a href="#" class="btn btn-light magnetic" id="bizCta">Boka 10 minuter med oss</a>
           </div>
+          <div class="biz-visual" id="bizDeluxe"></div>
         </div>
+        <div class="price-grid" id="bizGrid"></div>
+      </div>
+    </section>
+
+    <!-- ===== Drop 01 ===== -->
+    <section class="drop" id="drop">
+      <div class="drop-inner">
+        <p class="eyebrow" id="dropState">Väntelistan är öppen</p>
+        <h2 class="drop-title">Drop <em>01</em></h2>
+        <p class="drop-sub">
+          <strong><span id="dropSize">100</span> numrerade Sticker Deluxe.</strong> Varje exemplar får sitt eget nummer, Nº 001 och uppåt.
+          När de är slut är de slut. Droppen öppnar <span id="dropDate">snart</span> – väntelistan får köpa först.
+        </p>
+        <div class="countdown" aria-label="Nedräkning till droppen">
+          <div><strong id="cdD">00</strong><span>dagar</span></div>
+          <div><strong id="cdH">00</strong><span>tim</span></div>
+          <div><strong id="cdM">00</strong><span>min</span></div>
+          <div><strong id="cdS">00</strong><span>sek</span></div>
+        </div>
+        <form class="wait-form" id="waitForm">
+          <input name="name" placeholder="Ditt namn" required autocomplete="name">
+          <input name="contact" placeholder="Mejl eller mobil" required>
+          <input name="ref" placeholder="Värvad av (valfritt)">
+          <button class="btn btn-light" type="submit">Ställ mig i kön</button>
+        </form>
+        <p class="drop-ref"><strong>Värva 3 kompisar till kön – få din Deluxe gratis.</strong> Be dem skriva ditt namn i "Värvad av".</p>
       </div>
     </section>
 
@@ -249,32 +295,34 @@
         <h2 class="reveal-title">Bra att <em>veta.</em></h2>
       </div>
       <div class="faq">
-        <details><summary>Vad är skillnaden på oskuret och utskuret?</summary><p>Oskuret är ett helt laminerat A4-ark som du klipper ut själv. Utskuret (+20 kr) betyder att vi konturskär varje sticker – du drar bara av och klistrar.</p></details>
-        <details><summary>Tål de vatten?</summary><p>Ja. Vi laminerar alla ark så de klarar regn, spill och handdisk. Inte diskmaskin.</p></details>
-        <details><summary>Får jag använda vilken bild som helst?</summary><p>Använd bilder du själv har gjort eller har rätt att använda. Vi trycker inte andras varumärken, logotyper eller kändisars ansikten utan tillstånd.</p></details>
-        <details><summary>Hur lång tid tar det?</summary><p>Oftast en vecka från beställning till leverans. Klassbeställningar kan ta lite längre.</p></details>
-        <details><summary>Hur betalar jag?</summary><p>Med Swish när vi har bekräftat din beställning.</p></details>
-        <details><summary>Vad är ett UF-företag?</summary><p>Ung Företagsamhet – gymnasieelever som startar och driver ett riktigt företag under ett läsår. Det är vi.</p></details>
+        <details><summary>Vad är en Sticker Deluxe?</summary><p>Ett helt A4-ark som är en enda sticker. Den passar på baksidan av en laptop, på skåpdörren, pärmen eller väggen. Rak kant ingår – vill du ha den konturskuren efter motivet kostar det 20 kr extra.</p></details>
+        <details><summary>Får den plats på min dator?</summary><p>A4 är 21 × 29,7 cm. De flesta 13–16-tumslaptops har plats för en Deluxe på höjden. Mät gärna lockets yta först – vi kan också göra den lite mindre på beställning.</p></details>
+        <details><summary>Går den att ta bort?</summary><p>Ja. Vi använder ett lim som sitter bra men går att dra av utan att förstöra skåpet eller datorn. Små limrester tar du bort med lite handsprit.</p></details>
+        <details><summary>Hur funkar schemat?</summary><p>Välj mallen Schema i "Skapa egen", klicka på lektionerna på stickern och skriv ditt eget. Färgerna följer ämnet automatiskt.</p></details>
+        <details><summary>Vad är skillnaden på Deluxe och Sheet?</summary><p>Deluxe är en enda stor sticker. Sheet är ett A4 fullt med små stickers, oskuret eller utskuret (+20 kr).</p></details>
+        <details><summary>Får jag använda vilken bild som helst?</summary><p>Använd bilder du själv har tagit eller har rätt att använda. Vi trycker inte andras varumärken, logotyper eller kändisars ansikten utan tillstånd.</p></details>
+        <details><summary>Säljer ni till andra UF-företag?</summary><p>Ja – se Stickr Business. Vi gör logga-stickers, monterskyltar och egna sticker-kollektioner som ni kan sälja vidare.</p></details>
       </div>
     </section>
 
     <!-- ===== Slut-CTA ===== -->
     <section class="finale">
-      <p class="eyebrow">Stickruf UF</p>
-      <h2 class="finale-title reveal-title">Allt kan bli<br>en <em>sticker.</em></h2>
+      <p class="eyebrow">Stickr UF</p>
+      <h2 class="finale-title reveal-title">Gör din grej<br><em>större.</em></h2>
       <div class="hero-cta">
-        <a href="#bygg" class="btn btn-light magnetic">Skapa din egen</a>
-        <a href="mailto:hej@stickruf.se" class="btn btn-line magnetic">hej@stickruf.se</a>
+        <a href="#bygg" class="btn btn-light magnetic">Designa din Deluxe</a>
+        <a href="#drop" class="btn btn-line magnetic">Drop 01</a>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="footer-word" aria-hidden="true" id="footerWord">Stickruf</div>
+    <div class="footer-word" aria-hidden="true" id="footerWord">Stickr</div>
     <div class="footer-row">
-      <span>© <span id="year"></span> Stickruf UF · Ung Företagsamhet</span>
+      <span>© <span id="year"></span> Stickr UF · Ung Företagsamhet</span>
       <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a>
       <a href="https://tiktok.com/" target="_blank" rel="noopener">TikTok</a>
+      <a href="#business">För UF-företag</a>
       <a href="#top">Till toppen ↑</a>
     </div>
   </footer>
@@ -298,7 +346,7 @@
           <option value="Post (+15 kr)">Post (+15 kr)</option>
         </select>
         <button class="btn btn-light btn-block" type="submit">Skicka beställning</button>
-        <p class="hint">Vi bekräftar och skickar Swish-info. Custom-bilder bifogar du i mejlet som öppnas.</p>
+        <p class="hint">Vi bekräftar och skickar Swish-info. Egna bilder bifogar du i mejlet som öppnas.</p>
       </form>
     </div>
   </aside>

@@ -1,5 +1,5 @@
 /* =========================================================
-   Stickruf UF – animationer
+   Stickr UF – animationer
    GSAP + ScrollTrigger + SplitText för rörelse, Lenis för mjuk scroll.
    Om användaren valt "minska rörelse" (eller biblioteken inte laddar)
    visas allt statiskt i stället.
@@ -29,72 +29,61 @@
     lenis.stop();
   }
 
-  $$('a[href^="#"]').forEach((a) => a.addEventListener("click", (e) => {
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || !lenis) return;
     const id = a.getAttribute("href");
-    const target = id === "#top" ? 0 : $(id);
-    if (target === null || !lenis) return;
+    const target = id === "#top" ? 0 : id.length > 1 ? $(id) : null;
+    if (target === null) return;
     e.preventDefault();
     lenis.scrollTo(target, { duration: 1.6 });
-  }));
+  });
 
   /* =========================================================
      Hero
      ========================================================= */
   const heroStickers = $$("#heroStickers .sk");
-  const holo = $("#holo");
+  const heroDeluxe = $("#heroDeluxe");
 
   gsap.set(".hero-title .split", { yPercent: 115 });
-  gsap.set(holo, { opacity: 0, scale: 0.6, rotationY: -70, rotationZ: -12 });
+  gsap.set(heroDeluxe, { opacity: 0, scale: 0.7, rotationY: -60, rotationZ: -14, y: 60 });
   gsap.set(heroStickers, { scale: 0, rotation: -40 });
-  gsap.set(".hero-foot > *, .scroll-cue", { y: 30, opacity: 0 });
+  gsap.set(".hero .eyebrow, .hero-lead, .hero-cta, .scroll-cue", { y: 30, opacity: 0 });
 
   function heroIntro() {
     return gsap.timeline()
-      .to(".hero-title .split", { yPercent: 0, duration: 1.3, stagger: 0.09, ease: "expo.out" })
-      .to(holo, { opacity: 1, scale: 1, rotationY: 0, rotationZ: 0, duration: 1.6, ease: "expo.out" }, 0.15)
-      .to(heroStickers, { scale: 1, rotation: 0, duration: 0.9, stagger: 0.07, ease: "back.out(2.4)" }, 0.5)
-      .to(".hero-foot > *, .scroll-cue", { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "expo.out" }, 0.6);
+      .to(".hero-title .split", { yPercent: 0, duration: 1.3, stagger: 0.12, ease: "expo.out" })
+      .to(heroDeluxe, { opacity: 1, scale: 1, rotationY: 0, rotationZ: 4, y: 0, duration: 1.7, ease: "expo.out" }, 0.1)
+      .to(heroStickers, { scale: 1, rotation: 0, duration: 0.9, stagger: 0.1, ease: "back.out(2.4)" }, 0.7)
+      .to(".hero .eyebrow, .hero-lead, .hero-cta, .scroll-cue", { y: 0, opacity: 1, duration: 1, stagger: 0.08, ease: "expo.out" }, 0.4);
   }
 
-  // Holo-kortet lutar och skimrar efter musen
-  const tiltX = gsap.quickTo(holo, "rotationX", { duration: 0.9, ease: "power3" });
-  const tiltY = gsap.quickTo(holo, "rotationY", { duration: 0.9, ease: "power3" });
-  const setFoil = (px, py) => {
-    holo.style.setProperty("--mx", `${50 + px * 60}%`);
-    holo.style.setProperty("--my", `${50 + py * 60}%`);
-  };
+  // Arket lutar efter musen – laminatet glänser
+  const tiltX = gsap.quickTo(heroDeluxe, "rotationX", { duration: 0.9, ease: "power3" });
+  const tiltY = gsap.quickTo(heroDeluxe, "rotationY", { duration: 0.9, ease: "power3" });
   if (finePointer) {
     $("#hero").addEventListener("pointermove", (e) => {
-      const r = holo.getBoundingClientRect();
+      const r = heroDeluxe.getBoundingClientRect();
       const px = gsap.utils.clamp(-1, 1, (e.clientX - (r.left + r.width / 2)) / (innerWidth / 2));
       const py = gsap.utils.clamp(-1, 1, (e.clientY - (r.top + r.height / 2)) / (innerHeight / 2));
-      tiltY(px * 24);
-      tiltX(-py * 24);
-      setFoil(px, py);
+      tiltY(px * 20);
+      tiltX(-py * 16);
     });
-    $("#hero").addEventListener("pointerleave", () => { tiltX(0); tiltY(0); setFoil(0, 0); });
+    $("#hero").addEventListener("pointerleave", () => { tiltX(0); tiltY(0); });
   } else {
-    // Touch: kortet vickar långsamt av sig självt
-    const p = { v: -1 };
-    gsap.to(p, {
-      v: 1, duration: 3.2, ease: "sine.inOut", repeat: -1, yoyo: true, delay: 2,
-      onUpdate: () => { gsap.set(holo, { rotationY: p.v * 16, rotationX: p.v * -6 }); setFoil(p.v, -p.v * 0.5); },
-    });
+    gsap.to(heroDeluxe, { rotationY: 12, rotationX: -4, duration: 3.2, ease: "sine.inOut", repeat: -1, yoyo: true, delay: 2.5 });
   }
 
-  // Parallax när man scrollar förbi hero
   const heroST = { trigger: "#hero", start: "top top", end: "bottom top", scrub: true };
-  gsap.to(".hero-title", { yPercent: 35, opacity: 0.15, ease: "none", scrollTrigger: heroST });
-  gsap.to(".holo-wrap", { y: () => innerHeight * 0.35, rotation: 10, ease: "none", scrollTrigger: heroST });
+  gsap.to(".hero-copy", { yPercent: 25, opacity: 0.2, ease: "none", scrollTrigger: heroST });
+  gsap.to(".hero-visual", { y: () => innerHeight * 0.2, rotation: 6, ease: "none", scrollTrigger: heroST });
   heroStickers.forEach((el) => {
-    const speed = parseFloat(el.dataset.speed || 1);
-    gsap.to(el, { y: -speed * innerHeight * 0.35, ease: "none", scrollTrigger: heroST });
+    gsap.to(el, { y: -parseFloat(el.dataset.speed || 1) * innerHeight * 0.3, ease: "none", scrollTrigger: heroST });
   });
 
   /* ---------- Loader ---------- */
   let seen = false;
-  try { seen = sessionStorage.getItem("stickruf-seen") === "1"; sessionStorage.setItem("stickruf-seen", "1"); } catch { /* ok */ }
-
+  try { seen = sessionStorage.getItem("stickr-seen") === "1"; sessionStorage.setItem("stickr-seen", "1"); } catch { /* ok */ }
   const done = () => { loader?.remove(); lenis?.start(); };
   if (seen || !loader) {
     done();
@@ -104,7 +93,7 @@
     const count = { v: 0 };
     gsap.set(".loader-word span", { yPercent: 110 });
     gsap.timeline()
-      .to(".loader-word span", { yPercent: 0, duration: 0.9, stagger: 0.05, ease: "expo.out" })
+      .to(".loader-word span", { yPercent: 0, duration: 0.9, stagger: 0.06, ease: "expo.out" })
       .to(count, { v: 100, duration: 1.4, ease: "power2.inOut", onUpdate: () => { num.textContent = Math.round(count.v); } }, 0)
       .to(".loader-word span", { yPercent: -110, duration: 0.55, stagger: 0.03, ease: "expo.in" }, ">-0.05")
       .to(loader, { clipPath: "inset(0% 0% 100% 0%)", duration: 1, ease: "expo.inOut" }, ">-0.15")
@@ -112,12 +101,9 @@
       .add(done, "<0.5");
   }
 
-  /* =========================================================
-     Manifest – orden tänds när man scrollar
-     ========================================================= */
+  /* ---------- Statement: orden tänds ---------- */
   SplitText.create("#manifestText", {
-    type: "words",
-    autoSplit: true,
+    type: "words", autoSplit: true,
     onSplit: (self) => gsap.fromTo(self.words, { opacity: 0.12 }, {
       opacity: 1, stagger: 0.1, ease: "none",
       scrollTrigger: { trigger: "#manifestText", start: "top 78%", end: "bottom 45%", scrub: true },
@@ -134,6 +120,33 @@
   }));
 
   /* =========================================================
+     Användningsområden – horisontell scroll, stickern klistras på
+     ========================================================= */
+  const uses = $("#anvand");
+  const track = $("#usesTrack");
+  uses.classList.add("is-horizontal");
+  const useEls = $$(".use", track);
+  const slide = gsap.to(track, {
+    x: () => -(track.scrollWidth - innerWidth),
+    ease: "none",
+    scrollTrigger: {
+      trigger: uses, pin: true, start: "top top", scrub: 1, invalidateOnRefresh: true,
+      end: () => `+=${track.scrollWidth - innerWidth}`,
+    },
+  });
+  useEls.forEach((u, i) => {
+    const d = $(".deluxe", u);
+    const copy = $$(".use-copy > *", u);
+    const tl = gsap.timeline({
+      scrollTrigger: i === 0
+        ? { trigger: uses, start: "top 60%", toggleActions: "play none none reverse" }
+        : { trigger: u, containerAnimation: slide, start: "left 70%", toggleActions: "play none none reverse" },
+    });
+    tl.from(d, { scale: 1.5, rotation: -18, y: -40, opacity: 0, duration: 0.9, ease: "back.out(1.6)" })
+      .from(copy, { y: 40, opacity: 0, duration: 0.8, stagger: 0.08, ease: "expo.out" }, 0.15);
+  });
+
+  /* =========================================================
      Världar – pinnad scroll-resa
      ========================================================= */
   const worldsEl = $("#varldar");
@@ -142,26 +155,31 @@
 
   const parts = worlds.map((w) => {
     const split = SplitText.create($(".world-title", w), { type: "chars", charsClass: "char" });
-    return { el: w, chars: split.chars, copy: [$(".world-kicker", w), $(".world-line", w)], stickers: $$(".sk", w) };
+    return {
+      el: w, chars: split.chars,
+      copy: [$(".world-kicker", w), $(".world-line", w)],
+      deluxe: $(".world-deluxe", w),
+      stickers: $$(".world-stickers .sk", w),
+    };
   });
+  const slapFrom = { scale: 2.6, opacity: 0, rotation: () => gsap.utils.random(-60, 60) };
+  const slapTo = { scale: 1, opacity: 1, rotation: 0, stagger: 0.07, ease: "back.out(2.2)" };
+  const deluxeFrom = { yPercent: 60, rotation: -25, opacity: 0, scale: 0.8 };
+  const deluxeTo = { yPercent: 0, rotation: 4, opacity: 1, scale: 1, ease: "back.out(1.4)" };
 
-  const slapIn = (stickers) => ({
-    from: { scale: 2.6, opacity: 0, rotation: () => gsap.utils.random(-60, 60) },
-    to: { scale: 1, opacity: 1, rotation: 0, stagger: 0.07, ease: "back.out(2.2)" },
-  });
-
-  // Första världen "smackas" på när sektionen kommer in i bild
   const first = parts[0];
   gsap.set(first.chars, { yPercent: 105, opacity: 0 });
   gsap.set(first.copy, { y: 24, opacity: 0 });
-  gsap.set(first.stickers, slapIn().from);
+  gsap.set(first.stickers, slapFrom);
+  gsap.set(first.deluxe, deluxeFrom);
   gsap.timeline({ scrollTrigger: { trigger: worldsEl, start: "top 55%", toggleActions: "play none none reverse" } })
     .to(first.chars, { yPercent: 0, opacity: 1, duration: 1, stagger: 0.05, ease: "expo.out" })
     .to(first.copy, { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "expo.out" }, 0.2)
-    .to(first.stickers, { ...slapIn().to, duration: 0.6 }, 0.25);
+    .to(first.deluxe, { ...deluxeTo, duration: 1.1 }, 0.1)
+    .to(first.stickers, { ...slapTo, duration: 0.6 }, 0.4);
 
-  const STEP = 2.2;   // tidslinje-längd per värld
-  const marks = [0];  // när varje värld "tar över"
+  const STEP = 2.2;
+  const marks = [0];
   const tl = gsap.timeline({ defaults: { ease: "none" } });
   tl.to({}, { duration: 0.6 });
 
@@ -169,35 +187,31 @@
     const prev = parts[idx];
     const at = 0.6 + idx * STEP;
     marks.push(at + 0.5);
-
     gsap.set(p.el, { clipPath: "inset(100% 0% 0% 0%)" });
     gsap.set(p.chars, { yPercent: 105, opacity: 0 });
     gsap.set(p.copy, { y: 24, opacity: 0 });
-    gsap.set(p.stickers, slapIn().from);
+    gsap.set(p.stickers, slapFrom);
+    gsap.set(p.deluxe, deluxeFrom);
 
     tl.to(p.el, { clipPath: "inset(0% 0% 0% 0%)", duration: 1, ease: "power3.inOut" }, at)
       .to(prev.el, { scale: 0.88, yPercent: -6, filter: "brightness(.45)", duration: 1, ease: "power3.inOut" }, at)
-      .to(prev.stickers, {
+      .to([...prev.stickers, prev.deluxe], {
         y: () => -innerHeight * gsap.utils.random(0.4, 0.9),
         rotation: () => gsap.utils.random(-90, 90),
         duration: 0.9, stagger: 0.02, ease: "power2.in",
       }, at)
       .to(p.chars, { yPercent: 0, opacity: 1, duration: 0.6, stagger: 0.035, ease: "power4.out" }, at + 0.55)
       .to(p.copy, { y: 0, opacity: 1, duration: 0.4, stagger: 0.08, ease: "power3.out" }, at + 0.75)
-      .fromTo(p.stickers, slapIn().from, { ...slapIn().to, duration: 0.35 }, at + 0.8)
+      .to(p.deluxe, { ...deluxeTo, duration: 0.6 }, at + 0.6)
+      .fromTo(p.stickers, slapFrom, { ...slapTo, duration: 0.35 }, at + 0.85)
       .to({}, { duration: 0.6 });
   });
 
   const hudNum = $("#hudNum");
   const hudBar = $("#hudBar");
   ScrollTrigger.create({
-    trigger: worldsEl,
-    pin: true,
-    start: "top top",
+    trigger: worldsEl, pin: true, start: "top top", scrub: 1, animation: tl, invalidateOnRefresh: true,
     end: () => `+=${innerHeight * (worlds.length - 1) * 1.15 + innerHeight * 0.4}`,
-    scrub: 1,
-    animation: tl,
-    invalidateOnRefresh: true,
     onUpdate: (self) => {
       // Läs av scroll-positionen (inte tidslinjen, som släpar pga scrub)
       const t = self.progress * tl.duration();
@@ -210,19 +224,17 @@
 
   /* ---------- Marquee lutar med scroll-farten ---------- */
   const skewTo = gsap.quickTo("#marquee", "skewX", { duration: 0.5, ease: "power3" });
-  ScrollTrigger.create({
-    onUpdate: (self) => skewTo(gsap.utils.clamp(-10, 10, self.getVelocity() / -250)),
-  });
+  ScrollTrigger.create({ onUpdate: (self) => skewTo(gsap.utils.clamp(-10, 10, self.getVelocity() / -250)) });
 
   /* =========================================================
-     Process – arket byggs upp medan man scrollar
+     Process (Sheets) – arket byggs upp
      ========================================================= */
   const sheet = $("#processSheet");
   const cells = $$("#processGrid .sk");
   const cuts = $$("#processGrid .cut-line");
   const steps = $$(".pstep");
   const badge = $("#cutBadge");
-  const hero = cells[4];
+  const lift = cells[4];
   $(".process").classList.add("is-pinned");
 
   gsap.set(sheet, { rotationX: 35, rotationZ: -10, y: 80, scale: 0.85, transformPerspective: 1400 });
@@ -240,17 +252,12 @@
     .fromTo(cuts, { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.3, stagger: 0.05, ease: "power3.out" }, stepAt[2])
     .to(badge, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(3)" }, stepAt[2] + 0.4)
     .to(cuts[4], { opacity: 0, duration: 0.2 }, stepAt[3])
-    .to(hero, { y: () => -sheet.offsetHeight * 0.12, x: () => sheet.offsetWidth * 0.32, scale: 2.1, rotation: -16, duration: 0.9, ease: "power2.out" }, stepAt[3])
+    .to(lift, { y: () => -sheet.offsetHeight * 0.12, x: () => sheet.offsetWidth * 0.32, scale: 2.1, rotation: -16, duration: 0.9, ease: "power2.out" }, stepAt[3])
     .to({}, { duration: 0.9 });
 
   ScrollTrigger.create({
-    trigger: ".process",
-    pin: true,
-    start: "top top",
+    trigger: ".process", pin: true, start: "top top", scrub: 1, animation: ptl, invalidateOnRefresh: true,
     end: () => `+=${innerHeight * 2.8}`,
-    scrub: 1,
-    animation: ptl,
-    invalidateOnRefresh: true,
     onUpdate: (self) => {
       const t = self.progress * ptl.duration();
       let active = 0;
@@ -264,10 +271,25 @@
     y: 80, opacity: 0, duration: 1.2, stagger: 0.1, ease: "expo.out",
     scrollTrigger: { trigger, start: "top 82%" },
   });
-  rise(".price-card", ".price-grid");
-  rise(".product", "#shopGrid");
+  rise(".pricing .price-card", ".pricing .price-grid");
+  rise("#bizGrid .price-card", "#bizGrid");
+  rise(".facts > div", ".facts");
   rise(".builder > *", ".builder");
   rise(".faq details", ".faq");
+  rise(".countdown > div", ".countdown");
+  gsap.from("#bizDeluxe", { yPercent: 40, rotation: -20, opacity: 0, duration: 1.4, ease: "expo.out", scrollTrigger: { trigger: "#bizDeluxe", start: "top 85%" } });
+
+  // Butiken renderas om när man byter flik – animera korten varje gång
+  const animateShop = () => gsap.from("#shopGrid .product", { y: 60, opacity: 0, duration: 1, stagger: 0.08, ease: "expo.out" });
+  ScrollTrigger.create({ trigger: "#shopGrid", start: "top 82%", once: true, onEnter: animateShop });
+  $("#shopTabs").addEventListener("click", () => requestAnimationFrame(animateShop));
+
+  /* ---------- Drop-rubriken ---------- */
+  const dropSplit = SplitText.create(".drop-title", { type: "chars", charsClass: "char" });
+  gsap.from(dropSplit.chars, {
+    yPercent: 100, opacity: 0, rotation: () => gsap.utils.random(-25, 25), stagger: 0.05, duration: 1.1, ease: "expo.out",
+    scrollTrigger: { trigger: ".drop", start: "top 70%" },
+  });
 
   /* ---------- Jättelogga i footern ---------- */
   const footerSplit = SplitText.create("#footerWord", { type: "chars", charsClass: "char" });
@@ -291,7 +313,6 @@
       cursor.classList.toggle("is-big", !!t);
       if (t) label.textContent = t.dataset.cursor;
     });
-
     $$(".magnetic").forEach((el) => {
       const mx = gsap.quickTo(el, "x", { duration: 0.8, ease: "elastic.out(1, .4)" });
       const my = gsap.quickTo(el, "y", { duration: 0.8, ease: "elastic.out(1, .4)" });

@@ -1,159 +1,305 @@
 /* =========================================================
-   Stickruf UF – innehåll, butik, byggare och varukorg.
+   Stickr UF – innehåll, kollage, butik, byggare och varukorg.
    Animationerna ligger i js/motion.js.
 
-   Vill ni ändra priser, världar eller stickers? Allt finns
-   i CONFIG och WORLDS här nedanför.
+   Allt ni vill ändra (priser, drop-datum, världar, kollage)
+   ligger i CONFIG, WORLDS och DELUXE här nedanför.
    ========================================================= */
 
 const CONFIG = {
-  orderEmail: "hej@stickruf.se", // Byt till er riktiga mejl
-  sheetPrice: 49,                // färdigt ark, oskuret
-  customPrice: 79,               // custom-ark, oskuret
-  cutExtra: 20,                  // utskärning
-  holoExtra: 20,                 // holo-finish
-  shipping: 15,                  // porto
-  dealMinSheets: 10,             // klass-deal från så här många ark...
-  dealPercent: 10,               // ...ger så här många procent rabatt
+  brand: "Stickr UF",
+  orderEmail: "hej@stickr.se",      // BYT till er riktiga mejl innan lansering!
+  deluxePrice: 79,                  // Sticker Deluxe, färdig design
+  deluxeCustomPrice: 99,            // Sticker Deluxe, egen design (kollage/schema/helbild)
+  sheetPrice: 49,                   // Sticker Sheet, färdigt
+  sheetCustomPrice: 79,             // Sticker Sheet, egna bilder
+  cutExtra: 20,                     // konturskärning / utskärning
+  holoExtra: 20,                    // holo-finish
+  shipping: 15,                     // porto
+  dealMinSheets: 10,                // klass-deal från så här många...
+  dealPercent: 10,                  // ...ger så här många procent
   maxUploads: 6,
+  dropName: "Drop 01",
+  dropDate: "2026-11-02T07:30:00+01:00", // när droppen öppnar (svensk tid)
+  dropSize: 100,                    // antal numrerade Deluxe i droppen
 };
 
-/* ---------------------------------------------------------
-   Sticker-typer:
-   pill   – rundad etikett          { text }
-   word   – stort ord               { text }
-   tag    – rektangulär etikett     { text }
-   ticket – biljett                 { text, sub }
-   seal   – rund med text i cirkel  { text, icon }
-   star   – stjärnform              { text }
-   emoji  – emoji med vit kant      { text }
-   ghost  – streckad "din bild här" { text }
-   x/y = position i %, r = rotation, s = storlek, bg/fg = färger
-   --------------------------------------------------------- */
+/* =========================================================
+   Kollage-motorn
+   Varje Sticker Deluxe är ett A4 byggt av lager:
+   ph     – foto-yta. Lägg en bild i assets/foton/<photo>.jpg så används den,
+            annars visas gradienten g. form: rect | circle | arch, torn: rivna kanter
+   paper  – papperslapp i en färg eller ett mönster (pat)
+   text   – stor text (font: serif | sans | cond)
+   cut    – "urklippta" bokstäver i olika papper
+   tape   – tejpbit
+   sk     – en liten sticker ovanpå (samma typer som på arken)
+   icon   – ritad symbol (star, heart, bolt, ball, sparkle, arrow, scribble)
+   label  – liten etikett-text
+   schedule – veckoschema (redigerbart i byggaren)
+   x/y/w/h i % av arket, r = rotation, size = textstorlek (% av arkets bredd)
+   ========================================================= */
+
+const G = { // "foton" som används tills riktiga bilder finns
+  sunset:  "linear-gradient(170deg,#ff6a4d 0%,#ffa45c 45%,#ffd79a 100%)",
+  satin:   "linear-gradient(135deg,#ffd1e1 0%,#ff9ec0 38%,#ffe6ef 52%,#ff83ad 78%,#ffc2d6 100%)",
+  chrome:  "linear-gradient(180deg,#ffffff 0%,#9aa0aa 42%,#f4f6f8 50%,#4e535d 100%)",
+  neon:    "radial-gradient(circle at 70% 30%,#e3ff6b 0%,#a6d10f 18%,transparent 46%),radial-gradient(circle at 20% 80%,#ff3b8a55,transparent 40%),#101010",
+  stadium: "radial-gradient(ellipse at 25% 8%,#ffffffcc 0,transparent 22%),radial-gradient(ellipse at 78% 6%,#ffffffaa 0,transparent 20%),linear-gradient(180deg,#081428 0%,#16294a 48%,#1d6b3a 48%,#29894a 100%)",
+  pitch:   "repeating-linear-gradient(90deg,#1f7a3f 0 12%,#278c4a 12% 24%)",
+  warm:    "radial-gradient(circle at 50% 35%,#ffe2a8 0%,#f0a35a 35%,#9c4524 80%)",
+  sky:     "linear-gradient(180deg,#6fa8ff 0%,#bcd9ff 70%,#fff3d6 100%)",
+  night:   "radial-gradient(circle at 30% 30%,#c9a8ff 0,transparent 35%),radial-gradient(circle at 75% 70%,#ff4f8b88 0,transparent 40%),#16131a",
+  ink:     "linear-gradient(160deg,#2a2530,#0b0a0c)",
+};
+
+const DELUXE = {
+  kollage: {
+    name: "Kollage", bg: "#f1ebe0",
+    layers: [
+      { k: "ph", photo: "kollage-1", g: G.sunset, x: 4, y: 4, w: 62, h: 40, r: -3, torn: true, dots: true },
+      { k: "ph", photo: "kollage-2", g: G.satin, form: "circle", x: 52, y: 24, w: 44, h: 31, r: 0, dots: true },
+      { k: "paper", color: "#0b0a0c", x: -6, y: 49, w: 74, h: 21, r: 3, torn: true },
+      { k: "text", text: "Din grej.", font: "serif", size: 15, color: "#f4efe6", x: 4, y: 51, r: 3 },
+      { k: "ph", photo: "kollage-3", g: G.neon, x: 56, y: 59, w: 40, h: 30, r: 5, torn: true },
+      { k: "cut", text: "STICKR", size: 7.5, x: 6, y: 74, r: -4 },
+      { k: "tape", x: 12, y: 1, w: 22, h: 5, r: -8 },
+      { k: "tape", x: 68, y: 56, w: 18, h: 5, r: 22 },
+      { k: "icon", icon: "star", color: "#e8ff59", x: 76, y: 5, w: 18, h: 13, r: 10 },
+      { k: "icon", icon: "arrow", color: "#ff4f8b", x: 36, y: 40, w: 24, h: 13, r: 8 },
+      { k: "label", text: "DELUXE Nº 001 · A4", x: 6, y: 92 },
+    ],
+  },
+  schema: {
+    name: "Schema", bg: "#fbf8f2",
+    layers: [
+      { k: "cut", text: "SCHEMA", size: 9, x: 5, y: 4, r: -2 },
+      { k: "label", text: "VT 2027 · KLASS NA22B", x: 6, y: 15.5 },
+      { k: "icon", icon: "star", color: "#ff4f8b", x: 78, y: 3, w: 16, h: 11, r: 12 },
+      { k: "schedule", x: 5, y: 21, w: 90, h: 62 },
+      { k: "sk", t: "tag", text: "LUNCH 11:40", bg: "#e8ff59", fg: "#0b0a0c", x: 6, y: 86, r: -4, size: 1.9 },
+      { k: "ph", photo: "schema", g: G.satin, form: "circle", x: 74, y: 84, w: 18, h: 13, dots: true },
+      { k: "tape", x: 40, y: -1, w: 20, h: 5, r: 3 },
+    ],
+  },
+  matchday: {
+    name: "Matchday", bg: "#0d3a29",
+    layers: [
+      { k: "ph", photo: "matchday-1", g: G.stadium, x: 0, y: 0, w: 100, h: 55, dots: true },
+      { k: "sk", t: "star", text: "90+3'", bg: "#e8ff59", fg: "#0b0a0c", x: 6, y: 5, r: -10, size: 2.2 },
+      { k: "sk", t: "ticket", text: "MATCHDAY", sub: "SEKTION B · RAD 12", bg: "#f4efe6", fg: "#0d3a29", x: 44, y: 9, r: 7, size: 1.9 },
+      { k: "cut", text: "ALLEZ", size: 12, x: 5, y: 47, r: -3 },
+      { k: "text", text: "Matchday", font: "serif", size: 16, color: "#f4efe6", x: 5, y: 63 },
+      { k: "icon", icon: "ball", color: "#f4efe6", x: 70, y: 66, w: 24, h: 17, r: -10 },
+      { k: "paper", pat: "scarf", x: -6, y: 84, w: 112, h: 8, r: -3 },
+      { k: "label", text: "HELA VÄGEN · HELA TIDEN", x: 6, y: 94.5, color: "#f4efe6" },
+    ],
+  },
+  glow: {
+    name: "Glow", bg: "#f5c6d4",
+    layers: [
+      { k: "ph", photo: "glow-1", g: G.satin, form: "arch", x: 7, y: 5, w: 56, h: 47 },
+      { k: "ph", photo: "glow-2", g: G.chrome, form: "circle", x: 56, y: 30, w: 38, h: 27, dots: true },
+      { k: "tape", x: 26, y: 2, w: 20, h: 5, r: -6 },
+      { k: "text", text: "Glow", font: "serif", size: 26, color: "#3a0d1f", x: 5, y: 53 },
+      { k: "sk", t: "pill", text: "main character", bg: "#fff", fg: "#ff4f8b", x: 36, y: 77, r: -6, size: 2 },
+      { k: "icon", icon: "heart", color: "#ff4f8b", x: 74, y: 5, w: 18, h: 13, r: 10 },
+      { k: "icon", icon: "sparkle", color: "#fff", x: 8, y: 80, w: 13, h: 9 },
+      { k: "label", text: "BESTIES 4 EVER", x: 6, y: 93, color: "#3a0d1f" },
+    ],
+  },
+  grind: {
+    name: "Grind", bg: "#0b0a0c",
+    layers: [
+      { k: "ph", photo: "grind-1", g: G.neon, x: 0, y: 0, w: 100, h: 46, dots: true },
+      { k: "text", text: "NO DAYS<br>OFF", font: "cond", size: 21, color: "#d4ff3a", x: 5, y: 43 },
+      { k: "icon", icon: "bolt", color: "#d4ff3a", x: 74, y: 5, w: 20, h: 16, r: 8 },
+      { k: "sk", t: "pill", text: "05:30 CLUB", bg: "#f4efe6", fg: "#0b0a0c", x: 6, y: 80, r: -5, size: 2 },
+      { k: "sk", t: "tag", text: "LOCKED IN", bg: "#ff3b30", fg: "#fff", x: 50, y: 85, r: 6, size: 1.9 },
+      { k: "label", text: "1 % BÄTTRE · VARJE DAG", x: 6, y: 94, color: "#f4efe6" },
+    ],
+  },
+  mys: {
+    name: "Mys", bg: "#eedfc4",
+    layers: [
+      { k: "ph", photo: "mys-1", g: G.warm, form: "arch", x: 20, y: 5, w: 60, h: 47, dots: true },
+      { k: "icon", icon: "sparkle", color: "#b5552b", x: 6, y: 6, w: 14, h: 10 },
+      { k: "text", text: "Hemma<br>bäst.", font: "serif", size: 15, color: "#4a2e1a", x: 7, y: 54 },
+      { k: "paper", pat: "checker", x: -5, y: 81, w: 62, h: 14, r: -3 },
+      { k: "sk", t: "seal", text: "LITE MYS · SKADAR ALDRIG · ", icon: "♥", bg: "#4a2e1a", fg: "#eedfc4", x: 62, y: 64, size: 1.9 },
+      { k: "label", text: "FIKA? ALLTID.", x: 62, y: 93, color: "#4a2e1a" },
+    ],
+  },
+  business: {
+    name: "Ert UF-företag", bg: "#fbf8f2",
+    layers: [
+      { k: "paper", color: "#0b0a0c", form: "circle", x: 24, y: 10, w: 52, h: 37, text: "ER<br>LOGGA" },
+      { k: "icon", icon: "star", color: "#e8ff59", x: 66, y: 6, w: 20, h: 14, r: 14 },
+      { k: "cut", text: "UF 2027", size: 8.5, x: 8, y: 53, r: -2 },
+      { k: "text", text: "Ert företag.", font: "serif", size: 12, color: "#0b0a0c", x: 8, y: 66 },
+      { k: "tape", x: 6, y: 3, w: 20, h: 5, r: -10 },
+      { k: "label", text: "MÄSSPAKET · STICKR BUSINESS", x: 8, y: 92 },
+    ],
+  },
+};
+
+// Schemat som visas som standard (kan redigeras direkt i byggaren)
+const SCHEDULE = {
+  days: ["MÅN", "TIS", "ONS", "TOR", "FRE"],
+  rows: [
+    ["Matte", "Svenska", "Engelska", "Kemi", "Idrott"],
+    ["Svenska", "Historia", "Matte", "Engelska", "Matte"],
+    ["Lunch", "Lunch", "Lunch", "Lunch", "Lunch"],
+    ["Kemi", "Idrott", "Biologi", "Matte", "Svenska"],
+    ["Mentor", "Biologi", "Fysik", "Historia", "—"],
+  ],
+};
+const SUBJECT_COLORS = {
+  matte: "#e8ff59", svenska: "#ffc2d6", engelska: "#bcd9ff", kemi: "#c9a8ff", idrott: "#ffb36b",
+  historia: "#f2d6a2", biologi: "#b9f0c8", fysik: "#a8f0ff", lunch: "#0b0a0c", mentor: "#e5e0d8",
+};
+
+/* ---------- Världarna (scroll-resan + butiken) ---------- */
 const WORLDS = [
   {
-    id: "matchday",
-    name: "Matchday",
-    kicker: "För dig som lever för 90 minuter",
-    line: "Halsduken på. Laptopen full.",
+    id: "matchday", name: "Matchday", deluxe: "matchday",
+    kicker: "För dig som lever för 90 minuter", line: "Halsduken på. Laptopen täckt.",
     bg: "#0d3a29", fg: "#f4efe6", accent: "#e8ff59",
     stickers: [
-      { t: "ticket", text: "MATCHDAY", sub: "SEKTION B · RAD 12 · 19:00", x: 6,  y: 13, r: -7, bg: "#f4efe6", fg: "#0d3a29" },
-      { t: "pill",   text: "90+3'",       x: 64, y: 12, r: 8,   bg: "#e8ff59", fg: "#0b0a0c", s: 1.2 },
-      { t: "star",   text: "GOAL!",       x: 42, y: 4,  r: 12,  bg: "#e8ff59", fg: "#0b0a0c" },
-      { t: "emoji",  text: "⚽",          x: 82, y: 30, r: 0,   s: 1.1 },
-      { t: "seal",   text: "HELA VÄGEN · HELA TIDEN · ", icon: "♥", x: 7, y: 60, r: -10, bg: "#c8102e", fg: "#fff" },
-      { t: "word",   text: "ALLEZ ALLEZ", x: 36, y: 74, r: -4,  bg: "#f4efe6", fg: "#0d3a29" },
-      { t: "tag",    text: "TIFO-KLAN",   x: 68, y: 64, r: -9,  bg: "#0b0a0c", fg: "#f4efe6" },
-      { t: "emoji",  text: "🧣",          x: 22, y: 34, r: 10,  s: 0.9 },
+      { t: "ticket", text: "MATCHDAY", sub: "SEKTION B · RAD 12 · 19:00", x: 4, y: 12, r: -7, bg: "#f4efe6", fg: "#0d3a29" },
+      { t: "pill", text: "90+3'", x: 40, y: 8, r: 8, bg: "#e8ff59", fg: "#0b0a0c", s: 1.2 },
+      { t: "seal", text: "HELA VÄGEN · HELA TIDEN · ", icon: "♥", x: 4, y: 70, r: -10, bg: "#c8102e", fg: "#fff" },
+      { t: "icon", icon: "ball", x: 40, y: 74, r: 0, bg: "#f4efe6", fg: "#0d3a29" },
+      { t: "tag", text: "TIFO-KLAN", x: 84, y: 82, r: -9, bg: "#0b0a0c", fg: "#f4efe6" },
+      { t: "word", text: "ALLEZ ALLEZ", x: 80, y: 6, r: 6, bg: "#f4efe6", fg: "#0d3a29" },
     ],
   },
   {
-    id: "glow",
-    name: "Glow",
-    kicker: "För main characters",
-    line: "Mjukt, glittrigt och helt du.",
+    id: "glow", name: "Glow", deluxe: "glow",
+    kicker: "För main characters", line: "Mjukt, glittrigt och helt du.",
     bg: "#f5c6d4", fg: "#3a0d1f", accent: "#ff4f8b",
     stickers: [
-      { t: "emoji",  text: "🎀",                 x: 8,  y: 12, r: -12, s: 1.2 },
-      { t: "pill",   text: "main character",     x: 60, y: 10, r: 7,   bg: "#fff", fg: "#ff4f8b", s: 1.1 },
-      { t: "seal",   text: "BESTIES · 4 · EVER · ", icon: "♡", x: 78, y: 54, r: 10, bg: "#ff4f8b", fg: "#fff" },
-      { t: "word",   text: "hot girl walk",      x: 8,  y: 70, r: -5,  bg: "#3a0d1f", fg: "#f5c6d4" },
-      { t: "star",   text: "manifest",           x: 33, y: 5,  r: -8,  bg: "#fff1a8", fg: "#3a0d1f" },
-      { t: "emoji",  text: "💅",                 x: 84, y: 28, r: 12 },
-      { t: "emoji",  text: "🍒",                 x: 22, y: 38, r: -6,  s: 0.9 },
-      { t: "tag",    text: "THAT GIRL ERA",      x: 52, y: 76, r: 6,   bg: "#fff", fg: "#3a0d1f" },
+      { t: "pill", text: "main character", x: 38, y: 9, r: 7, bg: "#fff", fg: "#ff4f8b", s: 1.1 },
+      { t: "icon", icon: "heart", x: 6, y: 12, r: -12, bg: "#ff4f8b", fg: "#fff" },
+      { t: "seal", text: "BESTIES · 4 · EVER · ", icon: "♡", x: 84, y: 68, r: 10, bg: "#ff4f8b", fg: "#fff" },
+      { t: "word", text: "hot girl walk", x: 4, y: 78, r: -5, bg: "#3a0d1f", fg: "#f5c6d4" },
+      { t: "star", text: "manifest", x: 84, y: 8, r: -8, bg: "#fff1a8", fg: "#3a0d1f" },
+      { t: "tag", text: "THAT GIRL ERA", x: 42, y: 84, r: 6, bg: "#fff", fg: "#3a0d1f" },
     ],
   },
   {
-    id: "grind",
-    name: "Grind",
-    kicker: "För dig som aldrig skippar passet",
-    line: "Disciplin slår motivation. Varje dag.",
+    id: "grind", name: "Grind", deluxe: "grind",
+    kicker: "För dig som aldrig skippar passet", line: "Disciplin slår motivation. Varje dag.",
     bg: "#0b0a0c", fg: "#f4efe6", accent: "#d4ff3a",
     stickers: [
-      { t: "word",   text: "NO DAYS OFF",   x: 5,  y: 12, r: -6, bg: "#d4ff3a", fg: "#0b0a0c" },
-      { t: "pill",   text: "05:30 CLUB",    x: 66, y: 8,  r: 9,  bg: "#f4efe6", fg: "#0b0a0c" },
-      { t: "seal",   text: "1% BÄTTRE · VARJE DAG · ", icon: "⚡", x: 80, y: 30, r: 8, bg: "#d4ff3a", fg: "#0b0a0c" },
-      { t: "ticket", text: "ENERGI",        sub: "0 SOCKER · 100% FOKUS", x: 8, y: 64, r: 7, bg: "#f4efe6", fg: "#0b0a0c" },
-      { t: "tag",    text: "LOCKED IN",     x: 64, y: 72, r: -8, bg: "#ff3b30", fg: "#fff" },
-      { t: "star",   text: "PR!",           x: 42, y: 78, r: 14, bg: "#d4ff3a", fg: "#0b0a0c" },
-      { t: "emoji",  text: "💪",            x: 22, y: 36, r: -10 },
-      { t: "emoji",  text: "⚡",            x: 44, y: 3,  r: 10, s: 0.9 },
+      { t: "word", text: "NO DAYS OFF", x: 4, y: 10, r: -6, bg: "#d4ff3a", fg: "#0b0a0c" },
+      { t: "pill", text: "05:30 CLUB", x: 42, y: 7, r: 9, bg: "#f4efe6", fg: "#0b0a0c" },
+      { t: "seal", text: "1% BÄTTRE · VARJE DAG · ", icon: "⚡", x: 86, y: 10, r: 8, bg: "#d4ff3a", fg: "#0b0a0c" },
+      { t: "ticket", text: "ENERGI", sub: "0 SOCKER · 100% FOKUS", x: 4, y: 72, r: 7, bg: "#f4efe6", fg: "#0b0a0c" },
+      { t: "tag", text: "LOCKED IN", x: 82, y: 80, r: -8, bg: "#ff3b30", fg: "#fff" },
+      { t: "icon", icon: "bolt", x: 42, y: 80, r: 10, bg: "#d4ff3a", fg: "#0b0a0c" },
     ],
   },
   {
-    id: "mys",
-    name: "Mys",
-    kicker: "För inredningsromantiker",
-    line: "Levande ljus, lite pyssel och mycket kärlek.",
+    id: "mys", name: "Mys", deluxe: "mys",
+    kicker: "För inredningsromantiker", line: "Levande ljus, lite pyssel och mycket kärlek.",
     bg: "#eedfc4", fg: "#4a2e1a", accent: "#b5552b",
     stickers: [
-      { t: "emoji",  text: "🕯️",            x: 10, y: 12, r: -8, s: 1.1 },
-      { t: "word",   text: "Hemma bäst",    x: 56, y: 9,  r: 6,  bg: "#b5552b", fg: "#fff" },
-      { t: "seal",   text: "LITE MYS · SKADAR ALDRIG · ", icon: "☕", x: 6, y: 58, r: -6, bg: "#4a2e1a", fg: "#eedfc4" },
-      { t: "pill",   text: "fika?",         x: 80, y: 34, r: 12, bg: "#fff", fg: "#b5552b", s: 1.2 },
-      { t: "star",   text: "Ljuvligt!",     x: 72, y: 62, r: -10, bg: "#f2c14e", fg: "#4a2e1a" },
-      { t: "tag",    text: "PYSSEL-PROFFS", x: 36, y: 78, r: 4,  bg: "#4a2e1a", fg: "#eedfc4" },
-      { t: "emoji",  text: "🪴",            x: 24, y: 36, r: 6 },
-      { t: "emoji",  text: "🧶",            x: 40, y: 4,  r: -12, s: 0.9 },
+      { t: "word", text: "Hemma bäst", x: 4, y: 10, r: -6, bg: "#b5552b", fg: "#fff" },
+      { t: "seal", text: "LITE MYS · SKADAR ALDRIG · ", icon: "☕", x: 4, y: 70, r: -6, bg: "#4a2e1a", fg: "#eedfc4" },
+      { t: "pill", text: "fika?", x: 86, y: 12, r: 12, bg: "#fff", fg: "#b5552b", s: 1.2 },
+      { t: "star", text: "Ljuvligt!", x: 84, y: 72, r: -10, bg: "#f2c14e", fg: "#4a2e1a" },
+      { t: "tag", text: "PYSSEL-PROFFS", x: 40, y: 84, r: 4, bg: "#4a2e1a", fg: "#eedfc4" },
+      { t: "icon", icon: "sparkle", x: 42, y: 6, r: -12, bg: "#b5552b", fg: "#eedfc4" },
     ],
   },
   {
-    id: "custom",
-    name: "Din grej",
-    kicker: "Allt annat",
-    line: "Ladda upp vad som helst. Vi gör det till en sticker.",
-    bg: "#16131a", fg: "#f4efe6", accent: "#c9a8ff", holo: true,
+    id: "custom", name: "Din grej", deluxe: "kollage", holo: true,
+    kicker: "Allt annat", line: "Ditt lag, din katt, ditt schema. Vi gör det till en Deluxe.",
+    bg: "#16131a", fg: "#f4efe6", accent: "#c9a8ff",
     stickers: [
-      { t: "ghost",  text: "din bild här", x: 8,  y: 14, r: -8 },
-      { t: "pill",   text: "DITT LAG",     x: 64, y: 10, r: 8,  bg: "#c9a8ff", fg: "#16131a" },
-      { t: "pill",   text: "DIN KATT",     x: 80, y: 40, r: -10, bg: "#f4efe6", fg: "#16131a" },
-      { t: "tag",    text: "DITT BAND",    x: 10, y: 66, r: 6,  bg: "#ff4f8b", fg: "#fff" },
-      { t: "seal",   text: "DIN IDÉ · VÅRT TRYCK · ", icon: "✦", x: 70, y: 66, r: 10, bg: "#f4efe6", fg: "#16131a" },
-      { t: "star",   text: "NY!",          x: 40, y: 78, r: -12, bg: "#e8ff59", fg: "#0b0a0c" },
-      { t: "ghost",  text: "insidesskämt", x: 36, y: 4,  r: 6 },
+      { t: "ghost", text: "din bild här", x: 4, y: 12, r: -8 },
+      { t: "pill", text: "DITT LAG", x: 40, y: 8, r: 8, bg: "#c9a8ff", fg: "#16131a" },
+      { t: "tag", text: "DITT BAND", x: 4, y: 78, r: 6, bg: "#ff4f8b", fg: "#fff" },
+      { t: "seal", text: "DIN IDÉ · VÅRT TRYCK · ", icon: "✦", x: 86, y: 70, r: 10, bg: "#f4efe6", fg: "#16131a" },
+      { t: "star", text: "NY!", x: 86, y: 8, r: -12, bg: "#e8ff59", fg: "#0b0a0c" },
+      { t: "ghost", text: "insidesskämt", x: 40, y: 84, r: 6 },
     ],
   },
 ];
 
-// Stickers som svävar runt rubriken högst upp.
-const HERO_STICKERS = [
-  { t: "seal",  text: "STICKRUF · UF 2026 · COOLA IGEN · ", icon: "✦", x: 6, y: 20, r: -8, bg: "#f4efe6", fg: "#0b0a0c", speed: 0.6 },
-  { t: "pill",  text: "från 49 kr",  x: 74, y: 16, r: 9,  bg: "#e8ff59", fg: "#0b0a0c", speed: 1.2 },
-  { t: "star",  text: "NY!",         x: 84, y: 60, r: -12, bg: "#ff4f8b", fg: "#fff", speed: 0.9 },
-  { t: "tag",   text: "UTSKURET",    x: 10, y: 68, r: 7,  bg: "#c9a8ff", fg: "#0b0a0c", speed: 1.4 },
-  { t: "emoji", text: "⚽",          x: 64, y: 72, r: 0,  s: 0.8, speed: 1.8 },
-  { t: "emoji", text: "🎀",          x: 26, y: 10, r: -10, s: 0.8, speed: 1.6 },
+/* ---------- Användningsområden ---------- */
+const USES = [
+  { id: "skap", scene: "locker", deluxe: "schema", num: "01", title: "Skåpet", line: "Schemat där du faktiskt behöver det. Sluta leta i mobilen mellan lektionerna.", cta: "Gör ditt schema" },
+  { id: "dator", scene: "laptop", deluxe: "kollage", num: "02", title: "Datorn", line: "Baksidan av din laptop är den största reklamytan du äger. Använd den.", cta: "Gör ditt kollage" },
+  { id: "parm", scene: "binder", deluxe: "glow", num: "03", title: "Pärmen", line: "Ämne, namn, stil. Hitta rätt pärm på en sekund – och se bra ut när du gör det.", cta: "Välj en värld" },
+  { id: "vagg", scene: "wall", deluxe: "mys", num: "04", title: "Väggen", line: "En poster som aldrig rullar ihop sig och aldrig behöver häftmassa.", cta: "Välj en värld" },
+  { id: "gym", scene: "gym", deluxe: "grind", num: "05", title: "Gymskåpet", line: "Programmet på skåpet. Inga ursäkter, inga skärmdumpar.", cta: "Välj Grind" },
+];
+
+/* ---------- Stickr Business (B2B) ---------- */
+const PACKAGES = [
+  { name: "Mässpaketet", price: "449 kr", desc: "10 ark med er logga – utskurna. Dela ut i montern, sätt på kassan, sälj som merch.", list: ["10 A4-ark, utskurna", "Er logga i 3 storlekar", "Klart på 5 skoldagar"] },
+  { name: "Monter-Deluxe", price: "349 kr", desc: "5 Sticker Deluxe som skylt, meny eller prislista. Klistra på bordet, laptopen eller väggen.", list: ["5 A4 Deluxe", "Vi hjälper till med layout", "Tål mässans alla händer"], hero: true },
+  { name: "Merch-drop", price: "Offert", desc: "Egen sticker-kollektion att sälja vidare. Ni designar, vi trycker – ni tar marginalen.", list: ["Från 25 ark", "Vi fixar trycket", "Ni sätter priset"] },
 ];
 
 const SIZE_COUNT = { s: 30, m: 12, l: 6 };
 const SIZE_LABEL = { s: "Liten", m: "Mellan", l: "Stor" };
 const FINISH_LABEL = { matt: "Matt", glossy: "Blank", holo: "Holo" };
+const TEMPLATE_LABEL = { kollage: "Kollage", schema: "Schema", helbild: "Helbild" };
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 const kr = (n) => `${Math.round(n)} kr`;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const escBr = (s) => esc(s).replace(/&lt;br&gt;/g, "<br>");
 
-/* =========================================================
-   Sticker-renderare
-   ========================================================= */
+// Förutsägbar "slump" så kollagen ser likadana ut vid varje besök
+function rng(seed) {
+  let s = 0;
+  for (const c of String(seed)) s = (s * 31 + c.charCodeAt(0)) >>> 0;
+  return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
+}
+
+// Rivna papperskanter som clip-path
+function torn(seed) {
+  const r = rng(seed);
+  const j = () => (r() * 2.6).toFixed(1);
+  const pts = [];
+  for (let i = 0; i <= 10; i++) pts.push(`${i * 10}% ${j()}%`);
+  for (let i = 1; i <= 10; i++) pts.push(`${100 - j()}% ${i * 10}%`);
+  for (let i = 9; i >= 0; i--) pts.push(`${i * 10}% ${100 - j()}%`);
+  for (let i = 9; i >= 1; i--) pts.push(`${j()}% ${i * 10}%`);
+  return `polygon(${pts.join(",")})`;
+}
+
+const ICONS = {
+  star: '<path d="M50 2 61 35 96 30 68 52 84 86 50 66 16 86 32 52 4 30 39 35Z"/>',
+  heart: '<path d="M50 88C20 66 4 50 4 30 4 15 16 4 30 4c9 0 16 5 20 12C54 9 61 4 70 4c14 0 26 11 26 26 0 20-16 36-46 58Z"/>',
+  bolt: '<path d="M58 2 14 56h28l-8 42 52-60H56Z"/>',
+  sparkle: '<path d="M50 0C54 34 66 46 100 50 66 54 54 66 50 100 46 66 34 54 0 50 34 46 46 34 50 0Z"/>',
+  ball: '<circle cx="50" cy="50" r="46"/><path fill="var(--ic2,#0b0a0c)" d="M50 30 64 40 59 57H41L36 40ZM50 4v14l-10 7-14-4-6-10a46 46 0 0 1 30-7ZM90 32l-9 11 4 15 12 2a46 46 0 0 0-7-28ZM10 32a46 46 0 0 0-7 28l12-2 4-15ZM30 89l4-13 13-6h6l13 6 4 13a46 46 0 0 1-40 0Z"/>',
+  arrow: '<path fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" d="M4 70C20 30 50 20 70 40c10 10 4 26-8 22-12-4-6-26 14-30 6-1 14 0 20 4M96 36l-12-14M96 36l-17 4"/>',
+  scribble: '<path fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" d="M8 60c10-30 30-40 40-20s-20 30-10 40 40-50 50-30-10 30 10 30"/>',
+};
+const icon = (name, color, extra = "") =>
+  `<svg viewBox="0 0 100 100" class="icon" style="color:${color};fill:${color}" ${extra} aria-hidden="true">${ICONS[name] || ""}</svg>`;
+
+/* ---------- Små stickers (arken, världarna) ---------- */
 let sealId = 0;
-function stickerHTML(sp, { positioned = true } = {}) {
+function stickerHTML(sp, { positioned = true, size } = {}) {
   const style = [
     positioned ? `left:${sp.x}%;top:${sp.y}%` : "",
     `--r:${sp.r || 0}deg`, `--s:${sp.s || 1}`,
     sp.bg ? `--bg:${sp.bg}` : "", sp.fg ? `--fg:${sp.fg}` : "",
+    size ? `font-size:${size}cqw` : "",
   ].filter(Boolean).join(";");
   let body;
   switch (sp.t) {
     case "seal": {
       const id = `seal${sealId++}`;
-      body = `<span class="sk-b sk-seal">
-        <svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="${id}" d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0"/></defs>
-        <text><textPath href="#${id}">${esc(sp.text)}</textPath></text></svg>
-        <span class="sk-icon">${esc(sp.icon || "✦")}</span></span>`;
+      body = `<span class="sk-b sk-seal"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="${id}" d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0"/></defs><text><textPath href="#${id}">${esc(sp.text)}</textPath></text></svg><span class="sk-icon">${esc(sp.icon || "✦")}</span></span>`;
       break;
     }
     case "ticket":
@@ -162,50 +308,226 @@ function stickerHTML(sp, { positioned = true } = {}) {
     case "star":
       body = `<span class="sk-b sk-star"><span class="sk-star-in">${esc(sp.text)}</span></span>`;
       break;
+    case "icon":
+      body = `<span class="sk-b sk-iconsticker">${icon(sp.icon, sp.fg || "#fff", `style="--ic2:${sp.bg}"`)}</span>`;
+      break;
     default:
       body = `<span class="sk-b sk-${sp.t}">${esc(sp.text)}</span>`;
   }
   return `<div class="sk${positioned ? "" : " sk-static"}" style="${style}" ${sp.speed ? `data-speed="${sp.speed}"` : ""}>${body}</div>`;
 }
 
-/* ---------- Hero ---------- */
-function renderHero() {
-  $("#heroStickers").innerHTML = HERO_STICKERS.map((s) => stickerHTML(s)).join("");
+/* ---------- Schema ---------- */
+function scheduleHTML(data = SCHEDULE, editable = false) {
+  const ce = editable ? ' contenteditable="true" spellcheck="false"' : "";
+  const cell = (txt, ri, di) => {
+    const c = SUBJECT_COLORS[txt.trim().toLowerCase()] || "#efe9df";
+    const dark = c === "#0b0a0c";
+    return `<span class="sch-cell${dark ? " is-dark" : ""}" style="--c:${c}" data-r="${ri}" data-d="${di}"${ce}>${esc(txt)}</span>`;
+  };
+  return `<div class="sch">
+    <span class="sch-corner"></span>${data.days.map((d) => `<span class="sch-day">${d}</span>`).join("")}
+    ${data.rows.map((row, ri) => `<span class="sch-time">${["08:15", "09:40", "11:40", "12:30", "14:00"][ri] || ""}</span>${row.map((t, di) => cell(t, ri, di)).join("")}`).join("")}
+  </div>`;
 }
 
-/* ---------- Världar ---------- */
+/* ---------- Ett lager i kollaget ---------- */
+function layerHTML(L, seed, opts) {
+  const pos = `left:${L.x}%;top:${L.y}%;${L.w != null ? `width:${L.w}%;` : ""}${L.h != null ? `height:${L.h}%;` : ""}--r:${L.r || 0}deg`;
+  const clip = L.torn ? `;clip-path:${torn(seed)}` : "";
+  switch (L.k) {
+    case "ph": {
+      const user = opts.images?.length && L.slot != null ? opts.images[L.slot % opts.images.length] : null;
+      return `<div class="L L-ph form-${L.form || "rect"}${L.dots ? " has-dots" : ""}" ${user ? "" : `data-photo="${L.photo || ""}"`}
+        style="${pos}${clip};--g:${L.g}${user ? `;--img:url('${user}')` : ""}"></div>`;
+    }
+    case "paper": {
+      const bg = L.pat ? "" : `;background:${L.color}`;
+      return `<div class="L L-paper form-${L.form || "rect"}${L.pat ? ` pat-${L.pat}` : ""}" style="${pos}${clip}${bg}">${L.text ? `<span>${escBr(L.text)}</span>` : ""}</div>`;
+    }
+    case "text":
+      return `<div class="L L-text font-${L.font || "sans"}" style="${pos};font-size:${L.size}cqw;color:${L.color}">${escBr(L.text)}</div>`;
+    case "cut": {
+      const r = rng(seed + L.text);
+      const papers = ["#f4efe6", "#0b0a0c", "#e8ff59", "#ff4f8b", "#c9a8ff", "#fff"];
+      const fonts = ["serif", "sans", "cond"];
+      const letters = [...L.text].map((ch) => {
+        if (ch === " ") return '<span class="cut-sp"></span>';
+        const p = papers[Math.floor(r() * papers.length)];
+        const dark = p === "#0b0a0c";
+        return `<span class="cut-l font-${fonts[Math.floor(r() * 3)]}" style="background:${p};color:${dark ? "#f4efe6" : "#0b0a0c"};--lr:${(r() * 14 - 7).toFixed(1)}deg">${esc(ch)}</span>`;
+      }).join("");
+      return `<div class="L L-cut" style="${pos};font-size:${L.size}cqw">${letters}</div>`;
+    }
+    case "tape":
+      return `<div class="L L-tape" style="${pos}"></div>`;
+    case "icon":
+      return `<div class="L L-icon" style="${pos}">${icon(L.icon, L.color)}</div>`;
+    case "label":
+      return `<div class="L L-label" style="${pos};${L.color ? `color:${L.color}` : ""}">${esc(L.text)}</div>`;
+    case "sk":
+      return `<div class="L L-sk" style="${pos}">${stickerHTML({ ...L, x: 0, y: 0 }, { positioned: false, size: L.size || 2 })}</div>`;
+    case "schedule":
+      return `<div class="L L-schedule" style="${pos}">${scheduleHTML(opts.schedule || SCHEDULE, opts.editable)}</div>`;
+    default:
+      return "";
+  }
+}
+
+// Bygger en hel Sticker Deluxe. opts: { images, schedule, editable, peel, className }
+function deluxeHTML(key, opts = {}) {
+  const d = DELUXE[key];
+  // Kundens bilder fyller foto-ytorna i tur och ordning
+  let slot = 0;
+  const layers = d.layers.map((L, i) => layerHTML(L.k === "ph" ? { ...L, slot: slot++ } : L, `${key}-${i}`, opts)).join("");
+  return `<div class="deluxe${opts.peel === false ? "" : " has-peel"} ${opts.className || ""}" data-deluxe="${key}" style="--dbg:${d.bg}">
+    <div class="deluxe-card"><div class="deluxe-in">${layers}</div><span class="peel" aria-hidden="true"></span></div>
+  </div>`;
+}
+
+// Riktiga foton: lägg assets/foton/<namn>.jpg så byts gradienten ut automatiskt
+const photoCache = {};
+function hydratePhotos(root = document) {
+  $$("[data-photo]", root).forEach((el) => {
+    const name = el.dataset.photo;
+    if (!name) return;
+    const apply = (ok) => { if (ok) el.style.setProperty("--img", `url('assets/foton/${name}.jpg')`); };
+    if (name in photoCache) return photoCache[name].then(apply);
+    photoCache[name] = new Promise((res) => {
+      const img = new Image();
+      img.onload = () => res(true);
+      img.onerror = () => res(false);
+      img.src = `assets/foton/${name}.jpg`;
+    });
+    photoCache[name].then(apply);
+  });
+}
+
+/* =========================================================
+   Sektioner
+   ========================================================= */
+function renderHero() {
+  $("#heroDeluxe").innerHTML = deluxeHTML("kollage", { className: "deluxe--hero" });
+  const around = [
+    { t: "pill", text: "Nº 001 / 100", x: 2, y: 18, r: -8, bg: "#e8ff59", fg: "#0b0a0c", speed: 1.2 },
+    { t: "seal", text: "STICKR DELUXE · A4 · DROP 01 · ", icon: "✦", x: 82, y: 6, r: 8, bg: "#f4efe6", fg: "#0b0a0c", speed: 0.7 },
+    { t: "tag", text: "EN ENDA STICKER", x: 76, y: 78, r: 6, bg: "#ff4f8b", fg: "#fff", speed: 1.5 },
+  ];
+  $("#heroStickers").innerHTML = around.map((s) => stickerHTML(s)).join("");
+}
+
+function sceneHTML(u) {
+  const dlx = deluxeHTML(u.deluxe, { className: "deluxe--scene" });
+  switch (u.scene) {
+    case "locker":
+      return `<div class="scene scene-locker"><div class="locker"><span class="locker-vents"></span><span class="locker-num">214</span><span class="locker-handle"></span>${dlx}</div></div>`;
+    case "laptop":
+      return `<div class="scene scene-laptop"><div class="lid"><span class="lid-logo"></span>${dlx}</div><div class="lid-base"></div></div>`;
+    case "binder":
+      return `<div class="scene scene-binder"><div class="binder"><span class="binder-spine"><i></i><i></i></span>${dlx}</div></div>`;
+    case "wall":
+      return `<div class="scene scene-wall"><div class="wall">${dlx}<span class="wall-shelf"></span></div></div>`;
+    case "gym":
+      return `<div class="scene scene-gym"><div class="locker locker--dark"><span class="locker-vents"></span><span class="locker-num">07</span><span class="locker-handle"></span>${dlx}</div></div>`;
+    default:
+      return "";
+  }
+}
+
+function renderUses() {
+  $("#usesTrack").innerHTML = USES.map((u) => `
+    <article class="use" data-use="${u.id}">
+      <div class="use-visual">${sceneHTML(u)}</div>
+      <div class="use-copy">
+        <span class="use-num">${u.num} / ${String(USES.length).padStart(2, "0")}</span>
+        <h3>${esc(u.title)}</h3>
+        <p>${esc(u.line)}</p>
+        <a href="${u.deluxe === "schema" || u.deluxe === "kollage" ? "#bygg" : "#butik"}" class="use-link" data-template="${u.deluxe === "schema" ? "schema" : u.deluxe === "kollage" ? "kollage" : ""}">${esc(u.cta)} →</a>
+      </div>
+    </article>`).join("");
+}
+
 function renderWorlds() {
   const html = WORLDS.map((w, i) => `
-    <article class="world${w.holo ? " world--holo" : ""}" data-world="${w.id}"
-      style="--wbg:${w.bg};--wfg:${w.fg};--wacc:${w.accent}">
+    <article class="world${w.holo ? " world--holo" : ""}" data-world="${w.id}" style="--wbg:${w.bg};--wfg:${w.fg};--wacc:${w.accent}">
       <div class="world-stickers">${w.stickers.map((s) => stickerHTML(s)).join("")}</div>
-      <div class="world-copy">
-        <p class="world-kicker"><span>${String(i + 1).padStart(2, "0")}</span> ${esc(w.kicker)}</p>
-        <h2 class="world-title">${esc(w.name)}</h2>
-        <p class="world-line">${esc(w.line)}</p>
+      <div class="world-grid">
+        <div class="world-copy">
+          <p class="world-kicker"><span>${String(i + 1).padStart(2, "0")}</span> ${esc(w.kicker)}</p>
+          <h2 class="world-title">${esc(w.name)}</h2>
+          <p class="world-line">${esc(w.line)}</p>
+        </div>
+        <div class="world-deluxe">${deluxeHTML(w.deluxe, { className: "deluxe--world" })}</div>
       </div>
     </article>`).join("");
   $("#varldar").insertAdjacentHTML("afterbegin", html);
   $("#hudTotal").textContent = String(WORLDS.length).padStart(2, "0");
 }
 
-/* ---------- Process-arket ---------- */
 function renderProcess() {
   const picks = [
-    WORLDS[0].stickers[1], WORLDS[1].stickers[0], WORLDS[2].stickers[2],
-    WORLDS[3].stickers[1], WORLDS[0].stickers[3], WORLDS[1].stickers[1],
-    WORLDS[2].stickers[4], WORLDS[3].stickers[0], WORLDS[4].stickers[4],
+    WORLDS[0].stickers[1], WORLDS[1].stickers[1], WORLDS[2].stickers[2],
+    WORLDS[3].stickers[0], WORLDS[0].stickers[3], WORLDS[1].stickers[0],
+    WORLDS[2].stickers[4], WORLDS[3].stickers[5], WORLDS[4].stickers[3],
   ];
-  // Skärlinjen läggs inuti stickern så den följer dess form
+  // Skärlinjen ligger inuti stickern så den följer dess form
   $("#processGrid").innerHTML = picks.map((s) => {
     const html = stickerHTML({ ...s, s: 0.62, r: (s.r || 0) / 2 }, { positioned: false });
-    const round = s.t === "seal" || s.t === "emoji" || s.t === "star";
+    const round = ["seal", "icon", "star"].includes(s.t);
     return `<div class="sheet-cell">${html.replace(/<\/div>$/, `<span class="cut-line${round ? " cut-line--round" : ""}"></span></div>`)}</div>`;
   }).join("");
 }
 
+function renderBusiness() {
+  $("#bizDeluxe").innerHTML = deluxeHTML("business", { className: "deluxe--biz" });
+  $("#bizGrid").innerHTML = PACKAGES.map((p) => `
+    <article class="price-card${p.hero ? " price-card--hero" : ""}">
+      ${p.hero ? '<span class="price-flag">Mest bokat</span>' : ""}
+      <p class="price-kicker">${esc(p.name)}</p>
+      <p class="price-num"><span>${esc(p.price.replace(" kr", ""))}</span>${p.price.endsWith("kr") ? " kr" : ""}</p>
+      <p class="price-desc">${esc(p.desc)}</p>
+      <ul>${p.list.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>
+    </article>`).join("");
+  const subject = encodeURIComponent("Stickr Business – vi vill boka ett möte");
+  const body = encodeURIComponent("Hej Stickr!\n\nVi är UF-företaget: \nVi är intresserade av: Mässpaketet / Monter-Deluxe / Merch-drop\nBästa tid för ett snabbt möte: \n\n/");
+  $("#bizCta").href = `mailto:${CONFIG.orderEmail}?subject=${subject}&body=${body}`;
+}
+
+/* ---------- Drop 01: nedräkning + väntelista ---------- */
+function setupDrop() {
+  const target = new Date(CONFIG.dropDate).getTime();
+  const el = { d: $("#cdD"), h: $("#cdH"), m: $("#cdM"), s: $("#cdS") };
+  const pad = (n) => String(Math.max(0, n)).padStart(2, "0");
+  const tick = () => {
+    const left = Math.max(0, target - Date.now());
+    el.d.textContent = pad(Math.floor(left / 864e5));
+    el.h.textContent = pad(Math.floor(left / 36e5) % 24);
+    el.m.textContent = pad(Math.floor(left / 6e4) % 60);
+    el.s.textContent = pad(Math.floor(left / 1e3) % 60);
+    if (!left) $("#dropState").textContent = "Droppen är öppen";
+  };
+  tick();
+  setInterval(tick, 1000);
+  $("#dropSize").textContent = CONFIG.dropSize;
+  $("#dropDate").textContent = new Date(CONFIG.dropDate).toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" });
+
+  $("#waitForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    const body = [
+      "Hej Stickr!", "",
+      `Jag vill stå på väntelistan till ${CONFIG.dropName}.`,
+      `Namn: ${data.get("name")}`,
+      `Kontakt: ${data.get("contact")}`,
+      data.get("ref") ? `Värvad av: ${data.get("ref")}` : null,
+    ].filter((x) => x !== null).join("\n");
+    window.location.href = `mailto:${CONFIG.orderEmail}?subject=${encodeURIComponent(`Väntelista ${CONFIG.dropName}`)}&body=${encodeURIComponent(body)}`;
+    toast("Mejlet öppnas – skicka så är du med på listan");
+  });
+}
+
 /* =========================================================
-   Toast + konfetti
+   Toast + burst
    ========================================================= */
 let toastTimer;
 function toast(msg) {
@@ -216,14 +538,14 @@ function toast(msg) {
   toastTimer = setTimeout(() => el.classList.remove("is-show"), 2400);
 }
 
-function burst(x, y, items = ["✦", "★", "♥", "✦", "●"]) {
+function burst(x, y) {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const colors = ["#e8ff59", "#ff4f8b", "#c9a8ff", "#f4efe6", "#3dd6ff"];
   for (let i = 0; i < 14; i++) {
     const s = document.createElement("span");
     s.className = "burst";
-    s.textContent = items[i % items.length];
-    s.style.cssText = `left:${x}px;top:${y}px;color:${colors[i % colors.length]}`;
+    s.innerHTML = icon(i % 2 ? "star" : "sparkle", colors[i % colors.length]);
+    s.style.cssText = `left:${x}px;top:${y}px`;
     const a = Math.random() * Math.PI * 2;
     const d = 70 + Math.random() * 110;
     s.style.setProperty("--dx", `${Math.cos(a) * d}px`);
@@ -237,66 +559,80 @@ function burst(x, y, items = ["✦", "★", "♥", "✦", "●"]) {
 /* =========================================================
    Butik
    ========================================================= */
+let shopFormat = "deluxe";
 function renderShop() {
-  $("#shopGrid").innerHTML = WORLDS.filter((w) => !w.holo).map((w) => `
+  const grid = $("#shopGrid");
+  grid.innerHTML = WORLDS.filter((w) => !w.holo).map((w) => {
+    const visual = shopFormat === "deluxe"
+      ? `<div class="product-deluxe">${deluxeHTML(w.deluxe, { className: "deluxe--product" })}</div>`
+      : `<div class="mini-sheet">${w.stickers.map((s) => `<div class="mini-cell">${stickerHTML({ ...s, s: 0.5, r: (s.r || 0) / 2 }, { positioned: false })}</div>`).join("")}</div>`;
+    const base = shopFormat === "deluxe" ? CONFIG.deluxePrice : CONFIG.sheetPrice;
+    return `
     <article class="product" data-id="${w.id}" style="--wbg:${w.bg};--wfg:${w.fg};--wacc:${w.accent}">
-      <div class="product-visual" data-cursor="Lägg till">
-        <div class="mini-sheet">
-          ${w.stickers.slice(0, 6).map((s) => `<div class="mini-cell">${stickerHTML({ ...s, s: 0.5, r: (s.r || 0) / 2 }, { positioned: false })}</div>`).join("")}
-        </div>
-      </div>
+      <div class="product-visual" data-cursor="Lägg till">${visual}</div>
       <div class="product-body">
-        <div class="product-top">
-          <h3>${esc(w.name)}</h3>
-          <span class="product-price" data-price>${kr(CONFIG.sheetPrice)}</span>
-        </div>
-        <p>${esc(w.kicker)}</p>
+        <div class="product-top"><h3>${esc(w.name)}</h3><span class="product-price" data-price>${kr(base)}</span></div>
+        <p>${shopFormat === "deluxe" ? "Sticker Deluxe · ett helt A4 · en sticker" : "Sticker Sheet · A4 fullt med stickers"}</p>
         <div class="toggle" role="group" aria-label="Skärning">
-          <button type="button" class="is-active" data-cut="no">Oskuret</button>
-          <button type="button" data-cut="yes">Utskuret +${CONFIG.cutExtra}</button>
+          <button type="button" class="is-active" data-cut="no">${shopFormat === "deluxe" ? "Rak kant" : "Oskuret"}</button>
+          <button type="button" data-cut="yes">${shopFormat === "deluxe" ? "Konturskuren" : "Utskuret"} +${CONFIG.cutExtra}</button>
         </div>
         <button class="btn btn-light btn-block add-btn" data-add="${w.id}">Lägg i korgen</button>
       </div>
-    </article>`).join("");
+    </article>`;
+  }).join("");
+  hydratePhotos(grid);
+}
+
+function setupShop() {
+  $("#shopTabs").addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    $$("button", $("#shopTabs")).forEach((x) => x.classList.toggle("is-active", x === b));
+    shopFormat = b.dataset.format;
+    renderShop();
+  });
 
   $("#shopGrid").addEventListener("click", (e) => {
     const card = e.target.closest(".product");
     if (!card) return;
+    const base = shopFormat === "deluxe" ? CONFIG.deluxePrice : CONFIG.sheetPrice;
     const tbtn = e.target.closest(".toggle button");
     if (tbtn) {
       $$(".toggle button", card).forEach((b) => b.classList.toggle("is-active", b === tbtn));
-      const cut = tbtn.dataset.cut === "yes";
-      $("[data-price]", card).textContent = kr(CONFIG.sheetPrice + (cut ? CONFIG.cutExtra : 0));
+      $("[data-price]", card).textContent = kr(base + (tbtn.dataset.cut === "yes" ? CONFIG.cutExtra : 0));
       return;
     }
     const add = e.target.closest("[data-add]") || e.target.closest(".product-visual");
     if (!add) return;
     const w = WORLDS.find((x) => x.id === card.dataset.id);
     const cut = $(".toggle .is-active", card).dataset.cut === "yes";
+    const deluxe = shopFormat === "deluxe";
     addToCart({
-      key: `${w.id}-${cut ? "cut" : "uncut"}`, name: w.name,
-      detail: cut ? "Utskuret" : "Oskuret",
-      price: CONFIG.sheetPrice + (cut ? CONFIG.cutExtra : 0),
-      qty: 1, bg: w.bg, icon: w.stickers.find((s) => s.t === "emoji")?.text || "✦",
+      key: `${w.id}-${shopFormat}-${cut ? "cut" : "uncut"}`,
+      name: `${w.name} ${deluxe ? "Deluxe" : "Sheet"}`,
+      detail: deluxe ? (cut ? "Konturskuren" : "Rak kant") : (cut ? "Utskuret" : "Oskuret"),
+      price: base + (cut ? CONFIG.cutExtra : 0), qty: 1, bg: w.bg,
     });
     const r = add.getBoundingClientRect();
     burst(r.left + r.width / 2, r.top + r.height / 2);
-    toast(`${w.name} ligger i korgen`);
+    toast(`${w.name} ${deluxe ? "Deluxe" : "Sheet"} ligger i korgen`);
   });
+  renderShop();
 }
 
 /* =========================================================
    Varukorg (sparas i webbläsaren)
    ========================================================= */
-const CART_KEY = "stickruf-cart-v2";
+const CART_KEY = "stickr-cart-v3";
 let cart = [];
 try { cart = JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { cart = []; }
 function saveCart() {
   try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch { /* privat läge – korgen funkar ändå under besöket */ }
 }
-const cartSheets = () => cart.reduce((n, l) => n + l.qty, 0);
+const cartCount = () => cart.reduce((n, l) => n + l.qty, 0);
 const cartSubtotal = () => cart.reduce((n, l) => n + l.qty * l.price, 0);
-const cartDiscount = () => (cartSheets() >= CONFIG.dealMinSheets ? (cartSubtotal() * CONFIG.dealPercent) / 100 : 0);
+const cartDiscount = () => (cartCount() >= CONFIG.dealMinSheets ? (cartSubtotal() * CONFIG.dealPercent) / 100 : 0);
 
 function addToCart(line) {
   const existing = cart.find((l) => l.key === line.key);
@@ -309,25 +645,21 @@ function addToCart(line) {
 }
 
 function renderCart() {
-  $("#cartCount").textContent = cartSheets();
-  const body = $("#cartItems");
-  body.innerHTML = cart.length
+  $("#cartCount").textContent = cartCount();
+  $("#cartItems").innerHTML = cart.length
     ? cart.map((l, i) => `
       <div class="line">
-        <div class="line-thumb" style="--bg:${l.bg || "#c9a8ff"}">${l.thumb ? `<img src="${l.thumb}" alt="">` : esc(l.icon)}</div>
-        <div class="line-info"><strong>${esc(l.name)}</strong><small>${esc(l.detail || "")} · ${kr(l.price)}/ark</small></div>
-        <div class="line-qty">
-          <button data-dec="${i}" aria-label="Minska">−</button><span>${l.qty}</span><button data-inc="${i}" aria-label="Öka">+</button>
-        </div>
+        <div class="line-thumb" style="--bg:${l.bg || "#c9a8ff"}">${l.thumb ? `<img src="${l.thumb}" alt="">` : icon("star", "#f4efe6")}</div>
+        <div class="line-info"><strong>${esc(l.name)}</strong><small>${esc(l.detail || "")} · ${kr(l.price)}/st</small></div>
+        <div class="line-qty"><button data-dec="${i}" aria-label="Minska">−</button><span>${l.qty}</span><button data-inc="${i}" aria-label="Öka">+</button></div>
       </div>`).join("")
-    : `<div class="drawer-empty"><em>Tomt här.</em><span>Dags att hitta din värld.</span></div>`;
-
+    : `<div class="drawer-empty"><em>Tomt här.</em><span>Din Deluxe väntar.</span></div>`;
   const discount = cartDiscount();
   $("#cartTotal").textContent = kr(cartSubtotal() - discount);
-  const left = CONFIG.dealMinSheets - cartSheets();
+  const left = CONFIG.dealMinSheets - cartCount();
   $("#dealHint").textContent = discount
     ? `Klass-deal aktiv: −${kr(discount)}`
-    : cart.length && left > 0 ? `${left} ark till ger ${CONFIG.dealPercent} % klass-rabatt` : "";
+    : cart.length && left > 0 ? `${left} st till ger ${CONFIG.dealPercent} % klass-rabatt` : "";
   $("#orderForm").hidden = !cart.length;
 }
 
@@ -355,53 +687,73 @@ function setupCart() {
     const delivery = data.get("delivery");
     const ship = delivery.startsWith("Post") ? CONFIG.shipping : 0;
     const discount = cartDiscount();
-    const lines = cart.map((l) => `• ${l.qty} × ${l.name}${l.detail ? ` (${l.detail})` : ""} – ${kr(l.qty * l.price)}`);
+    const lines = cart.map((l) => `• ${l.qty} × ${l.name}${l.detail ? ` (${l.detail})` : ""} – ${kr(l.qty * l.price)}${l.extra ? `\n${l.extra}` : ""}`);
     const body = [
-      "Hej Stickruf!", "", "Jag vill beställa:", ...lines, "",
+      "Hej Stickr!", "", "Jag vill beställa:", ...lines, "",
       discount ? `Klass-rabatt: −${kr(discount)}` : null,
       `Leverans: ${delivery}`,
       `Totalt: ${kr(cartSubtotal() - discount + ship)}`, "",
       `Namn: ${data.get("name")}`,
       `Kontakt: ${data.get("contact")}`,
-      cart.some((l) => l.custom) ? "\n(Jag bifogar mina bilder till custom-arket i det här mejlet.)" : null,
+      cart.some((l) => l.custom) ? "\n(Jag bifogar mina bilder i det här mejlet.)" : null,
     ].filter((x) => x !== null).join("\n");
-    window.location.href = `mailto:${CONFIG.orderEmail}?subject=${encodeURIComponent("Beställning – Stickruf UF")}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${CONFIG.orderEmail}?subject=${encodeURIComponent(`Beställning – ${CONFIG.brand}`)}&body=${encodeURIComponent(body)}`;
     toast("Mejlet öppnas – tryck skicka så är det klart");
   });
-
   renderCart();
 }
 
 /* =========================================================
-   Custom-byggaren
+   Byggaren: Deluxe (kollage / schema / helbild) eller Sheet
    ========================================================= */
-const builder = { images: [], size: "m", cut: "no", finish: "matt", qty: 1 };
+const builder = {
+  format: "deluxe", template: "kollage", images: [], size: "m", cut: "no", finish: "matt", qty: 1,
+  schedule: JSON.parse(JSON.stringify(SCHEDULE)),
+};
+
 const builderUnit = () =>
-  CONFIG.customPrice + (builder.cut === "yes" ? CONFIG.cutExtra : 0) + (builder.finish === "holo" ? CONFIG.holoExtra : 0);
+  (builder.format === "deluxe" ? CONFIG.deluxeCustomPrice : CONFIG.sheetCustomPrice)
+  + (builder.cut === "yes" ? CONFIG.cutExtra : 0)
+  + (builder.finish === "holo" ? CONFIG.holoExtra : 0);
 
 function renderBuilder() {
-  const grid = $("#a4Grid");
-  grid.className = `a4-grid size-${builder.size}${builder.cut === "yes" ? " is-cut" : ""}`;
-  $("#a4").className = `sheet sheet--builder finish-${builder.finish}`;
-  const n = SIZE_COUNT[builder.size];
-  const ph = ["✦", "★", "♥", "●", "✿", "☾"];
-  grid.innerHTML = Array.from({ length: n }, (_, i) => {
-    const d = `style="animation-delay:${i * 16}ms"`;
-    if (!builder.images.length) return `<div class="a4-item" ${d}><span class="a4-ph">${ph[i % ph.length]}</span></div>`;
-    return `<div class="a4-item" ${d}><img src="${builder.images[i % builder.images.length].url}" alt=""></div>`;
-  }).join("");
+  const prev = $("#builderPreview");
+  const imgs = builder.images.map((i) => i.url);
+  const deluxe = builder.format === "deluxe";
+  $("#tplOpt").hidden = !deluxe;
+  $("#sizeOpt").hidden = deluxe;
+  $("#cutYesLabel").textContent = deluxe ? "Konturskuren" : "Utskuret";
+  $("#cutNoLabel").textContent = deluxe ? "Rak kant" : "Oskuret";
+  $("#cutNoSub").textContent = deluxe ? "Rak A4-kant" : "Du klipper själv";
+  $("#schemaHint").hidden = !(deluxe && builder.template === "schema");
+
+  let html;
+  if (deluxe && builder.template !== "helbild") {
+    html = deluxeHTML(builder.template, { images: imgs, schedule: builder.schedule, editable: true, className: "deluxe--builder" });
+  } else if (deluxe) {
+    html = `<div class="deluxe has-peel deluxe--builder deluxe--full"><div class="deluxe-card"><div class="deluxe-in">${imgs[0]
+      ? `<div class="L L-ph form-rect" style="left:0;top:0;width:100%;height:100%;--img:url('${imgs[0]}')"></div>`
+      : `<div class="full-ph"><span>Din bild.<br>Hela arket.</span></div>`}</div><span class="peel"></span></div></div>`;
+  } else {
+    const n = SIZE_COUNT[builder.size];
+    html = `<div class="sheet sheet--builder"><div class="a4-grid size-${builder.size}${builder.cut === "yes" ? " is-cut" : ""}">${Array.from({ length: n }, (_, i) =>
+      `<div class="a4-item" style="animation-delay:${i * 16}ms">${imgs.length ? `<img src="${imgs[i % imgs.length]}" alt="">` : `<span class="a4-ph">${icon(["star", "heart", "sparkle", "bolt"][i % 4], "#d8d0dc")}</span>`}</div>`).join("")}</div><span class="sheet-label">A4 · 210 × 297 mm</span></div>`;
+  }
+  prev.innerHTML = html;
+  prev.className = `builder-preview finish-${builder.finish}${deluxe && builder.cut === "yes" ? " is-contour" : ""}`;
+  hydratePhotos(prev);
 
   $("#thumbs").innerHTML = builder.images.map((img, i) =>
     `<div class="thumb"><img src="${img.url}" alt="${esc(img.name)}"><button type="button" data-remove="${i}" aria-label="Ta bort ${esc(img.name)}">✕</button></div>`).join("");
   $("#customPrice").textContent = kr(builderUnit() * builder.qty);
   $("#qtyVal").textContent = builder.qty;
-  $("#addCustom").disabled = !builder.images.length;
-  $("#customHint").textContent = builder.images.length
-    ? `${n} stickers per ark · ${builder.images.length} motiv fördelas jämnt · ${kr(builderUnit())}/ark`
-    : "Ladda upp minst en bild för att fortsätta.";
+  const needsImage = !(deluxe && builder.template === "schema");
+  $("#addCustom").disabled = needsImage && !builder.images.length;
+  $("#customHint").textContent = needsImage && !builder.images.length
+    ? "Ladda upp minst en bild för att fortsätta."
+    : `${deluxe ? `Sticker Deluxe · ${TEMPLATE_LABEL[builder.template]}` : `Sticker Sheet · ${SIZE_COUNT[builder.size]} st`} · ${kr(builderUnit())}/st`;
 }
 
-// Liten miniatyr till korgen så den får plats i localStorage.
 function makeThumb(url, size = 96) {
   return new Promise((resolve) => {
     const img = new Image();
@@ -422,9 +774,16 @@ function addFiles(files) {
   const imgs = [...files].filter((f) => f.type.startsWith("image/"));
   const room = CONFIG.maxUploads - builder.images.length;
   if (!imgs.length) return toast("Det där var ingen bild");
-  if (room <= 0) return toast(`Max ${CONFIG.maxUploads} motiv per ark`);
+  if (room <= 0) return toast(`Max ${CONFIG.maxUploads} bilder`);
   imgs.slice(0, room).forEach((f) => builder.images.push({ url: URL.createObjectURL(f), name: f.name }));
-  if (imgs.length > room) toast(`Bara ${CONFIG.maxUploads} motiv får plats – resten hoppades över`);
+  if (imgs.length > room) toast(`Bara ${CONFIG.maxUploads} bilder får plats – resten hoppades över`);
+  renderBuilder();
+}
+
+function setBuilder(key, value) {
+  builder[key] = value;
+  const seg = { format: "#formatSeg", template: "#tplSeg" }[key];
+  if (seg) $$("button", $(seg)).forEach((b) => b.classList.toggle("is-active", b.dataset[key] === value));
   renderBuilder();
 }
 
@@ -450,24 +809,54 @@ function setupBuilder() {
     builder[key] = b.dataset[key];
     renderBuilder();
   });
+  seg("#formatSeg", "format");
+  seg("#tplSeg", "template");
   seg("#sizeSeg", "size");
   seg("#cutSeg", "cut");
   seg("#finishSeg", "finish");
+
+  // Schemat redigeras direkt på stickern
+  $("#builderPreview").addEventListener("input", (e) => {
+    const c = e.target.closest(".sch-cell");
+    if (!c) return;
+    builder.schedule.rows[+c.dataset.r][+c.dataset.d] = c.textContent.trim();
+    const col = SUBJECT_COLORS[c.textContent.trim().toLowerCase()] || "#efe9df";
+    c.style.setProperty("--c", col);
+    c.classList.toggle("is-dark", col === "#0b0a0c");
+  });
+
+  // Länkar från användningsområdena väljer rätt mall
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("[data-template]");
+    if (!link || !link.dataset.template) return;
+    setBuilder("format", "deluxe");
+    setBuilder("template", link.dataset.template);
+  });
 
   $("#qtyMinus").addEventListener("click", () => { builder.qty = Math.max(1, builder.qty - 1); renderBuilder(); });
   $("#qtyPlus").addEventListener("click", () => { builder.qty = Math.min(99, builder.qty + 1); renderBuilder(); });
 
   $("#addCustom").addEventListener("click", async (e) => {
     const btn = e.currentTarget;
-    const thumb = await makeThumb(builder.images[0].url);
+    const deluxe = builder.format === "deluxe";
+    const thumb = builder.images[0] ? await makeThumb(builder.images[0].url) : null;
+    const schemaText = deluxe && builder.template === "schema"
+      ? builder.schedule.days.map((d, di) => `   ${d}: ${builder.schedule.rows.map((r) => r[di]).join(", ")}`).join("\n")
+      : "";
     addToCart({
-      key: `custom-${Date.now()}`, name: "Custom-ark", custom: true,
-      detail: `${SIZE_LABEL[builder.size]}, ${builder.cut === "yes" ? "Utskuret" : "Oskuret"}, ${FINISH_LABEL[builder.finish]}, ${builder.images.length} motiv`,
-      price: builderUnit(), qty: builder.qty, thumb, icon: "✦",
+      key: `custom-${Date.now()}`, custom: builder.images.length > 0,
+      name: deluxe ? `Custom Deluxe – ${TEMPLATE_LABEL[builder.template]}` : "Custom Sheet",
+      detail: [
+        deluxe ? (builder.cut === "yes" ? "Konturskuren" : "Rak kant") : `${SIZE_LABEL[builder.size]}, ${builder.cut === "yes" ? "Utskuret" : "Oskuret"}`,
+        FINISH_LABEL[builder.finish],
+        builder.images.length ? `${builder.images.length} bilder` : null,
+      ].filter(Boolean).join(", "),
+      extra: schemaText,
+      price: builderUnit(), qty: builder.qty, thumb, bg: "#c9a8ff",
     });
     const r = btn.getBoundingClientRect();
     burst(r.left + r.width / 2, r.top);
-    toast("Ditt custom-ark ligger i korgen");
+    toast("Din custom ligger i korgen");
   });
 
   renderBuilder();
@@ -475,9 +864,13 @@ function setupBuilder() {
 
 /* ---------- Start ---------- */
 renderHero();
+renderUses();
 renderWorlds();
 renderProcess();
-renderShop();
+renderBusiness();
+setupShop();
 setupCart();
 setupBuilder();
+setupDrop();
+hydratePhotos();
 $("#year").textContent = new Date().getFullYear();
