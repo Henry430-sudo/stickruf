@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stickruf UF – Stickers i A4 för nästan inga pengar</title>
+  <meta name="description" content="Stickruf UF gör custom stickers och färdiga stickerark i A4 – för laptopen, skåpet, vattenflaskan och allt annat. Billigt, snabbt och snyggt.">
+  <meta name="theme-color" content="#ff3d7f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌈</text></svg>">
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <a href="#top" class="logo" aria-label="Stickruf UF – till toppen">
+      <span class="logo-mark">S</span>
+      <span class="logo-text">stickruf<span class="logo-uf">UF</span></span>
+    </a>
+    <nav class="nav" aria-label="Huvudmeny">
+      <a href="#ark">Färdiga ark</a>
+      <a href="#bygg">Gör egna</a>
+      <a href="#hur">Så funkar det</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <button class="cart-btn" id="cartBtn" aria-label="Öppna varukorgen">
+      <span aria-hidden="true">🛒</span>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </header>
+
+  <main id="top">
+
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Ett UF-företag med klistriga fingrar</p>
+        <h1>
+          Klistra din<br>
+          <span class="hl hl-pink">grej</span> på<br>
+          <span class="hl hl-yellow">allt.</span>
+        </h1>
+        <p class="lead">
+          Ett helt A4-ark fullt med stickers – färdiga eller med <em>dina egna</em> bilder –
+          för mindre än en lunch i skolcaféet. Perfekt till laptopen, skåpet, flaskan och mobilskalet.
+        </p>
+        <div class="hero-cta">
+          <a href="#bygg" class="btn btn-primary">Gör dina egna →</a>
+          <a href="#ark" class="btn btn-ghost">Kolla färdiga ark</a>
+        </div>
+        <ul class="hero-points">
+          <li>✦ Från <strong>49 kr</strong> per A4</li>
+          <li>✦ Vattentåliga</li>
+          <li>✦ Leverans i skolan</li>
+        </ul>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="laptop">
+          <div class="laptop-lid">
+            <span class="stk s1">🌈</span>
+            <span class="stk s2">👾</span>
+            <span class="stk s3 stk-text">NO&nbsp;HW<br>TODAY</span>
+            <span class="stk s4">🍄</span>
+            <span class="stk s5">⚡</span>
+            <span class="stk s6">🐸</span>
+            <span class="stk s7 stk-text stk-round">UF<br>2026</span>
+            <span class="stk s8">💿</span>
+          </div>
+          <div class="laptop-base"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Marquee ===== -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>LAPTOPEN ✦ SKÅPET ✦ VATTENFLASKAN ✦ MOBILSKALET ✦ PENNSKRINET ✦ SKATEBOARDEN ✦ GITARRFODRALET ✦ KYLSKÅPET ✦ </span>
+        <span>LAPTOPEN ✦ SKÅPET ✦ VATTENFLASKAN ✦ MOBILSKALET ✦ PENNSKRINET ✦ SKATEBOARDEN ✦ GITARRFODRALET ✦ KYLSKÅPET ✦ </span>
+      </div>
+    </div>
+
+    <!-- ===== Färdiga ark ===== -->
+    <section class="section" id="ark">
+      <div class="section-head">
+        <p class="eyebrow">Drop 01</p>
+        <h2>Färdiga stickerark</h2>
+        <p>Handplockade teman. Ett ark = ett helt A4 fullproppat med stickers.</p>
+      </div>
+
+      <div class="filters" role="tablist" aria-label="Filtrera ark">
+        <button class="chip is-active" data-filter="alla" role="tab" aria-selected="true">Alla</button>
+        <button class="chip" data-filter="gulligt" role="tab" aria-selected="false">Gulligt</button>
+        <button class="chip" data-filter="gaming" role="tab" aria-selected="false">Gaming</button>
+        <button class="chip" data-filter="skola" role="tab" aria-selected="false">Skola</button>
+        <button class="chip" data-filter="natur" role="tab" aria-selected="false">Natur</button>
+      </div>
+
+      <div class="product-grid" id="productGrid">
+        <!-- Fylls i av js/main.js -->
+      </div>
+    </section>
+
+    <!-- ===== Bygg egna ===== -->
+    <section class="section section-dark" id="bygg">
+      <div class="section-head">
+        <p class="eyebrow">Custom</p>
+        <h2>Gör ditt eget ark</h2>
+        <p>Ladda upp en bild – din katt, ditt band, din klassens insidesskämt – så ser du direkt hur arket blir.</p>
+      </div>
+
+      <div class="builder">
+        <div class="builder-controls">
+
+          <label class="dropzone" id="dropzone" for="fileInput">
+            <input type="file" id="fileInput" accept="image/*" multiple hidden>
+            <span class="dz-icon" aria-hidden="true">⬆</span>
+            <span class="dz-title">Släpp dina bilder här</span>
+            <span class="dz-sub">eller klicka för att välja (PNG/JPG, max 6 st)</span>
+          </label>
+
+          <div class="thumbs" id="thumbs"></div>
+
+          <fieldset class="opt">
+            <legend>Storlek per sticker</legend>
+            <div class="seg" id="sizeSeg">
+              <button type="button" data-size="s">Liten<small>~4 cm · 30 st</small></button>
+              <button type="button" data-size="m" class="is-active">Mellan<small>~6 cm · 12 st</small></button>
+              <button type="button" data-size="l">Stor<small>~9 cm · 6 st</small></button>
+            </div>
+          </fieldset>
+
+          <fieldset class="opt">
+            <legend>Form</legend>
+            <div class="seg" id="shapeSeg">
+              <button type="button" data-shape="diecut" class="is-active">Konturskuren</button>
+              <button type="button" data-shape="round">Rund</button>
+              <button type="button" data-shape="square">Fyrkant</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="opt">
+            <legend>Finish</legend>
+            <div class="seg" id="finishSeg">
+              <button type="button" data-finish="matt" class="is-active">Matt</button>
+              <button type="button" data-finish="glossy">Blank</button>
+              <button type="button" data-finish="holo">Holo ✨ <small>+20 kr</small></button>
+            </div>
+          </fieldset>
+
+          <div class="builder-total">
+            <div>
+              <span class="muted">Pris per A4-ark</span>
+              <strong id="customPrice">79 kr</strong>
+            </div>
+            <div class="qty">
+              <button type="button" id="qtyMinus" aria-label="Minska antal">−</button>
+              <span id="qtyVal">1</span>
+              <button type="button" id="qtyPlus" aria-label="Öka antal">+</button>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block" id="addCustom" disabled>Lägg i varukorgen</button>
+          <p class="hint" id="customHint">Ladda upp minst en bild för att fortsätta.</p>
+        </div>
+
+        <div class="builder-preview">
+          <div class="a4 finish-matt" id="a4">
+            <div class="a4-grid size-m shape-diecut" id="a4Grid">
+              <!-- Förhandsvisning genereras av js/main.js -->
+            </div>
+            <span class="a4-label">A4 · 210 × 297 mm</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Så funkar det ===== -->
+    <section class="section" id="hur">
+      <div class="section-head">
+        <p class="eyebrow">Easy peasy</p>
+        <h2>Så funkar det</h2>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <span class="step-num">1</span>
+          <h3>Välj eller ladda upp</h3>
+          <p>Plocka ett färdigt ark eller ladda upp egna bilder i byggaren.</p>
+        </li>
+        <li class="step">
+          <span class="step-num">2</span>
+          <h3>Beställ & betala</h3>
+          <p>Skicka beställningen och betala smidigt med Swish.</p>
+        </li>
+        <li class="step">
+          <span class="step-num">3</span>
+          <h3>Vi trycker</h3>
+          <p>Vi skriver ut, laminerar och skär – oftast inom en vecka.</p>
+        </li>
+        <li class="step">
+          <span class="step-num">4</span>
+          <h3>Klistra!</h3>
+          <p>Hämta i skolan eller få det på posten. Sen är det bara att köra.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ===== Varför vi ===== -->
+    <section class="section section-yellow">
+      <div class="why">
+        <div class="why-big">
+          <span class="big-num">49<small>kr</small></span>
+          <p>för ett helt A4. En enda sticker i en vanlig butik kan kosta lika mycket.</p>
+        </div>
+        <ul class="why-list">
+          <li><strong>Billigt på riktigt.</strong> Vi säljer ark, inte enstaka stickers – så du får massor för pengarna.</li>
+          <li><strong>Din design.</strong> Custom utan minsta order. Ett ark räcker.</li>
+          <li><strong>Lokalt.</strong> Vi går i din skola – inga fraktkostnader om du hämtar.</li>
+          <li><strong>Klass-deal.</strong> Beställ 10+ ark tillsammans och få rabatt. Perfekt för klassen eller laget.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Teamet ===== -->
+    <section class="section" id="team">
+      <div class="section-head">
+        <p class="eyebrow">Vi som klistrar</p>
+        <h2>Teamet bakom Stickruf</h2>
+        <p>Byt ut namnen och rollerna mot era egna 👇</p>
+      </div>
+      <div class="team">
+        <article class="member"><span class="avatar" style="--c:#ff3d7f">🦊</span><h3>Namn Efternamn</h3><p>VD</p></article>
+        <article class="member"><span class="avatar" style="--c:#3dd6ff">🐙</span><h3>Namn Efternamn</h3><p>Design</p></article>
+        <article class="member"><span class="avatar" style="--c:#ffd23d">🐝</span><h3>Namn Efternamn</h3><p>Ekonomi</p></article>
+        <article class="member"><span class="avatar" style="--c:#7cff6b">🐸</span><h3>Namn Efternamn</h3><p>Marknadsföring</p></article>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="section" id="faq">
+      <div class="section-head">
+        <p class="eyebrow">Frågor</p>
+        <h2>FAQ</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Hur stora är stickersen?</summary>
+          <p>Du väljer själv: liten (~4 cm), mellan (~6 cm) eller stor (~9 cm). Alla får plats på ett A4-ark.</p>
+        </details>
+        <details>
+          <summary>Tål de vatten?</summary>
+          <p>Ja! Vi laminerar arken så de klarar regn, spill och diskhon (handdisk – inte diskmaskin).</p>
+        </details>
+        <details>
+          <summary>Får jag använda vilken bild som helst?</summary>
+          <p>Använd bilder du själv har tagit/gjort eller har rätt att använda. Vi trycker inte kränkande innehåll eller andras logotyper.</p>
+        </details>
+        <details>
+          <summary>Hur betalar jag?</summary>
+          <p>Med Swish när vi bekräftat din beställning. Du får ett meddelande med nummer och belopp.</p>
+        </details>
+        <details>
+          <summary>Hur får jag mina stickers?</summary>
+          <p>Hämta gratis hos oss i skolan, eller välj frakt med posten (+15 kr).</p>
+        </details>
+        <details>
+          <summary>Vad är ett UF-företag?</summary>
+          <p>Ung Företagsamhet – ett läsår där gymnasieelever startar och driver ett riktigt företag. Det är vi!</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===== Kontakt ===== -->
+    <section class="section section-pink" id="kontakt">
+      <div class="contact">
+        <h2>Har du en idé? Säg hej!</h2>
+        <p>Klass-beställning, idrottslag, event eller bara en fråga – vi svarar snabbt.</p>
+        <div class="hero-cta">
+          <a class="btn btn-dark" href="mailto:hej@stickruf.se">hej@stickruf.se</a>
+          <a class="btn btn-ghost-dark" href="https://instagram.com/" target="_blank" rel="noopener">@stickruf.uf på Instagram</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> Stickruf UF · Ett företag inom Ung Företagsamhet</p>
+  </footer>
+
+  <!-- ===== Varukorg ===== -->
+  <div class="drawer-backdrop" id="backdrop" hidden></div>
+  <aside class="drawer" id="drawer" aria-label="Varukorg" aria-hidden="true">
+    <div class="drawer-head">
+      <h2>Din korg</h2>
+      <button class="icon-btn" id="closeCart" aria-label="Stäng varukorgen">✕</button>
+    </div>
+    <div class="drawer-body" id="cartItems"></div>
+    <div class="drawer-foot">
+      <div class="row"><span>Totalt</span><strong id="cartTotal">0 kr</strong></div>
+      <p class="hint" id="dealHint"></p>
+      <form id="orderForm" class="order-form">
+        <input name="name" placeholder="Ditt namn" required>
+        <input name="contact" placeholder="Mejl eller mobilnummer" required>
+        <select name="delivery">
+          <option value="Hämtar i skolan">Hämtar i skolan (gratis)</option>
+          <option value="Post (+15 kr)">Post (+15 kr)</option>
+        </select>
+        <button class="btn btn-primary btn-block" type="submit">Skicka beställning</button>
+        <p class="hint">Vi bekräftar och skickar Swish-info. Har du custom-bilder? Bifoga dem i mejlet som öppnas.</p>
+      </form>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
