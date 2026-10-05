@@ -482,7 +482,7 @@ function renderBusiness() {
   $("#bizDeluxe").innerHTML = deluxeHTML("business", { className: "deluxe--biz" });
   $("#bizGrid").innerHTML = PACKAGES.map((p) => `
     <article class="price-card${p.hero ? " price-card--hero" : ""}">
-      ${p.hero ? '<span class="price-flag">Mest bokat</span>' : ""}
+      ${p.hero ? '<span class="price-flag">Vårt tips</span>' : ""}
       <p class="price-kicker">${esc(p.name)}</p>
       <p class="price-num"><span>${esc(p.price.replace(" kr", ""))}</span>${p.price.endsWith("kr") ? " kr" : ""}</p>
       <p class="price-desc">${esc(p.desc)}</p>
