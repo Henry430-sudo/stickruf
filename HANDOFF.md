@@ -49,7 +49,8 @@
 2. **Kolla påståenden med teamet** innan lansering (checklistan finns i `PLAN.md` avsnitt 7): "5 dagar" / "5 skoldagar", att limmet går att ta bort, att Deluxe får plats på 13–16"-laptops, och drop-datumet (`CONFIG.dropDate` = 2026-11-02 07:30).
 3. **Villkor för värvningen** står som förslag i `PLAN.md` (minst en värvad köper, tak på t.ex. 20 gratis Deluxe). När teamet bestämt sig ska villkoren in på sajten under Drop 01.
 4. **Byt platshållare:** mejl, Instagram- och TikTok-länkar, teamnamn om de vill ha ett teamavsnitt.
-5. **Möjliga nästa steg:** riktig väntelista (Formspree eller Google-formulär i stället för mailto – viktigt innan teasern), Swish-betalning, fler världar (Gaming, Studenten), publicering via GitHub Pages.
+5. **Väntelistan är byggd med Formspree**, men `CONFIG.waitlistEndpoint` är tom tills teamet skapat ett formulär (se `README.md`). Den är testad i Playwright med en fejkad Formspree, eftersom `formspree.io` är blockerat i miljön.
+6. **Möjliga nästa steg:** Swish-betalning, fler världar (Gaming, Studenten), publicering via GitHub Pages.
 
 ## 6. Så testar du
 ```bash

@@ -22,6 +22,9 @@ const CONFIG = {
   dropName: "Drop 01",
   dropDate: "2026-11-02T07:30:00+01:00", // när droppen öppnar (svensk tid)
   dropSize: 100,                    // antal numrerade Deluxe i droppen
+  // Väntelistan: skapa ett formulär på formspree.io och klistra in dess adress här,
+  // t.ex. "https://formspree.io/f/abcdwxyz". Tom = väntelistan öppnar ett mejl i stället.
+  waitlistEndpoint: "",
 };
 
 /* =========================================================
@@ -511,9 +514,30 @@ function setupDrop() {
   $("#dropSize").textContent = CONFIG.dropSize;
   $("#dropDate").textContent = new Date(CONFIG.dropDate).toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" });
 
-  $("#waitForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
+  setupWaitlist();
+}
+
+function setupWaitlist() {
+  const form = $("#waitForm");
+  const status = $("#waitStatus");
+  const fields = { name: form.elements.name, contact: form.elements.contact, ref: form.elements.ref };
+
+  // Värvningslänk: ?ref=Namn fyller i "Värvad av"
+  const refParam = new URLSearchParams(location.search).get("ref");
+  if (refParam) fields.ref.value = refParam.slice(0, 60);
+
+  const done = (name) => {
+    const link = new URL(location.href.split("#")[0]);
+    link.search = `?ref=${encodeURIComponent(name)}`;
+    link.hash = "drop";
+    $("#waitName").textContent = name;
+    $("#waitLink").value = link.href;
+    form.hidden = true;
+    $("#waitDone").hidden = false;
+    status.textContent = "";
+  };
+
+  const mailto = (data) => {
     const body = [
       "Hej Stickr!", "",
       `Jag vill stå på väntelistan till ${CONFIG.dropName}.`,
@@ -522,7 +546,49 @@ function setupDrop() {
       data.get("ref") ? `Värvad av: ${data.get("ref")}` : null,
     ].filter((x) => x !== null).join("\n");
     window.location.href = `mailto:${CONFIG.orderEmail}?subject=${encodeURIComponent(`Väntelista ${CONFIG.dropName}`)}&body=${encodeURIComponent(body)}`;
-    toast("Mejlet öppnas – skicka så är du med på listan");
+  };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const name = String(data.get("name")).trim();
+
+    if (!CONFIG.waitlistEndpoint) {
+      mailto(data);
+      toast("Mejlet öppnas – skicka så är du med på listan");
+      return;
+    }
+
+    const contact = String(data.get("contact")).trim();
+    if (contact.includes("@")) data.set("email", contact); // så ni kan svara direkt från Formspree
+    data.set("_subject", `Väntelista ${CONFIG.dropName}: ${name}`);
+    data.set("drop", CONFIG.dropName);
+
+    const btn = form.querySelector("button");
+    btn.disabled = true;
+    status.textContent = "Skickar…";
+    try {
+      const res = await fetch(CONFIG.waitlistEndpoint, { method: "POST", body: data, headers: { Accept: "application/json" } });
+      if (!res.ok) throw new Error(res.status);
+      done(name);
+      toast(`Du står i kön till ${CONFIG.dropName}`);
+    } catch {
+      status.innerHTML = `Det gick inte att skicka just nu. <button type="button" class="link-btn" id="waitMail">Skicka med mejl i stället</button>`;
+      $("#waitMail").addEventListener("click", () => mailto(data));
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  $("#waitCopy").addEventListener("click", async () => {
+    const input = $("#waitLink");
+    try {
+      await navigator.clipboard.writeText(input.value);
+    } catch {
+      input.select();
+      document.execCommand("copy");
+    }
+    toast("Länken är kopierad");
   });
 }
 

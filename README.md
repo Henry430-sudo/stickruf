@@ -63,7 +63,19 @@ Använd bara egna bilder eller bilder med fri kommersiell licens, och skriv foto
 
 ## Beställningar
 
-Det finns ingen backend och ingen betalning på sajten. Kunden lägger saker i korgen och trycker på **Skicka beställning**. Då öppnas ett färdigt mejl till `CONFIG.orderEmail`, och vi svarar med Swish-info. Egna bilder bifogar kunden i mejlet. Väntelistan till Drop 01 fungerar på samma sätt.
+Det finns ingen backend och ingen betalning på sajten. Kunden lägger saker i korgen och trycker på **Skicka beställning**. Då öppnas ett färdigt mejl till `CONFIG.orderEmail`, och vi svarar med Swish-info. Egna bilder bifogar kunden i mejlet.
+
+### Väntelistan (Formspree)
+
+Väntelistan till Drop 01 skickas till [Formspree](https://formspree.io), som är gratis upp till 50 anmälningar i månaden.
+
+1. Skapa ett konto på formspree.io med företagets mejl och gör ett nytt formulär.
+2. Kopiera formulärets adress, till exempel `https://formspree.io/f/abcdwxyz`.
+3. Klistra in den i `CONFIG.waitlistEndpoint` i `js/main.js` och pusha.
+
+Anmälningarna hamnar i Formspree (och i er inkorg) med namn, kontakt, "värvad av" och drop. Där kan ni exportera dem som CSV och räkna värvningar. Är `waitlistEndpoint` tom öppnas ett mejl i stället, som förut.
+
+När någon har ställt sig i kön får hen en egen värvningslänk (`?ref=Namn`). Den som öppnar länken får "Värvad av" ifyllt automatiskt.
 
 **Innan lansering:** byt `hej@stickr.se` (i `CONFIG` och i `index.html`) och länkarna till Instagram och TikTok i footern.
 

@@ -58,7 +58,8 @@ Alla priser ändras på ett ställe: `CONFIG` i `js/main.js`.
 | **Efter** | Posta "Nº 001–100 slutsålda" (bara om det stämmer). Visa kunder med sina nummer. |
 
 ### Väntelistan
-- Formuläret på sajten skickar just nu ett mejl (mailto). Det tappar folk. **Byt till Formspree eller ett Google-formulär innan teasern drar igång.**
+- Formuläret skickar till Formspree. **Skapa formuläret och fyll i `CONFIG.waitlistEndpoint` innan teasern drar igång** (se `README.md`), annars öppnas ett mejl och vi tappar folk.
+- Den som ställt sig i kön får en värvningslänk som fyller i "Värvad av" åt kompisarna.
 - Spara: namn, mejl/mobil, "värvad av", datum. Det är vår kölista och vår bevisning för värvningen.
 
 ### Värvning
@@ -209,7 +210,7 @@ Andra UF-företag behöver synas på mässan och har en budget för det. Vi är 
 - [ ] Testa en skärmaskin som klarar print-and-cut på hela A4
 - [ ] Provtryck en Deluxe av varje värld och testa limmet på skåp och laptop
 - [ ] Byt mejl (`CONFIG.orderEmail` och `hej@stickr.se` i `index.html`) och Instagram/TikTok-länkar i footern
-- [ ] Byt väntelistan till Formspree eller Google-formulär
+- [ ] Skapa Formspree-formuläret och fyll i `CONFIG.waitlistEndpoint`
 - [ ] Skriv villkoren för värvningen
 - [ ] Fota bilderna i `assets/foton/README.md`
 - [ ] Publicera sajten med GitHub Pages (se `README.md`)
