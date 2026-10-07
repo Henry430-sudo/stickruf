@@ -555,7 +555,7 @@ function renderBusiness() {
   $("#bizCta").href = `mailto:${CONFIG.orderEmail}?subject=${subject}&body=${body}`;
 }
 
-/* ---------- Drop 01: nedräkning + väntelista ---------- */
+/* ---------- Drop 01: nedräkning ---------- */
 function setupDrop() {
   const target = new Date(CONFIG.dropDate).getTime();
   const el = { d: $("#cdD"), h: $("#cdH"), m: $("#cdM"), s: $("#cdS") };
@@ -573,19 +573,6 @@ function setupDrop() {
   $("#dropSize").textContent = CONFIG.dropSize;
   $("#dropDate").textContent = new Date(CONFIG.dropDate).toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" });
 
-  $("#waitForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    const body = [
-      "Hej Stickr!", "",
-      `Jag vill stå på väntelistan till ${CONFIG.dropName}.`,
-      `Namn: ${data.get("name")}`,
-      `Kontakt: ${data.get("contact")}`,
-      data.get("ref") ? `Värvad av: ${data.get("ref")}` : null,
-    ].filter((x) => x !== null).join("\n");
-    window.location.href = `mailto:${CONFIG.orderEmail}?subject=${encodeURIComponent(`Väntelista ${CONFIG.dropName}`)}&body=${encodeURIComponent(body)}`;
-    toast("Mejlet öppnas – skicka så är du med på listan");
-  });
 }
 
 /* =========================================================

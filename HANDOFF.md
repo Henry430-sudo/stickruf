@@ -11,7 +11,7 @@
 - **Katalog:** kategorierna **Hets**, **Kollage** (prototypbilder) (provocerande, rivalpar som NA > SA / SA > NA, KEBAB > PIZZA), **Pilar**, **Konst** (bildstickers, första: Napoleon av J-L David 1801 – public domain) och **Egen design**. Varje design finns som Deluxe eller Sheet. Teamet vill INTE ha Tröjengelska eller Peppa.
 - **Logga:** `assets/logo/stickr-light.png` och `stickr-dark.png` (genomskinliga, gjorda från teamets logga). Används i header, laddningsskärm och footer.
 - **Bilder från teamet (Pinterest):** loggan och Napoleon (public domain) används på riktigt. Övriga 7 (G Spot/Guinness, Tutto Passa, Monaco, ski-kollaget, "Old Money"-kollaget, Roll the Dice/Baksmällan, Tigrarna) ligger i `assets/prototyp/` som **prototyp** på teamets begäran – markerade med `proto: true` i `PRODUCTS` (ingen etikett syns på sajten, teamet ville inte ha den). De ägs av andra / innehåller varumärken och kändisar och **måste bytas mot egna versioner innan sajten publiceras eller något säljs**. Se `assets/prototyp/README.md`.
-- **Hype:** **Drop 01** – 100 numrerade Deluxe, nedräkning, väntelista och värvning (värva 3 kompisar = gratis Deluxe).
+- **Hype:** **Drop 01** – 100 numrerade Deluxe och nedräkning. Väntelista/värvning är borttagen på teamets begäran.
 
 ## 2. Önskemål från teamet (viktigt!)
 - Allt på **svenska**, och de pratar avslappnat ("bror").
@@ -52,7 +52,7 @@
    - Är allt stängt: be dem lägga till domänerna under Network access → Custom (se https://code.claude.com/docs/en/cloud-environments#network-access) och starta en ny session.
 2. **Skriv om `PLAN.md`** med hype- och säljstrategin:
    - positionering ("Sticker Deluxe. Ett helt A4. En enda sticker.") och användningsområden
-   - Drop 01-planen: teaser, numrerad upplaga, väntelista, värvning
+   - Drop 01-planen: teaser, numrerad upplaga, nedräkning
    - TikTok-plan där peel-videon är viktigast
    - säljmanus för korridoren och klasserna, i stil med "sell me this pen" men ärligt: "var är ditt schema just nu?"
    - Stickr Business: hur man säljer till andra UF-företag, till exempel på UF-mässan
@@ -62,7 +62,7 @@
 3. **Uppdatera `README.md`** så den beskriver nya sajten (kollage-motorn, `DELUXE`, mallar, foton).
 4. **Kolla påståenden med teamet** innan lansering: "5 dagar" leveranstid, att limmet går att ta bort, att Deluxe får plats på 13–16"-laptops, och drop-datumet (`CONFIG.dropDate` = 2026-11-02 07:30).
 5. **Byt platshållare:** mejl, Instagram- och TikTok-länkar, teamnamn om de vill ha ett teamavsnitt.
-6. **Möjliga nästa steg:** riktig väntelista (till exempel Formspree eller en Google-form i stället för mailto), Swish-betalning, fler världar (Gaming, Studenten), publicering via GitHub Pages.
+6. **Möjliga nästa steg:** Swish-betalning, fler världar (Gaming, Studenten), publicering via GitHub Pages.
 
 ## 6. Så testar du
 ```bash

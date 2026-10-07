@@ -517,11 +517,8 @@ html.lenis, html.lenis body { height: auto; }
 .countdown div { min-width: clamp(70px, 14vw, 130px); padding: 18px 10px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.03); }
 .countdown strong { display: block; font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(2.6rem, 7vw, 5rem); line-height: 1; }
 .countdown span { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
-.wait-form { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; }
-.wait-form input, .order-form input, .order-form select { padding: 15px 18px; border: 1px solid var(--line); border-radius: 999px; background: rgba(0,0,0,.4); color: var(--cream); font: inherit; min-width: 0; }
-.wait-form input:focus, .order-form input:focus, .order-form select:focus { outline: none; border-color: var(--lime); }
-.drop-ref { margin: 22px 0 0; color: var(--muted); }
-.drop-ref strong { color: var(--cream); }
+.order-form input, .order-form select { padding: 15px 18px; border: 1px solid var(--line); border-radius: 999px; background: rgba(0,0,0,.4); color: var(--cream); font: inherit; min-width: 0; }
+.order-form input:focus, .order-form select:focus { outline: none; border-color: var(--lime); }
 
 /* ===== FAQ ===== */
 .faq { max-width: 920px; border-top: 1px solid var(--line); }
@@ -604,7 +601,6 @@ html.lenis, html.lenis body { height: auto; }
   .price-grid, .builder, .biz-top { grid-template-columns: 1fr; }
   .builder-preview { position: static; order: -1; }
   .builder-preview .deluxe, .builder-preview .sheet { width: min(76%, 360px); }
-  .wait-form { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
   body { font-size: 16px; }
