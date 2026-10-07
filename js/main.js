@@ -246,6 +246,7 @@ const CATEGORIES = [
   { id: "alla", name: "Alla" },
   { id: "hets", name: "Hets" },
   { id: "pilar", name: "Pilar" },
+  { id: "kollage", name: "Kollage" },
   { id: "konst", name: "Konst" },
   { id: "egen", name: "Egen design" },
 ];
@@ -266,6 +267,15 @@ const PRODUCTS = [
   { id: "hjarna", cat: "pilar", lines: ["↑ HJÄRNA", "↓ DET SOM", "FAKTISKT", "STYR"], bg: "#ff4f8b", fg: "#0b0a0c", accent: "#f4efe6", tag: "Ny" },
   { id: "kaos", cat: "pilar", lines: ["HÄR BOR", "KAOS ↓"], sub: "Öppna på egen risk.", bg: "#0b0a0c", fg: "#e8ff59", accent: "#f4efe6" },
   // Konst – bildstickers. Bara bilder vi har rätt att trycka (egna eller fria från upphovsrätt)
+  // PROTOTYP – teamets referensbilder (Pinterest). Får INTE säljas eller publiceras: byt mot egna
+  // bilder innan lansering (se assets/prototyp/README.md). proto: true ger etiketten "Prototyp".
+  { id: "gspot", cat: "kollage", title: "The Real G Spot", img: "assets/prototyp/g-spot.jpg", desc: "Retroaffisch.", bg: "#f5e6c0", fg: "#0b0a0c", accent: "#c8241b", proto: true },
+  { id: "tutto", cat: "kollage", title: "Tutto Passa", img: "assets/prototyp/tutto-passa.jpg", desc: "Allt går över.", bg: "#2e6fa3", fg: "#fff", accent: "#ffcf6b", proto: true },
+  { id: "monaco", cat: "kollage", title: "Monaco", img: "assets/prototyp/monaco.jpg", desc: "Blått, blankt och dyrt.", bg: "#0b2a4a", fg: "#f4efe6", accent: "#9cc7ff", proto: true },
+  { id: "ski", cat: "kollage", title: "If It Comes, Let It", img: "assets/prototyp/ski.jpg", desc: "Fjällkollage.", bg: "#f2a07b", fg: "#1e2a4a", accent: "#fff", proto: true },
+  { id: "kollage-2", cat: "kollage", title: "Old Money", img: "assets/prototyp/kollage.jpg", desc: "Svartvitt, schack och racerbana.", bg: "#2a2a26", fg: "#f4efe6", accent: "#d9c9a3", proto: true },
+  { id: "dice", cat: "kollage", title: "Roll the Dice", img: "assets/prototyp/roll-the-dice.jpg", desc: "En runda till.", bg: "#0f4d33", fg: "#f4efe6", accent: "#e8c766", proto: true },
+  { id: "tigrar", cat: "konst", title: "Tigrarna", img: "assets/prototyp/tigrar.jpg", desc: "Tre tigrar mot djupblått.", bg: "#13306b", fg: "#f4efe6", accent: "#f4efe6", proto: true },
   { id: "napoleon", cat: "konst", title: "Napoleon", img: "assets/produkter/napoleon.jpg", desc: "Oljemålning av Jacques-Louis David, 1801. Fri att använda.", bg: "#2b2a2e", fg: "#f4efe6", accent: "#c8102e", tag: "Drop 01" },
 ];
 
@@ -619,7 +629,7 @@ function productCard(p) {
   return `
     <article class="product" data-id="${p.id}" style="--wbg:${p.bg};--wfg:${p.fg}">
       <div class="product-visual" data-cursor="${custom ? "Skapa" : "Lägg till"}">
-        ${p.tag ? `<span class="product-tag">${esc(p.tag)}</span>` : ""}
+        ${p.proto ? `<span class="product-tag product-tag--proto">Prototyp</span>` : p.tag ? `<span class="product-tag">${esc(p.tag)}</span>` : ""}
         <div class="product-deluxe">${deluxeHTML(p.id, { className: "deluxe--product" })}</div>
         <div class="mini-sheet" hidden>${p.img ? Array.from({ length: 6 }, () => `<div class="mini-cell"><img class="mini-img" src="${p.img}" alt=""></div>`).join("") : (p.lines || ["DIN", "GREJ"]).slice(0, 2).concat(p.sub ? [p.sub] : []).concat(["STICKR"]).flatMap((t, i) => [
           { t: ["pill", "tag", "star"][i % 3], text: t, bg: i % 2 ? p.fg : p.bg, fg: i % 2 ? p.bg : p.fg },
