@@ -230,11 +230,11 @@ const WORLDS = [
 
 /* ---------- Användningsområden ---------- */
 const USES = [
-  { id: "skap", scene: "locker", deluxe: "schema", num: "01", title: "Skåpet", line: "Schemat där du faktiskt behöver det. Sluta leta i mobilen mellan lektionerna.", cta: "Gör ditt schema", template: "schema" },
-  { id: "dator", scene: "laptop", deluxe: "rorinte", num: "02", title: "Datorn", line: "Baksidan av din laptop är den största reklamytan du äger. Säg något med den.", cta: "Se Hets", cat: "hets" },
+  { id: "skap", scene: "locker", deluxe: "tigrar", num: "01", title: "Skåpet", line: "Öppna skåpet och mötas av tre tigrar. Varje morgon.", cta: "Se Konst", cat: "konst" },
+  { id: "dator", scene: "laptop", deluxe: "kollage-2", num: "02", title: "Datorn", line: "Baksidan av din laptop är den största reklamytan du äger. Använd den.", cta: "Se Kollage", cat: "kollage" },
   { id: "parm", scene: "binder", deluxe: "napoleon", num: "03", title: "Pärmen", line: "Ingen tar fel pärm när det sitter en kejsare på den.", cta: "Se Konst", cat: "konst" },
-  { id: "vagg", scene: "wall", deluxe: "kollage", num: "04", title: "Väggen", line: "En poster som aldrig rullar ihop sig och aldrig behöver häftmassa.", cta: "Gör ditt kollage", template: "kollage" },
-  { id: "gym", scene: "gym", deluxe: "skap", num: "05", title: "Gymskåpet", line: "Ditt skåp. Ditt revir. Alla andra kan läsa skylten.", cta: "Se Hets", cat: "hets" },
+  { id: "vagg", scene: "wall", deluxe: "gspot", num: "04", title: "Väggen", line: "En poster som aldrig rullar ihop sig och aldrig behöver häftmassa.", cta: "Se Kollage", cat: "kollage" },
+  { id: "gym", scene: "gym", deluxe: "dice", num: "05", title: "Gymskåpet", line: "Varje pass är en chansning. Rulla tärningen ändå.", cta: "Se Kollage", cat: "kollage" },
 ];
 
 /* =========================================================
@@ -244,10 +244,10 @@ const USES = [
    ========================================================= */
 const CATEGORIES = [
   { id: "alla", name: "Alla" },
-  { id: "hets", name: "Hets" },
-  { id: "pilar", name: "Pilar" },
   { id: "kollage", name: "Kollage" },
   { id: "konst", name: "Konst" },
+  { id: "hets", name: "Hets" },
+  { id: "pilar", name: "Pilar" },
   { id: "egen", name: "Egen design" },
 ];
 
@@ -659,7 +659,8 @@ const CUSTOM_PRODUCTS = [
 ];
 
 function renderShop() {
-  const all = [...PRODUCTS, ...CUSTOM_PRODUCTS];
+  // Bildstickers (kollage/konst) visas först
+  const all = [...PRODUCTS.filter((p) => p.img), ...PRODUCTS.filter((p) => !p.img), ...CUSTOM_PRODUCTS];
   const list = shopCat === "alla" ? all : all.filter((p) => p.cat === shopCat);
   $("#shopGrid").innerHTML = list.map(productCard).join("");
   fitTexts($("#shopGrid"));
