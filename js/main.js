@@ -3,7 +3,7 @@
    Animationerna ligger i js/motion.js.
 
    Allt ni vill ändra (priser, drop-datum, världar, kollage)
-   ligger i CONFIG, WORLDS och DELUXE här nedanför.
+   ligger i CONFIG, PRODUCTS, USES och DELUXE här nedanför.
    ========================================================= */
 
 const CONFIG = {
@@ -159,7 +159,7 @@ const SUBJECT_COLORS = {
   historia: "#f2d6a2", biologi: "#b9f0c8", fysik: "#a8f0ff", lunch: "#0b0a0c", mentor: "#e5e0d8",
 };
 
-/* ---------- Världarna (scroll-resan + butiken) ---------- */
+/* ---------- Små sticker-set (används på Sheets-arket i processen) ---------- */
 const WORLDS = [
   {
     id: "matchday", name: "Matchday", deluxe: "matchday",
@@ -230,12 +230,69 @@ const WORLDS = [
 
 /* ---------- Användningsområden ---------- */
 const USES = [
-  { id: "skap", scene: "locker", deluxe: "schema", num: "01", title: "Skåpet", line: "Schemat där du faktiskt behöver det. Sluta leta i mobilen mellan lektionerna.", cta: "Gör ditt schema" },
-  { id: "dator", scene: "laptop", deluxe: "kollage", num: "02", title: "Datorn", line: "Baksidan av din laptop är den största reklamytan du äger. Använd den.", cta: "Gör ditt kollage" },
-  { id: "parm", scene: "binder", deluxe: "glow", num: "03", title: "Pärmen", line: "Ämne, namn, stil. Hitta rätt pärm på en sekund – och se bra ut när du gör det.", cta: "Välj en värld" },
-  { id: "vagg", scene: "wall", deluxe: "mys", num: "04", title: "Väggen", line: "En poster som aldrig rullar ihop sig och aldrig behöver häftmassa.", cta: "Välj en värld" },
-  { id: "gym", scene: "gym", deluxe: "grind", num: "05", title: "Gymskåpet", line: "Programmet på skåpet. Inga ursäkter, inga skärmdumpar.", cta: "Välj Grind" },
+  { id: "skap", scene: "locker", deluxe: "schema", num: "01", title: "Skåpet", line: "Schemat där du faktiskt behöver det. Sluta leta i mobilen mellan lektionerna.", cta: "Gör ditt schema", template: "schema" },
+  { id: "dator", scene: "laptop", deluxe: "rorinte", num: "02", title: "Datorn", line: "Baksidan av din laptop är den största reklamytan du äger. Säg något med den.", cta: "Se Hets", cat: "hets" },
+  { id: "parm", scene: "binder", deluxe: "nothing", num: "03", title: "Pärmen", line: "Ingen kommer ta din pärm igen. Ingen kommer förstå den heller.", cta: "Se Tröjengelska", cat: "engelska" },
+  { id: "vagg", scene: "wall", deluxe: "kollage", num: "04", title: "Väggen", line: "En poster som aldrig rullar ihop sig och aldrig behöver häftmassa.", cta: "Gör ditt kollage", template: "kollage" },
+  { id: "gym", scene: "gym", deluxe: "nodays", num: "05", title: "Gymskåpet", line: "Programmet på skåpet. Inga ursäkter, inga skärmdumpar.", cta: "Se Peppa", cat: "peppa" },
 ];
+
+/* =========================================================
+   Katalogen – alla färdiga Sticker Deluxe
+   lines = rader i stor text, sub = liten rad under, pair = rivalen
+   Lägg till en produkt här så finns den direkt i butiken.
+   ========================================================= */
+const CATEGORIES = [
+  { id: "alla", name: "Alla" },
+  { id: "hets", name: "Hets" },
+  { id: "engelska", name: "Tröjengelska" },
+  { id: "pilar", name: "Pilar" },
+  { id: "peppa", name: "Peppa" },
+  { id: "egen", name: "Egen design" },
+];
+
+const PRODUCTS = [
+  // Hets – sätt upp, provocera, sälj till båda sidor
+  { id: "na", cat: "hets", lines: ["NA > SA"], sub: "Bevisa motsatsen.", bg: "#e8ff59", fg: "#0b0a0c", accent: "#ff4f8b", pair: "sa", tag: "Rivalpar" },
+  { id: "sa", cat: "hets", lines: ["SA > NA"], sub: "Vi har i alla fall vänner.", bg: "#ff4f8b", fg: "#0b0a0c", accent: "#f4efe6", pair: "na", tag: "Rivalpar" },
+  { id: "te", cat: "hets", lines: ["TEKNIK", "> ALLT"], sub: "Vi bygger. Ni pratar.", bg: "#3dd6ff", fg: "#0b0a0c", accent: "#f4efe6" },
+  { id: "ek", cat: "hets", lines: ["EK > ER"], sub: "Vi kommer anställa er.", bg: "#0b0a0c", fg: "#e8ff59", accent: "#f4efe6" },
+  { id: "rorinte", cat: "hets", lines: ["RÖR INTE", "MIN LAPTOP"], sub: "Jag ser dig.", bg: "#ff3b30", fg: "#fff", accent: "#0b0a0c", tag: "Bästsäljare" },
+  { id: "skap", cat: "hets", lines: ["MITT SKÅP.", "DINA", "PROBLEM."], sub: "Respektera zonen.", bg: "#0b0a0c", fg: "#f4efe6", accent: "#e8ff59" },
+  { id: "ratt", cat: "hets", lines: ["JAG HADE", "RÄTT."], sub: "Som vanligt.", bg: "#c9a8ff", fg: "#0b0a0c", accent: "#f4efe6" },
+  { id: "kebab", cat: "hets", lines: ["KEBAB", "> PIZZA"], sub: "Kom och bråka.", bg: "#f2c14e", fg: "#0b0a0c", accent: "#c8102e", pair: "pizza", tag: "Rivalpar" },
+  { id: "pizza", cat: "hets", lines: ["PIZZA", "> KEBAB"], sub: "Diskussionen är över.", bg: "#ff8a3d", fg: "#0b0a0c", accent: "#f4efe6", pair: "kebab", tag: "Rivalpar" },
+  // Tröjengelska – absurd engelska som tar sig själv på största allvar
+  { id: "nothing", cat: "engelska", lines: ["PLEASE", "ENJOY THE", "NOTHING"], bg: "#f4efe6", fg: "#0b0a0c", accent: "#ff4f8b", brand: true },
+  { id: "soup", cat: "engelska", lines: ["I AM VERY", "COOL AND", "ALSO SOUP"], bg: "#bcd9ff", fg: "#0b0a0c", accent: "#c8102e", brand: true },
+  { id: "normal", cat: "engelska", lines: ["SPECIAL", "EDITION", "NORMAL", "PERSON"], bg: "#ffc2d6", fg: "#3a0d1f", accent: "#0b0a0c", brand: true },
+  { id: "morning", cat: "engelska", lines: ["GOOD", "MORNING", "BAD", "DECISION"], bg: "#e8ff59", fg: "#0b0a0c", accent: "#0b0a0c", brand: true },
+  // Pilar – pekar på dig, din grej eller ditt "andra jag"
+  { id: "ceo", cat: "pilar", lines: ["↑ CEO", "↓ AVD. FÖR", "DÅLIGA", "BESLUT"], bg: "#f4efe6", fg: "#0b0a0c", accent: "#ff4f8b" },
+  { id: "hjarna", cat: "pilar", lines: ["↑ HJÄRNA", "↓ DET SOM", "FAKTISKT", "STYR"], bg: "#ff4f8b", fg: "#0b0a0c", accent: "#f4efe6", tag: "Ny" },
+  { id: "kaos", cat: "pilar", lines: ["HÄR BOR", "KAOS ↓"], sub: "Öppna på egen risk.", bg: "#0b0a0c", fg: "#e8ff59", accent: "#f4efe6" },
+  // Peppa
+  { id: "nodays", cat: "peppa", lines: ["NO DAYS", "OFF"], sub: "05:30 club.", bg: "#0b0a0c", fg: "#d4ff3a", accent: "#f4efe6" },
+  { id: "disciplin", cat: "peppa", lines: ["DISCIPLIN", "> MOTIV-", "ATION"], sub: "Varje dag.", bg: "#f4efe6", fg: "#0b0a0c", accent: "#ff4f8b" },
+];
+
+// Gör en Deluxe-design av en textprodukt (stora bokstäver, etiketter, tejp)
+function textLayers(p) {
+  const maxLen = Math.max(...p.lines.map((l) => [...l].length));
+  const size = Math.min(30, 84 / (maxLen * 0.47));
+  const blockH = (p.lines.length * size * 0.9) / 1.414; // höjd i % av arket
+  const top = p.brand ? 20 : Math.max(16, 46 - blockH / 2 - (p.sub ? 5 : 0));
+  const L = [
+    { k: "label", text: p.brand ? "ORIGINAL FEELING DEPARTMENT" : `STICKR · ${CATEGORIES.find((c) => c.id === p.cat).name.toUpperCase()}`, x: 6, y: 5.5, color: p.fg },
+    { k: "icon", icon: p.brand ? "sparkle" : "star", color: p.accent, x: 78, y: 3, w: 15, h: 10.5, r: 12 },
+    { k: "text", text: p.lines.join("<br>"), font: "cond", size, color: p.fg, x: 6, y: top },
+    { k: "tape", x: 58, y: -1, w: 20, h: 4.5, r: 4 },
+    { k: "label", text: p.brand ? "QUALITY GOODS · SINCE 1997" : `DELUXE Nº ${String(PRODUCTS.indexOf(p) + 1).padStart(3, "0")} · A4`, x: 6, y: 93, color: p.fg },
+  ];
+  if (p.sub) L.push({ k: "text", text: p.sub, font: "serif", size: 8, color: p.accent, x: 6, y: top + blockH + 3 });
+  if (p.brand && top + blockH < 78) L.push({ k: "icon", icon: "scribble", color: p.accent, x: 56, y: Math.max(76, top + blockH + 2), w: 34, h: 12, r: -6 });
+  return L;
+}
 
 /* ---------- Stickr Business (B2B) ---------- */
 const PACKAGES = [
@@ -385,6 +442,19 @@ function deluxeHTML(key, opts = {}) {
   </div>`;
 }
 
+// Krymper stor text som inte får plats på arket (t.ex. långa ord eller om typsnittet inte laddat)
+function fitTexts(root = document) {
+  $$(".deluxe .L-text", root).forEach((el) => {
+    const box = el.closest(".deluxe-in");
+    if (!box || !box.clientWidth) return;
+    const base = parseFloat(el.dataset.size || el.style.fontSize);
+    el.dataset.size = base;
+    el.style.fontSize = `${base}cqw`;
+    const avail = box.clientWidth * (1 - parseFloat(el.style.left) / 100) - box.clientWidth * 0.05;
+    if (el.offsetWidth > avail) el.style.fontSize = `${(base * avail / el.offsetWidth).toFixed(2)}cqw`;
+  });
+}
+
 // Riktiga foton: lägg assets/foton/<namn>.jpg så byts gradienten ut automatiskt
 const photoCache = {};
 function hydratePhotos(root = document) {
@@ -414,6 +484,7 @@ function renderHero() {
     { t: "tag", text: "EN ENDA STICKER", x: 76, y: 78, r: 6, bg: "#ff4f8b", fg: "#fff", speed: 1.5 },
   ];
   $("#heroStickers").innerHTML = around.map((s) => stickerHTML(s)).join("");
+  fitTexts($("#hero"));
 }
 
 function sceneHTML(u) {
@@ -442,26 +513,10 @@ function renderUses() {
         <span class="use-num">${u.num} / ${String(USES.length).padStart(2, "0")}</span>
         <h3>${esc(u.title)}</h3>
         <p>${esc(u.line)}</p>
-        <a href="${u.deluxe === "schema" || u.deluxe === "kollage" ? "#bygg" : "#butik"}" class="use-link" data-template="${u.deluxe === "schema" ? "schema" : u.deluxe === "kollage" ? "kollage" : ""}">${esc(u.cta)} →</a>
+        <a href="${u.template ? "#bygg" : "#butik"}" class="use-link" ${u.template ? `data-template="${u.template}"` : `data-cat-link="${u.cat}"`}>${esc(u.cta)} →</a>
       </div>
     </article>`).join("");
-}
-
-function renderWorlds() {
-  const html = WORLDS.map((w, i) => `
-    <article class="world${w.holo ? " world--holo" : ""}" data-world="${w.id}" style="--wbg:${w.bg};--wfg:${w.fg};--wacc:${w.accent}">
-      <div class="world-stickers">${w.stickers.map((s) => stickerHTML(s)).join("")}</div>
-      <div class="world-grid">
-        <div class="world-copy">
-          <p class="world-kicker"><span>${String(i + 1).padStart(2, "0")}</span> ${esc(w.kicker)}</p>
-          <h2 class="world-title">${esc(w.name)}</h2>
-          <p class="world-line">${esc(w.line)}</p>
-        </div>
-        <div class="world-deluxe">${deluxeHTML(w.deluxe, { className: "deluxe--world" })}</div>
-      </div>
-    </article>`).join("");
-  $("#varldar").insertAdjacentHTML("afterbegin", html);
-  $("#hudTotal").textContent = String(WORLDS.length).padStart(2, "0");
+  fitTexts($("#usesTrack"));
 }
 
 function renderProcess() {
@@ -557,66 +612,119 @@ function burst(x, y) {
 }
 
 /* =========================================================
-   Butik
+   Butik / katalog
    ========================================================= */
-let shopFormat = "deluxe";
-function renderShop() {
-  const grid = $("#shopGrid");
-  grid.innerHTML = WORLDS.filter((w) => !w.holo).map((w) => {
-    const visual = shopFormat === "deluxe"
-      ? `<div class="product-deluxe">${deluxeHTML(w.deluxe, { className: "deluxe--product" })}</div>`
-      : `<div class="mini-sheet">${w.stickers.map((s) => `<div class="mini-cell">${stickerHTML({ ...s, s: 0.5, r: (s.r || 0) / 2 }, { positioned: false })}</div>`).join("")}</div>`;
-    const base = shopFormat === "deluxe" ? CONFIG.deluxePrice : CONFIG.sheetPrice;
-    return `
-    <article class="product" data-id="${w.id}" style="--wbg:${w.bg};--wfg:${w.fg};--wacc:${w.accent}">
-      <div class="product-visual" data-cursor="Lägg till">${visual}</div>
+let shopCat = "alla";
+const productName = (p) => p.lines.join(" ").replace(/\s*([↑↓])\s*/g, " $1 ").trim();
+
+function productCard(p) {
+  const custom = p.cat === "egen";
+  return `
+    <article class="product" data-id="${p.id}" style="--wbg:${p.bg};--wfg:${p.fg}">
+      <div class="product-visual" data-cursor="${custom ? "Skapa" : "Lägg till"}">
+        ${p.tag ? `<span class="product-tag">${esc(p.tag)}</span>` : ""}
+        <div class="product-deluxe">${deluxeHTML(p.id, { className: "deluxe--product" })}</div>
+        <div class="mini-sheet" hidden>${(p.lines || ["DIN", "GREJ"]).slice(0, 2).concat(p.sub ? [p.sub] : []).concat(["STICKR"]).flatMap((t, i) => [
+          { t: ["pill", "tag", "star"][i % 3], text: t, bg: i % 2 ? p.fg : p.bg, fg: i % 2 ? p.bg : p.fg },
+          { t: ["tag", "pill", "word"][i % 3], text: t, bg: p.accent, fg: p.fg === "#fff" ? "#0b0a0c" : p.fg },
+        ]).slice(0, 6).map((sp) => `<div class="mini-cell">${stickerHTML({ ...sp, s: 0.5 }, { positioned: false })}</div>`).join("")}</div>
+      </div>
       <div class="product-body">
-        <div class="product-top"><h3>${esc(w.name)}</h3><span class="product-price" data-price>${kr(base)}</span></div>
-        <p>${shopFormat === "deluxe" ? "Sticker Deluxe · ett helt A4 · en sticker" : "Sticker Sheet · A4 fullt med stickers"}</p>
-        <div class="toggle" role="group" aria-label="Skärning">
-          <button type="button" class="is-active" data-cut="no">${shopFormat === "deluxe" ? "Rak kant" : "Oskuret"}</button>
-          <button type="button" data-cut="yes">${shopFormat === "deluxe" ? "Konturskuren" : "Utskuret"} +${CONFIG.cutExtra}</button>
+        <div class="product-top"><h3>${esc(p.title || productName(p))}</h3><span class="product-price" data-price>${custom ? "från " : ""}${kr(custom ? CONFIG.deluxeCustomPrice : CONFIG.deluxePrice)}</span></div>
+        ${p.pair ? `<p class="product-pair">Rivalpar med <button type="button" data-goto="${p.pair}">${esc(productName(PRODUCTS.find((x) => x.id === p.pair)))}</button> – köp båda sidor.</p>` : `<p>${esc(p.desc || p.sub || "Sticker Deluxe · ett helt A4")}</p>`}
+        ${custom ? `<a href="#bygg" class="btn btn-light btn-block add-btn" data-template="${p.id}">Skapa din egen</a>` : `
+        <div class="toggle" data-group="format" role="group" aria-label="Format">
+          <button type="button" class="is-active" data-format="deluxe">Deluxe</button>
+          <button type="button" data-format="sheet">Sheet</button>
         </div>
-        <button class="btn btn-light btn-block add-btn" data-add="${w.id}">Lägg i korgen</button>
+        <div class="toggle" data-group="cut" role="group" aria-label="Skärning">
+          <button type="button" class="is-active" data-cut="no">Rak kant</button>
+          <button type="button" data-cut="yes">Utskuren +${CONFIG.cutExtra}</button>
+        </div>
+        <button class="btn btn-light btn-block add-btn" data-add="${p.id}">Lägg i korgen</button>`}
       </div>
     </article>`;
-  }).join("");
-  hydratePhotos(grid);
+}
+
+const CUSTOM_PRODUCTS = [
+  { id: "schema", cat: "egen", title: "Ditt schema", desc: "Skriv in lektionerna direkt på stickern.", bg: "#fbf8f2", fg: "#0b0a0c", accent: "#ff4f8b" },
+  { id: "kollage", cat: "egen", title: "Ditt kollage", desc: "Ladda upp 1–6 bilder. Vi gör kollaget.", bg: "#f1ebe0", fg: "#0b0a0c", accent: "#ff4f8b" },
+];
+
+function renderShop() {
+  const all = [...PRODUCTS, ...CUSTOM_PRODUCTS];
+  const list = shopCat === "alla" ? all : all.filter((p) => p.cat === shopCat);
+  $("#shopGrid").innerHTML = list.map(productCard).join("");
+  fitTexts($("#shopGrid"));
+  $$("#shopTabs button").forEach((b) => b.classList.toggle("is-active", b.dataset.cat === shopCat));
+  hydratePhotos($("#shopGrid"));
+}
+
+function setShopCat(cat) {
+  shopCat = cat;
+  renderShop();
+}
+
+function cardState(card) {
+  const sheet = $('[data-group="format"] .is-active', card)?.dataset.format === "sheet";
+  const cut = $('[data-group="cut"] .is-active', card)?.dataset.cut === "yes";
+  return { sheet, cut, price: (sheet ? CONFIG.sheetPrice : CONFIG.deluxePrice) + (cut ? CONFIG.cutExtra : 0) };
 }
 
 function setupShop() {
+  $("#shopTabs").innerHTML = CATEGORIES.map((c) => `<button type="button" data-cat="${c.id}">${esc(c.name)}</button>`).join("");
   $("#shopTabs").addEventListener("click", (e) => {
     const b = e.target.closest("button");
-    if (!b) return;
-    $$("button", $("#shopTabs")).forEach((x) => x.classList.toggle("is-active", x === b));
-    shopFormat = b.dataset.format;
-    renderShop();
+    if (b) setShopCat(b.dataset.cat);
+  });
+
+  // Länkar från "ställena" filtrerar katalogen
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("[data-cat-link]");
+    if (link) setShopCat(link.dataset.catLink);
   });
 
   $("#shopGrid").addEventListener("click", (e) => {
     const card = e.target.closest(".product");
     if (!card) return;
-    const base = shopFormat === "deluxe" ? CONFIG.deluxePrice : CONFIG.sheetPrice;
-    const tbtn = e.target.closest(".toggle button");
-    if (tbtn) {
-      $$(".toggle button", card).forEach((b) => b.classList.toggle("is-active", b === tbtn));
-      $("[data-price]", card).textContent = kr(base + (tbtn.dataset.cut === "yes" ? CONFIG.cutExtra : 0));
+
+    const go = e.target.closest("[data-goto]");
+    if (go) {
+      const target = $(`.product[data-id="${go.dataset.goto}"]`);
+      target?.scrollIntoView({ behavior: "smooth", block: "center" });
+      target?.classList.add("is-flash");
+      setTimeout(() => target?.classList.remove("is-flash"), 1200);
       return;
     }
-    const add = e.target.closest("[data-add]") || e.target.closest(".product-visual");
-    if (!add) return;
-    const w = WORLDS.find((x) => x.id === card.dataset.id);
-    const cut = $(".toggle .is-active", card).dataset.cut === "yes";
-    const deluxe = shopFormat === "deluxe";
+
+    const tbtn = e.target.closest(".toggle button");
+    if (tbtn) {
+      $$("button", tbtn.parentElement).forEach((b) => b.classList.toggle("is-active", b === tbtn));
+      const st = cardState(card);
+      $("[data-price]", card).textContent = kr(st.price);
+      $(".product-deluxe", card).hidden = st.sheet;
+      $(".mini-sheet", card).hidden = !st.sheet;
+      $('[data-group="cut"] [data-cut="no"]', card).textContent = st.sheet ? "Oskuret" : "Rak kant";
+      fitTexts(card);
+      return;
+    }
+
+    const add = e.target.closest("[data-add]") || (e.target.closest(".product-visual") && $("[data-add]", card));
+    if (!add) {
+      if (e.target.closest(".product-visual")) $("[data-template]", card)?.click();
+      return;
+    }
+    const p = PRODUCTS.find((x) => x.id === card.dataset.id);
+    const st = cardState(card);
     addToCart({
-      key: `${w.id}-${shopFormat}-${cut ? "cut" : "uncut"}`,
-      name: `${w.name} ${deluxe ? "Deluxe" : "Sheet"}`,
-      detail: deluxe ? (cut ? "Konturskuren" : "Rak kant") : (cut ? "Utskuret" : "Oskuret"),
-      price: base + (cut ? CONFIG.cutExtra : 0), qty: 1, bg: w.bg,
+      key: `${p.id}-${st.sheet ? "sheet" : "deluxe"}-${st.cut ? "cut" : "uncut"}`,
+      name: `${productName(p)} – ${st.sheet ? "Sheet" : "Deluxe"}`,
+      detail: st.sheet ? (st.cut ? "Utskuret" : "Oskuret") : (st.cut ? "Konturskuren" : "Rak kant"),
+      price: st.price, qty: 1, bg: p.bg,
     });
-    const r = add.getBoundingClientRect();
+    const r = (e.target.closest(".product-visual") || add).getBoundingClientRect();
     burst(r.left + r.width / 2, r.top + r.height / 2);
-    toast(`${w.name} ${deluxe ? "Deluxe" : "Sheet"} ligger i korgen`);
+    toast(`${productName(p)} ligger i korgen`);
   });
   renderShop();
 }
@@ -742,6 +850,7 @@ function renderBuilder() {
   prev.innerHTML = html;
   prev.className = `builder-preview finish-${builder.finish}${deluxe && builder.cut === "yes" ? " is-contour" : ""}`;
   hydratePhotos(prev);
+  fitTexts(prev);
 
   $("#thumbs").innerHTML = builder.images.map((img, i) =>
     `<div class="thumb"><img src="${img.url}" alt="${esc(img.name)}"><button type="button" data-remove="${i}" aria-label="Ta bort ${esc(img.name)}">✕</button></div>`).join("");
@@ -863,9 +972,9 @@ function setupBuilder() {
 }
 
 /* ---------- Start ---------- */
+PRODUCTS.forEach((p) => { DELUXE[p.id] = { name: p.lines.join(" "), bg: p.bg, layers: textLayers(p) }; });
 renderHero();
 renderUses();
-renderWorlds();
 renderProcess();
 renderBusiness();
 setupShop();
@@ -874,3 +983,4 @@ setupBuilder();
 setupDrop();
 hydratePhotos();
 $("#year").textContent = new Date().getFullYear();
+document.fonts?.ready.then(() => fitTexts());

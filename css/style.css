@@ -329,7 +329,7 @@ html.lenis, html.lenis body { height: auto; }
   background: linear-gradient(145deg, #c9c6cf, #96929e); border-radius: 18px 18px 6px 6px; box-shadow: 0 30px 50px -20px rgba(0,0,0,.4);
 }
 .lid-logo { position: absolute; width: 8%; aspect-ratio: 1; border-radius: 50%; background: rgba(255,255,255,.4); }
-.lid .deluxe { width: auto; height: 116%; flex: none; transform: rotate(-90deg); }
+.lid .deluxe { width: auto; height: 86%; flex: none; transform: rotate(-4deg); }
 .lid-base { width: min(92%, 700px); height: 16px; background: #b4b0bb; border-radius: 0 0 18px 18px; box-shadow: 0 10px 20px rgba(0,0,0,.2); }
 .scene-binder { background: linear-gradient(160deg, #ffd7e4, #f6b9cc); }
 .binder { position: relative; height: 90%; aspect-ratio: 1 / 1.3; display: grid; place-items: center; padding-left: 12%; background: #3a0d1f; border-radius: 10px; box-shadow: 0 30px 50px -20px rgba(58,13,31,.6); }
@@ -340,34 +340,6 @@ html.lenis, html.lenis body { height: auto; }
 .wall { position: relative; height: 100%; width: 100%; display: grid; place-items: center; }
 .wall .deluxe { width: min(36%, 260px); transform: translateY(-6%) rotate(-2deg); }
 .wall-shelf { position: absolute; bottom: 18%; left: 0; right: 0; height: 2%; background: rgba(0,0,0,.08); }
-
-/* ===== Världar ===== */
-.worlds { position: relative; }
-.world { position: relative; min-height: 100svh; overflow: hidden; display: grid; align-items: center; padding: 100px clamp(16px, 4vw, 48px); background: var(--wbg); color: var(--wfg); }
-.world--holo { background: radial-gradient(circle at 50% 50%, #2a2133, var(--wbg) 70%); }
-.world-stickers { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
-.world-stickers .sk { pointer-events: auto; }
-.world-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 40px; max-width: 1320px; width: 100%; margin: 0 auto; }
-.world-kicker { margin: 0 0 6px; font-size: .78rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; opacity: .75; }
-.world-kicker span { color: var(--wacc); margin-right: 8px; }
-.world[data-world="glow"] .world-kicker span, .world[data-world="mys"] .world-kicker span { color: inherit; }
-.world-title { font-family: var(--serif); font-style: italic; line-height: .9; letter-spacing: -.03em; padding-right: .1em; font-size: clamp(4.4rem, 14vw, 15rem); }
-.world-title .char { display: inline-block; }
-.world-line { margin: 14px 0 0; max-width: 24em; font-size: clamp(1rem, 1.6vw, 1.3rem); opacity: .85; }
-.world-deluxe { --page: var(--wbg); width: min(100%, 360px); justify-self: center; transform: rotate(4deg); }
-.world-deluxe .deluxe { --page: var(--wbg); }
-.world--holo .world-title .char { -webkit-background-clip: text; background-clip: text; color: transparent; background-image: var(--holo); background-size: 400% 100%; animation: holoText 6s linear infinite; }
-@keyframes holoText { to { background-position: 200% 0; } }
-.worlds-hud { display: none; }
-.worlds.is-pinned { height: 100svh; overflow: hidden; }
-.worlds.is-pinned .world { position: absolute; inset: 0; min-height: 0; }
-.worlds.is-pinned .worlds-hud {
-  position: absolute; left: clamp(16px, 4vw, 48px); right: clamp(16px, 4vw, 48px); bottom: 26px; z-index: 10;
-  display: flex; align-items: center; gap: 20px; mix-blend-mode: difference; color: #fff;
-  font-size: .78rem; font-weight: 600; letter-spacing: .2em; font-variant-numeric: tabular-nums;
-}
-.hud-bar { flex: 1; height: 1px; background: rgba(255,255,255,.3); }
-.hud-bar span { display: block; height: 100%; background: #fff; transform-origin: left; transform: scaleX(0); }
 
 /* ===== Marquee ===== */
 .marquee { overflow: hidden; padding: clamp(28px, 5vw, 60px) 0; border-block: 1px solid var(--line); }
@@ -430,7 +402,15 @@ html.lenis, html.lenis body { height: auto; }
 .price-card li::before { content: "✦"; margin-right: 10px; color: var(--lime); }
 .price-card--hero li::before { color: var(--pink); }
 
-/* ===== Butik ===== */
+/* ===== Butik / katalog ===== */
+.tabs--cats { display: flex; flex-wrap: wrap; border-radius: 22px; }
+.product-tag { position: absolute; top: 14px; left: 14px; z-index: 5; padding: 5px 11px; border-radius: 999px; background: var(--bg); color: var(--lime); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.product-pair { color: var(--muted); }
+.product-pair button { padding: 0; border: 0; background: none; color: var(--lime); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.product .toggle + .toggle { margin-top: -2px; }
+.product.is-flash { animation: flash 1.2s var(--ease); }
+@keyframes flash { 20% { box-shadow: 0 0 0 3px var(--lime); transform: scale(1.02); } }
+.section-sub strong { color: var(--cream); }
 .tabs, .toggle { display: inline-grid; grid-auto-flow: column; padding: 4px; border: 1px solid var(--line); border-radius: 999px; }
 .tabs button, .toggle button { padding: 11px 18px; border: 0; border-radius: 999px; background: transparent; font-size: .9rem; font-weight: 600; color: var(--muted); transition: background .35s var(--ease), color .35s; }
 .tabs button.is-active, .toggle button.is-active { background: var(--cream); color: var(--bg); }
@@ -454,8 +434,8 @@ html.lenis, html.lenis body { height: auto; }
 .mini-cell .sk-ticket-in small { display: none; }
 .product-body { display: flex; flex-direction: column; gap: 10px; padding: 22px; flex: 1; }
 .product-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-.product h3 { font-family: var(--serif); font-style: italic; font-size: 2.1rem; line-height: 1; }
-.product-price { font-weight: 600; font-variant-numeric: tabular-nums; }
+.product h3 { font-family: var(--serif); font-style: italic; font-size: 1.75rem; line-height: 1; }
+.product-price { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .product-body p { margin: 0; color: var(--muted); font-size: .9rem; flex: 1; }
 .add-btn { padding: 14px 20px; }
 
@@ -614,10 +594,6 @@ html.lenis, html.lenis body { height: auto; }
   .use h3 { font-size: 3.4rem; margin: 4px 0 8px; }
   .use p { font-size: 1rem; margin-bottom: 14px; }
   .uses.is-horizontal .scene { height: 40vh; }
-  .world-grid { grid-template-columns: 1fr; gap: 20px; text-align: center; }
-  .world-line { margin-inline: auto; }
-  .world-deluxe { width: min(46vw, 210px); order: -1; }
-  .worlds.is-pinned .world-deluxe { width: min(40vw, 190px); }
   .process-stage { grid-template-columns: 1fr; gap: 24px; padding-top: 90px; align-content: center; }
   .process-visual { order: -1; }
   .process-visual .sheet { width: min(50vw, 250px); }

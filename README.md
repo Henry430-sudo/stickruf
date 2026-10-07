@@ -12,14 +12,15 @@ Sidan är byggd med ren HTML, CSS och JavaScript. Ingen installation och inget b
 | --- | --- |
 | `index.html` | Alla sektioner och texter |
 | `css/style.css` | Designen. Färger och typsnitt ligger överst under `:root` |
-| `js/main.js` | **Världar, stickers, priser**, butik, custom-byggare och varukorg |
-| `js/motion.js` | Alla animationer (laddning, scroll-resan, holo-kortet, cursor) |
+| `js/main.js` | **Produkter (`PRODUCTS`), kategorier, priser**, ställen (`USES`), kollage-motorn, butik, byggare och varukorg |
+| `js/motion.js` | Alla animationer (laddning, hero, horisontell scroll genom ställena, cursor) |
 | `js/vendor/` | GSAP, ScrollTrigger, SplitText och Lenis. Ligger lokalt så sidan inte är beroende av någon annan server |
 
 ## Ändra innehåll
 
 - **Priser:** `CONFIG` högst upp i `js/main.js` (ark, custom, utskärning, holo, frakt, klass-deal).
-- **Världarna och deras stickers:** `WORLDS` i `js/main.js`. Varje sticker har en typ (`pill`, `word`, `tag`, `ticket`, `seal`, `star`, `emoji`, `ghost`), en text, en position (`x`/`y` i %), en rotation (`r`), en storlek (`s`) och färger (`bg`/`fg`). Lägg till en ny värld så dyker den upp både i scroll-resan och i butiken.
+- **Produkter:** `PRODUCTS` i `js/main.js`. Varje produkt har `lines` (raderna i stor text), `sub` (liten rad), färger (`bg`/`fg`/`accent`), kategori (`cat`) och ev. `pair` (rivalen) eller `tag` ("Bästsäljare"). Designen genereras automatiskt – lägg till en rad så finns den i butiken.
+- **Foton i kollagen:** se `assets/foton/README.md`.
 - **Mejl:** `orderEmail` i `CONFIG`, och `hej@stickr.se` i `index.html`.
 - **Sociala medier:** länkarna i footern i `index.html`.
 

@@ -7,9 +7,7 @@
   <meta name="description" content="Sticker Deluxe från Stickr UF: ett helt A4 som en enda sticker. Schemat på skåpet, kollaget på datorn, posten på väggen. Gör din egen eller välj en värld.">
   <meta name="theme-color" content="#0b0a0c">
   <script>document.documentElement.classList.add("js");</script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;800&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Anton&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='12' y='4' width='76' height='92' rx='8' fill='%23f4efe6'/><text x='50' y='68' font-size='54' text-anchor='middle' font-family='Georgia' font-style='italic' fill='%230b0a0c'>S</text></svg>">
 </head>
@@ -29,7 +27,7 @@
     <a href="#top" class="logo" aria-label="Stickr UF – till toppen"><em>Stickr</em><sup>UF</sup></a>
     <nav class="nav" aria-label="Huvudmeny">
       <a href="#anvand">Användning</a>
-      <a href="#varldar">Världar</a>
+      <a href="#butik">Produkter</a>
       <a href="#bygg">Skapa egen</a>
       <a href="#business">För UF-företag</a>
       <a href="#drop" class="nav-drop">Drop 01</a>
@@ -87,14 +85,6 @@
       <div class="uses-track" id="usesTrack"></div>
     </section>
 
-    <!-- ===== Världar (pinnad scroll-resa) ===== -->
-    <section class="worlds" id="varldar" aria-label="Världar">
-      <div class="worlds-hud" aria-hidden="true">
-        <span class="hud-num"><span id="hudNum">01</span> / <span id="hudTotal">05</span></span>
-        <span class="hud-bar"><span id="hudBar"></span></span>
-      </div>
-    </section>
-
     <!-- ===== Marquee ===== -->
     <div class="marquee" id="marquee" aria-hidden="true">
       <div class="marquee-track">
@@ -109,7 +99,7 @@
         <div class="process-copy">
           <p class="eyebrow">Sticker Sheets – för den som vill ha många</p>
           <ol class="process-steps">
-            <li class="pstep is-active"><span>01</span><h3>Du väljer</h3><p>En värld – eller ladda upp dina egna bilder.</p></li>
+            <li class="pstep is-active"><span>01</span><h3>Du väljer</h3><p>En design ur katalogen – eller ladda upp dina egna bilder.</p></li>
             <li class="pstep"><span>02</span><h3>Vi trycker &amp; laminerar</h3><p>Skarpa färger och en yta som tål regn, spill och vardag.</p></li>
             <li class="pstep"><span>03</span><h3>Vi skär ut <em>+20 kr</em></h3><p>Slipp saxen. Vi konturskär varje sticker åt dig.</p></li>
             <li class="pstep"><span>04</span><h3>Dra av. Klistra.</h3><p>Hämta i skolan eller få det på posten.</p></li>
@@ -129,13 +119,11 @@
     <section class="section shop" id="butik">
       <div class="section-head section-head--row">
         <div>
-          <p class="eyebrow">Butik</p>
-          <h2 class="reveal-title">Välj din <em>värld.</em></h2>
+          <p class="eyebrow">Produkter</p>
+          <h2 class="reveal-title">Välj din <em>sticker.</em></h2>
+          <p class="section-sub">Varje design finns som <strong>Deluxe</strong> (ett A4, en sticker – 79 kr) eller <strong>Sheet</strong> (ett A4 fullt med små – 49 kr). Rivalpar? Köp båda sidor.</p>
         </div>
-        <div class="tabs" id="shopTabs" role="group" aria-label="Format">
-          <button type="button" class="is-active" data-format="deluxe">Deluxe · 79 kr</button>
-          <button type="button" data-format="sheet">Sheets · 49 kr</button>
-        </div>
+        <div class="tabs tabs--cats" id="shopTabs" role="group" aria-label="Kategorier"></div>
       </div>
       <div class="shop-grid" id="shopGrid"></div>
     </section>
@@ -228,14 +216,14 @@
         <article class="price-card">
           <p class="price-kicker">Sticker Sheet</p>
           <p class="price-num"><span>49</span> kr</p>
-          <p class="price-desc">Ett A4 fullt med stickers från en värld. Egna bilder: 79 kr.</p>
+          <p class="price-desc">Ett A4 fullt med små stickers av samma design. Egna bilder: 79 kr.</p>
           <ul><li>Oskuret – du klipper</li><li>Utskuret: +20 kr</li><li>Holo: +20 kr</li></ul>
         </article>
         <article class="price-card price-card--hero">
           <span class="price-flag">Huvudrollen</span>
           <p class="price-kicker">Sticker Deluxe</p>
           <p class="price-num"><span>79</span> kr</p>
-          <p class="price-desc">Ett helt A4 som en enda sticker. Din egen design – kollage, schema eller helbild: 99 kr.</p>
+          <p class="price-desc">Ett helt A4 som en enda sticker. Egen design – kollage, schema eller helbild: 99 kr.</p>
           <ul><li>Rak kant ingår</li><li>Konturskuren: +20 kr</li><li>Holo: +20 kr</li></ul>
         </article>
         <article class="price-card">
