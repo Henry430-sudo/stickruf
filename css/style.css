@@ -207,7 +207,7 @@ html.lenis, html.lenis body { height: auto; }
 .deluxe:hover .peel, .deluxe:hover .deluxe-card::after { width: 20cqw; height: 20cqw; }
 
 .L { position: absolute; transform: rotate(var(--r, 0deg)); }
-.L-ph { background: var(--img, none) center / cover no-repeat, var(--g); overflow: hidden; }
+.L-ph { background: var(--img, none) var(--pos, center) / cover no-repeat, var(--g); overflow: hidden; }
 .L-ph.has-dots::after { /* tryckraster */
   content: ""; position: absolute; inset: 0; mix-blend-mode: multiply; opacity: .35;
   background: radial-gradient(circle, #000 28%, transparent 30%) 0 0 / 1.6cqw 1.6cqw;

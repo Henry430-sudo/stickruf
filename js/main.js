@@ -189,7 +189,7 @@ const PRODUCTS = [
   { id: "ski", cat: "kollage", title: "If It Comes, Let It", img: "assets/prototyp/ski.jpg", desc: "Fjällkollage.", bg: "#f2a07b", fg: "#1e2a4a", accent: "#fff", proto: true },
   { id: "kollage-2", cat: "kollage", title: "Old Money", img: "assets/prototyp/kollage.jpg", desc: "Svartvitt, schack och racerbana.", bg: "#2a2a26", fg: "#f4efe6", accent: "#d9c9a3", proto: true },
   { id: "dice", cat: "kollage", title: "Roll the Dice", img: "assets/prototyp/roll-the-dice.jpg", desc: "En runda till.", bg: "#0f4d33", fg: "#f4efe6", accent: "#e8c766", proto: true },
-  { id: "tigrar", cat: "konst", title: "Tigrarna", img: "assets/prototyp/tigrar.jpg", desc: "Tre tigrar mot djupblått.", bg: "#13306b", fg: "#f4efe6", accent: "#f4efe6", proto: true },
+  { id: "tigrar", cat: "konst", title: "Tigrarna", img: "assets/prototyp/tigrar.jpg", pos: "center bottom", desc: "Tre tigrar mot djupblått.", bg: "#13306b", fg: "#f4efe6", accent: "#f4efe6", proto: true },
   { id: "napoleon", cat: "konst", title: "Napoleon", img: "assets/produkter/napoleon.jpg", desc: "Oljemålning av Jacques-Louis David, 1801. Fri att använda.", bg: "#2b2a2e", fg: "#f4efe6", accent: "#c8102e", tag: "Drop 01" },
 ];
 
@@ -317,7 +317,7 @@ function layerHTML(L, seed, opts) {
       const user = opts.images?.length && L.slot != null ? opts.images[L.slot % opts.images.length] : null;
       const img = user || (L.img && absUrl(L.img));
       return `<div class="L L-ph form-${L.form || "rect"}${L.dots ? " has-dots" : ""}" ${img ? "" : `data-photo="${L.photo || ""}"`}
-        style="${pos}${clip};--g:${L.g}${img ? `;--img:url('${img}')` : ""}"></div>`;
+        style="${pos}${clip};--g:${L.g}${img ? `;--img:url('${img}')` : ""}${L.pos ? `;--pos:${L.pos}` : ""}"></div>`;
     }
     case "paper": {
       const bg = L.pat ? "" : `;background:${L.color}`;
@@ -398,7 +398,7 @@ function hydratePhotos(root = document) {
    Sektioner
    ========================================================= */
 function renderHero() {
-  $("#heroDeluxe").innerHTML = deluxeHTML("kollage", { className: "deluxe--hero" });
+  $("#heroDeluxe").innerHTML = deluxeHTML("dice", { className: "deluxe--hero" });
   const around = [
     { t: "pill", text: "Nº 001 / 100", x: 2, y: 18, r: -8, bg: "#e8ff59", fg: "#0b0a0c", speed: 1.2 },
     { t: "seal", text: "STICKR DELUXE · A4 · DROP 01 · ", icon: "✦", x: 82, y: 6, r: 8, bg: "#f4efe6", fg: "#0b0a0c", speed: 0.7 },
@@ -441,10 +441,10 @@ function renderUses() {
 }
 
 function renderProcess() {
-  const imgs = PRODUCTS.filter((p) => p.img).map((p) => p.img);
+  const imgs = PRODUCTS.filter((p) => p.img);
   // Skärlinjen ligger inuti stickern så den följer dess form
   $("#processGrid").innerHTML = Array.from({ length: 9 }, (_, i) =>
-    `<div class="sheet-cell"><div class="sk sk-static sk-photo" style="--r:${[-6, 4, -3, 5, -4, 3, -5, 6, -2][i]}deg"><img src="${imgs[i % imgs.length]}" alt=""><span class="cut-line"></span></div></div>`
+    `<div class="sheet-cell"><div class="sk sk-static sk-photo" style="--r:${[-6, 4, -3, 5, -4, 3, -5, 6, -2][i]}deg"><img src="${imgs[i % imgs.length].img}" style="object-position:${imgs[i % imgs.length].pos || "center"}" alt=""><span class="cut-line"></span></div></div>`
   ).join("");
 }
 
@@ -526,7 +526,7 @@ function productCard(p) {
       <div class="product-visual" data-cursor="${custom ? "Skapa" : "Lägg till"}">
         ${p.tag ? `<span class="product-tag">${esc(p.tag)}</span>` : ""}
         <div class="product-deluxe">${deluxeHTML(p.id, { className: "deluxe--product" })}</div>
-        <div class="mini-sheet" hidden>${p.img ? Array.from({ length: 6 }, () => `<div class="mini-cell"><img class="mini-img" src="${p.img}" alt=""></div>`).join("") : (p.lines || ["DIN", "GREJ"]).slice(0, 2).concat(p.sub ? [p.sub] : []).concat(["STICKR"]).flatMap((t, i) => [
+        <div class="mini-sheet" hidden>${p.img ? Array.from({ length: 6 }, () => `<div class="mini-cell"><img class="mini-img" src="${p.img}" style="object-position:${p.pos || "center"}" alt=""></div>`).join("") : (p.lines || ["DIN", "GREJ"]).slice(0, 2).concat(p.sub ? [p.sub] : []).concat(["STICKR"]).flatMap((t, i) => [
           { t: ["pill", "tag", "star"][i % 3], text: t, bg: i % 2 ? p.fg : p.bg, fg: i % 2 ? p.bg : p.fg },
           { t: ["tag", "pill", "word"][i % 3], text: t, bg: p.accent, fg: p.fg === "#fff" ? "#0b0a0c" : p.fg },
         ]).slice(0, 6).map((sp) => `<div class="mini-cell">${stickerHTML({ ...sp, s: 0.5 }, { positioned: false })}</div>`).join("")}</div>
@@ -748,7 +748,7 @@ function renderBuilder() {
   } else {
     const n = SIZE_COUNT[builder.size];
     html = `<div class="sheet sheet--builder"><div class="a4-grid size-${builder.size}${builder.cut === "yes" ? " is-cut" : ""}">${Array.from({ length: n }, (_, i) =>
-      `<div class="a4-item" style="animation-delay:${i * 16}ms">${imgs.length ? `<img src="${imgs[i % imgs.length]}" alt="">` : `<span class="a4-ph">${icon(["star", "heart", "sparkle", "bolt"][i % 4], "#d8d0dc")}</span>`}</div>`).join("")}</div><span class="sheet-label">A4 · 210 × 297 mm</span></div>`;
+      `<div class="a4-item" style="animation-delay:${i * 16}ms">${imgs.length ? `<img src="${imgs[i % imgs.length].img}" style="object-position:${imgs[i % imgs.length].pos || "center"}" alt="">` : `<span class="a4-ph">${icon(["star", "heart", "sparkle", "bolt"][i % 4], "#d8d0dc")}</span>`}</div>`).join("")}</div><span class="sheet-label">A4 · 210 × 297 mm</span></div>`;
   }
   prev.innerHTML = html;
   prev.className = `builder-preview finish-${builder.finish}${deluxe && builder.cut === "yes" ? " is-contour" : ""}`;
@@ -877,7 +877,7 @@ function setupBuilder() {
 /* ---------- Start ---------- */
 PRODUCTS.forEach((p) => {
   DELUXE[p.id] = p.img
-    ? { name: p.title, bg: p.bg, layers: [{ k: "ph", img: p.img, g: p.bg, x: 0, y: 0, w: 100, h: 100 }] }
+    ? { name: p.title, bg: p.bg, layers: [{ k: "ph", img: p.img, pos: p.pos, g: p.bg, x: 0, y: 0, w: 100, h: 100 }] }
     : { name: p.lines.join(" "), bg: p.bg, layers: textLayers(p) };
 });
 renderHero();
