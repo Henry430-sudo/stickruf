@@ -268,7 +268,7 @@ const PRODUCTS = [
   { id: "kaos", cat: "pilar", lines: ["HÄR BOR", "KAOS ↓"], sub: "Öppna på egen risk.", bg: "#0b0a0c", fg: "#e8ff59", accent: "#f4efe6" },
   // Konst – bildstickers. Bara bilder vi har rätt att trycka (egna eller fria från upphovsrätt)
   // PROTOTYP – teamets referensbilder (Pinterest). Får INTE säljas eller publiceras: byt mot egna
-  // bilder innan lansering (se assets/prototyp/README.md). proto: true ger etiketten "Prototyp".
+  // bilder innan lansering (se assets/prototyp/README.md). proto: true markerar vilka som ska bytas.
   { id: "gspot", cat: "kollage", title: "The Real G Spot", img: "assets/prototyp/g-spot.jpg", desc: "Retroaffisch.", bg: "#f5e6c0", fg: "#0b0a0c", accent: "#c8241b", proto: true },
   { id: "tutto", cat: "kollage", title: "Tutto Passa", img: "assets/prototyp/tutto-passa.jpg", desc: "Allt går över.", bg: "#2e6fa3", fg: "#fff", accent: "#ffcf6b", proto: true },
   { id: "monaco", cat: "kollage", title: "Monaco", img: "assets/prototyp/monaco.jpg", desc: "Blått, blankt och dyrt.", bg: "#0b2a4a", fg: "#f4efe6", accent: "#9cc7ff", proto: true },
@@ -629,7 +629,7 @@ function productCard(p) {
   return `
     <article class="product" data-id="${p.id}" style="--wbg:${p.bg};--wfg:${p.fg}">
       <div class="product-visual" data-cursor="${custom ? "Skapa" : "Lägg till"}">
-        ${p.proto ? `<span class="product-tag product-tag--proto">Prototyp</span>` : p.tag ? `<span class="product-tag">${esc(p.tag)}</span>` : ""}
+        ${p.tag ? `<span class="product-tag">${esc(p.tag)}</span>` : ""}
         <div class="product-deluxe">${deluxeHTML(p.id, { className: "deluxe--product" })}</div>
         <div class="mini-sheet" hidden>${p.img ? Array.from({ length: 6 }, () => `<div class="mini-cell"><img class="mini-img" src="${p.img}" alt=""></div>`).join("") : (p.lines || ["DIN", "GREJ"]).slice(0, 2).concat(p.sub ? [p.sub] : []).concat(["STICKR"]).flatMap((t, i) => [
           { t: ["pill", "tag", "star"][i % 3], text: t, bg: i % 2 ? p.fg : p.bg, fg: i % 2 ? p.bg : p.fg },
