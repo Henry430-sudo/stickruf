@@ -159,75 +159,6 @@ const SUBJECT_COLORS = {
   historia: "#f2d6a2", biologi: "#b9f0c8", fysik: "#a8f0ff", lunch: "#0b0a0c", mentor: "#e5e0d8",
 };
 
-/* ---------- Små sticker-set (används på Sheets-arket i processen) ---------- */
-const WORLDS = [
-  {
-    id: "matchday", name: "Matchday", deluxe: "matchday",
-    kicker: "För dig som lever för 90 minuter", line: "Halsduken på. Laptopen täckt.",
-    bg: "#0d3a29", fg: "#f4efe6", accent: "#e8ff59",
-    stickers: [
-      { t: "ticket", text: "MATCHDAY", sub: "SEKTION B · RAD 12 · 19:00", x: 4, y: 12, r: -7, bg: "#f4efe6", fg: "#0d3a29" },
-      { t: "pill", text: "90+3'", x: 40, y: 8, r: 8, bg: "#e8ff59", fg: "#0b0a0c", s: 1.2 },
-      { t: "seal", text: "HELA VÄGEN · HELA TIDEN · ", icon: "♥", x: 4, y: 70, r: -10, bg: "#c8102e", fg: "#fff" },
-      { t: "icon", icon: "ball", x: 40, y: 74, r: 0, bg: "#f4efe6", fg: "#0d3a29" },
-      { t: "tag", text: "TIFO-KLAN", x: 84, y: 82, r: -9, bg: "#0b0a0c", fg: "#f4efe6" },
-      { t: "word", text: "ALLEZ ALLEZ", x: 80, y: 6, r: 6, bg: "#f4efe6", fg: "#0d3a29" },
-    ],
-  },
-  {
-    id: "glow", name: "Glow", deluxe: "glow",
-    kicker: "För main characters", line: "Mjukt, glittrigt och helt du.",
-    bg: "#f5c6d4", fg: "#3a0d1f", accent: "#ff4f8b",
-    stickers: [
-      { t: "pill", text: "main character", x: 38, y: 9, r: 7, bg: "#fff", fg: "#ff4f8b", s: 1.1 },
-      { t: "icon", icon: "heart", x: 6, y: 12, r: -12, bg: "#ff4f8b", fg: "#fff" },
-      { t: "seal", text: "BESTIES · 4 · EVER · ", icon: "♡", x: 84, y: 68, r: 10, bg: "#ff4f8b", fg: "#fff" },
-      { t: "word", text: "hot girl walk", x: 4, y: 78, r: -5, bg: "#3a0d1f", fg: "#f5c6d4" },
-      { t: "star", text: "manifest", x: 84, y: 8, r: -8, bg: "#fff1a8", fg: "#3a0d1f" },
-      { t: "tag", text: "THAT GIRL ERA", x: 42, y: 84, r: 6, bg: "#fff", fg: "#3a0d1f" },
-    ],
-  },
-  {
-    id: "grind", name: "Grind", deluxe: "grind",
-    kicker: "För dig som aldrig skippar passet", line: "Disciplin slår motivation. Varje dag.",
-    bg: "#0b0a0c", fg: "#f4efe6", accent: "#d4ff3a",
-    stickers: [
-      { t: "word", text: "NO DAYS OFF", x: 4, y: 10, r: -6, bg: "#d4ff3a", fg: "#0b0a0c" },
-      { t: "pill", text: "05:30 CLUB", x: 42, y: 7, r: 9, bg: "#f4efe6", fg: "#0b0a0c" },
-      { t: "seal", text: "1% BÄTTRE · VARJE DAG · ", icon: "⚡", x: 86, y: 10, r: 8, bg: "#d4ff3a", fg: "#0b0a0c" },
-      { t: "ticket", text: "ENERGI", sub: "0 SOCKER · 100% FOKUS", x: 4, y: 72, r: 7, bg: "#f4efe6", fg: "#0b0a0c" },
-      { t: "tag", text: "LOCKED IN", x: 82, y: 80, r: -8, bg: "#ff3b30", fg: "#fff" },
-      { t: "icon", icon: "bolt", x: 42, y: 80, r: 10, bg: "#d4ff3a", fg: "#0b0a0c" },
-    ],
-  },
-  {
-    id: "mys", name: "Mys", deluxe: "mys",
-    kicker: "För inredningsromantiker", line: "Levande ljus, lite pyssel och mycket kärlek.",
-    bg: "#eedfc4", fg: "#4a2e1a", accent: "#b5552b",
-    stickers: [
-      { t: "word", text: "Hemma bäst", x: 4, y: 10, r: -6, bg: "#b5552b", fg: "#fff" },
-      { t: "seal", text: "LITE MYS · SKADAR ALDRIG · ", icon: "☕", x: 4, y: 70, r: -6, bg: "#4a2e1a", fg: "#eedfc4" },
-      { t: "pill", text: "fika?", x: 86, y: 12, r: 12, bg: "#fff", fg: "#b5552b", s: 1.2 },
-      { t: "star", text: "Ljuvligt!", x: 84, y: 72, r: -10, bg: "#f2c14e", fg: "#4a2e1a" },
-      { t: "tag", text: "PYSSEL-PROFFS", x: 40, y: 84, r: 4, bg: "#4a2e1a", fg: "#eedfc4" },
-      { t: "icon", icon: "sparkle", x: 42, y: 6, r: -12, bg: "#b5552b", fg: "#eedfc4" },
-    ],
-  },
-  {
-    id: "custom", name: "Din grej", deluxe: "kollage", holo: true,
-    kicker: "Allt annat", line: "Ditt lag, din katt, ditt schema. Vi gör det till en Deluxe.",
-    bg: "#16131a", fg: "#f4efe6", accent: "#c9a8ff",
-    stickers: [
-      { t: "ghost", text: "din bild här", x: 4, y: 12, r: -8 },
-      { t: "pill", text: "DITT LAG", x: 40, y: 8, r: 8, bg: "#c9a8ff", fg: "#16131a" },
-      { t: "tag", text: "DITT BAND", x: 4, y: 78, r: 6, bg: "#ff4f8b", fg: "#fff" },
-      { t: "seal", text: "DIN IDÉ · VÅRT TRYCK · ", icon: "✦", x: 86, y: 70, r: 10, bg: "#f4efe6", fg: "#16131a" },
-      { t: "star", text: "NY!", x: 86, y: 8, r: -12, bg: "#e8ff59", fg: "#0b0a0c" },
-      { t: "ghost", text: "insidesskämt", x: 40, y: 84, r: 6 },
-    ],
-  },
-];
-
 /* ---------- Användningsområden ---------- */
 const USES = [
   { id: "skap", scene: "locker", deluxe: "tigrar", num: "01", title: "Skåpet", line: "Öppna skåpet och mötas av tre tigrar. Varje morgon.", cta: "Se Konst", cat: "konst" },
@@ -246,27 +177,10 @@ const CATEGORIES = [
   { id: "alla", name: "Alla" },
   { id: "kollage", name: "Kollage" },
   { id: "konst", name: "Konst" },
-  { id: "hets", name: "Hets" },
-  { id: "pilar", name: "Pilar" },
   { id: "egen", name: "Egen design" },
 ];
 
 const PRODUCTS = [
-  // Hets – sätt upp, provocera, sälj till båda sidor
-  { id: "na", cat: "hets", lines: ["NA > SA"], sub: "Bevisa motsatsen.", bg: "#e8ff59", fg: "#0b0a0c", accent: "#ff4f8b", pair: "sa", tag: "Rivalpar" },
-  { id: "sa", cat: "hets", lines: ["SA > NA"], sub: "Vi har i alla fall vänner.", bg: "#ff4f8b", fg: "#0b0a0c", accent: "#f4efe6", pair: "na", tag: "Rivalpar" },
-  { id: "te", cat: "hets", lines: ["TEKNIK", "> ALLT"], sub: "Vi bygger. Ni pratar.", bg: "#3dd6ff", fg: "#0b0a0c", accent: "#f4efe6" },
-  { id: "ek", cat: "hets", lines: ["EK > ER"], sub: "Vi kommer anställa er.", bg: "#0b0a0c", fg: "#e8ff59", accent: "#f4efe6" },
-  { id: "rorinte", cat: "hets", lines: ["RÖR INTE", "MIN LAPTOP"], sub: "Jag ser dig.", bg: "#ff3b30", fg: "#fff", accent: "#0b0a0c", tag: "Bästsäljare" },
-  { id: "skap", cat: "hets", lines: ["MITT SKÅP.", "DINA", "PROBLEM."], sub: "Respektera zonen.", bg: "#0b0a0c", fg: "#f4efe6", accent: "#e8ff59" },
-  { id: "ratt", cat: "hets", lines: ["JAG HADE", "RÄTT."], sub: "Som vanligt.", bg: "#c9a8ff", fg: "#0b0a0c", accent: "#f4efe6" },
-  { id: "kebab", cat: "hets", lines: ["KEBAB", "> PIZZA"], sub: "Kom och bråka.", bg: "#f2c14e", fg: "#0b0a0c", accent: "#c8102e", pair: "pizza", tag: "Rivalpar" },
-  { id: "pizza", cat: "hets", lines: ["PIZZA", "> KEBAB"], sub: "Diskussionen är över.", bg: "#ff8a3d", fg: "#0b0a0c", accent: "#f4efe6", pair: "kebab", tag: "Rivalpar" },
-  // Pilar – pekar på dig, din grej eller ditt "andra jag"
-  { id: "ceo", cat: "pilar", lines: ["↑ CEO", "↓ AVD. FÖR", "DÅLIGA", "BESLUT"], bg: "#f4efe6", fg: "#0b0a0c", accent: "#ff4f8b" },
-  { id: "hjarna", cat: "pilar", lines: ["↑ HJÄRNA", "↓ DET SOM", "FAKTISKT", "STYR"], bg: "#ff4f8b", fg: "#0b0a0c", accent: "#f4efe6", tag: "Ny" },
-  { id: "kaos", cat: "pilar", lines: ["HÄR BOR", "KAOS ↓"], sub: "Öppna på egen risk.", bg: "#0b0a0c", fg: "#e8ff59", accent: "#f4efe6" },
-  // Konst – bildstickers. Bara bilder vi har rätt att trycka (egna eller fria från upphovsrätt)
   // PROTOTYP – teamets referensbilder (Pinterest). Får INTE säljas eller publiceras: byt mot egna
   // bilder innan lansering (se assets/prototyp/README.md). proto: true markerar vilka som ska bytas.
   { id: "gspot", cat: "kollage", title: "The Real G Spot", img: "assets/prototyp/g-spot.jpg", desc: "Retroaffisch.", bg: "#f5e6c0", fg: "#0b0a0c", accent: "#c8241b", proto: true },
@@ -527,17 +441,11 @@ function renderUses() {
 }
 
 function renderProcess() {
-  const picks = [
-    WORLDS[0].stickers[1], WORLDS[1].stickers[1], WORLDS[2].stickers[2],
-    WORLDS[3].stickers[0], WORLDS[0].stickers[3], WORLDS[1].stickers[0],
-    WORLDS[2].stickers[4], WORLDS[3].stickers[5], WORLDS[4].stickers[3],
-  ];
+  const imgs = PRODUCTS.filter((p) => p.img).map((p) => p.img);
   // Skärlinjen ligger inuti stickern så den följer dess form
-  $("#processGrid").innerHTML = picks.map((s) => {
-    const html = stickerHTML({ ...s, s: 0.62, r: (s.r || 0) / 2 }, { positioned: false });
-    const round = ["seal", "icon", "star"].includes(s.t);
-    return `<div class="sheet-cell">${html.replace(/<\/div>$/, `<span class="cut-line${round ? " cut-line--round" : ""}"></span></div>`)}</div>`;
-  }).join("");
+  $("#processGrid").innerHTML = Array.from({ length: 9 }, (_, i) =>
+    `<div class="sheet-cell"><div class="sk sk-static sk-photo" style="--r:${[-6, 4, -3, 5, -4, 3, -5, 6, -2][i]}deg"><img src="${imgs[i % imgs.length]}" alt=""><span class="cut-line"></span></div></div>`
+  ).join("");
 }
 
 function renderBusiness() {

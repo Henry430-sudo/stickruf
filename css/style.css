@@ -614,3 +614,6 @@ html.lenis, html.lenis body { height: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
 }
 .mini-img { width: 82%; aspect-ratio: 3 / 4; object-fit: cover; border: 3px solid #fff; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,.25); }
+.sk-photo { width: 78%; }
+.sk-photo img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border: 3px solid #fff; border-radius: 8px; transform: rotate(var(--r)); box-shadow: 0 6px 12px rgba(0,0,0,.25); }
+.sk-photo .cut-line { inset: -6px; border-radius: 12px; }
