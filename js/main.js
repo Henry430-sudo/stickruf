@@ -232,9 +232,9 @@ const WORLDS = [
 const USES = [
   { id: "skap", scene: "locker", deluxe: "schema", num: "01", title: "Skåpet", line: "Schemat där du faktiskt behöver det. Sluta leta i mobilen mellan lektionerna.", cta: "Gör ditt schema", template: "schema" },
   { id: "dator", scene: "laptop", deluxe: "rorinte", num: "02", title: "Datorn", line: "Baksidan av din laptop är den största reklamytan du äger. Säg något med den.", cta: "Se Hets", cat: "hets" },
-  { id: "parm", scene: "binder", deluxe: "nothing", num: "03", title: "Pärmen", line: "Ingen kommer ta din pärm igen. Ingen kommer förstå den heller.", cta: "Se Tröjengelska", cat: "engelska" },
+  { id: "parm", scene: "binder", deluxe: "napoleon", num: "03", title: "Pärmen", line: "Ingen tar fel pärm när det sitter en kejsare på den.", cta: "Se Konst", cat: "konst" },
   { id: "vagg", scene: "wall", deluxe: "kollage", num: "04", title: "Väggen", line: "En poster som aldrig rullar ihop sig och aldrig behöver häftmassa.", cta: "Gör ditt kollage", template: "kollage" },
-  { id: "gym", scene: "gym", deluxe: "nodays", num: "05", title: "Gymskåpet", line: "Programmet på skåpet. Inga ursäkter, inga skärmdumpar.", cta: "Se Peppa", cat: "peppa" },
+  { id: "gym", scene: "gym", deluxe: "skap", num: "05", title: "Gymskåpet", line: "Ditt skåp. Ditt revir. Alla andra kan läsa skylten.", cta: "Se Hets", cat: "hets" },
 ];
 
 /* =========================================================
@@ -245,9 +245,8 @@ const USES = [
 const CATEGORIES = [
   { id: "alla", name: "Alla" },
   { id: "hets", name: "Hets" },
-  { id: "engelska", name: "Tröjengelska" },
   { id: "pilar", name: "Pilar" },
-  { id: "peppa", name: "Peppa" },
+  { id: "konst", name: "Konst" },
   { id: "egen", name: "Egen design" },
 ];
 
@@ -262,18 +261,12 @@ const PRODUCTS = [
   { id: "ratt", cat: "hets", lines: ["JAG HADE", "RÄTT."], sub: "Som vanligt.", bg: "#c9a8ff", fg: "#0b0a0c", accent: "#f4efe6" },
   { id: "kebab", cat: "hets", lines: ["KEBAB", "> PIZZA"], sub: "Kom och bråka.", bg: "#f2c14e", fg: "#0b0a0c", accent: "#c8102e", pair: "pizza", tag: "Rivalpar" },
   { id: "pizza", cat: "hets", lines: ["PIZZA", "> KEBAB"], sub: "Diskussionen är över.", bg: "#ff8a3d", fg: "#0b0a0c", accent: "#f4efe6", pair: "kebab", tag: "Rivalpar" },
-  // Tröjengelska – absurd engelska som tar sig själv på största allvar
-  { id: "nothing", cat: "engelska", lines: ["PLEASE", "ENJOY THE", "NOTHING"], bg: "#f4efe6", fg: "#0b0a0c", accent: "#ff4f8b", brand: true },
-  { id: "soup", cat: "engelska", lines: ["I AM VERY", "COOL AND", "ALSO SOUP"], bg: "#bcd9ff", fg: "#0b0a0c", accent: "#c8102e", brand: true },
-  { id: "normal", cat: "engelska", lines: ["SPECIAL", "EDITION", "NORMAL", "PERSON"], bg: "#ffc2d6", fg: "#3a0d1f", accent: "#0b0a0c", brand: true },
-  { id: "morning", cat: "engelska", lines: ["GOOD", "MORNING", "BAD", "DECISION"], bg: "#e8ff59", fg: "#0b0a0c", accent: "#0b0a0c", brand: true },
   // Pilar – pekar på dig, din grej eller ditt "andra jag"
   { id: "ceo", cat: "pilar", lines: ["↑ CEO", "↓ AVD. FÖR", "DÅLIGA", "BESLUT"], bg: "#f4efe6", fg: "#0b0a0c", accent: "#ff4f8b" },
   { id: "hjarna", cat: "pilar", lines: ["↑ HJÄRNA", "↓ DET SOM", "FAKTISKT", "STYR"], bg: "#ff4f8b", fg: "#0b0a0c", accent: "#f4efe6", tag: "Ny" },
   { id: "kaos", cat: "pilar", lines: ["HÄR BOR", "KAOS ↓"], sub: "Öppna på egen risk.", bg: "#0b0a0c", fg: "#e8ff59", accent: "#f4efe6" },
-  // Peppa
-  { id: "nodays", cat: "peppa", lines: ["NO DAYS", "OFF"], sub: "05:30 club.", bg: "#0b0a0c", fg: "#d4ff3a", accent: "#f4efe6" },
-  { id: "disciplin", cat: "peppa", lines: ["DISCIPLIN", "> MOTIV-", "ATION"], sub: "Varje dag.", bg: "#f4efe6", fg: "#0b0a0c", accent: "#ff4f8b" },
+  // Konst – bildstickers. Bara bilder vi har rätt att trycka (egna eller fria från upphovsrätt)
+  { id: "napoleon", cat: "konst", title: "Napoleon", img: "assets/produkter/napoleon.jpg", desc: "Oljemålning av Jacques-Louis David, 1801. Fri att använda.", bg: "#2b2a2e", fg: "#f4efe6", accent: "#c8102e", tag: "Drop 01" },
 ];
 
 // Gör en Deluxe-design av en textprodukt (stora bokstäver, etiketter, tejp)
@@ -311,6 +304,9 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 const kr = (n) => `${Math.round(n)} kr`;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const escBr = (s) => esc(s).replace(/&lt;br&gt;/g, "<br>");
+
+// Bildsökvägar görs absoluta – annars tolkas url() i CSS-variabler relativt till css-mappen
+const absUrl = (path) => new URL(path, document.baseURI).href;
 
 // Förutsägbar "slump" så kollagen ser likadana ut vid varje besök
 function rng(seed) {
@@ -395,8 +391,9 @@ function layerHTML(L, seed, opts) {
   switch (L.k) {
     case "ph": {
       const user = opts.images?.length && L.slot != null ? opts.images[L.slot % opts.images.length] : null;
-      return `<div class="L L-ph form-${L.form || "rect"}${L.dots ? " has-dots" : ""}" ${user ? "" : `data-photo="${L.photo || ""}"`}
-        style="${pos}${clip};--g:${L.g}${user ? `;--img:url('${user}')` : ""}"></div>`;
+      const img = user || (L.img && absUrl(L.img));
+      return `<div class="L L-ph form-${L.form || "rect"}${L.dots ? " has-dots" : ""}" ${img ? "" : `data-photo="${L.photo || ""}"`}
+        style="${pos}${clip};--g:${L.g}${img ? `;--img:url('${img}')` : ""}"></div>`;
     }
     case "paper": {
       const bg = L.pat ? "" : `;background:${L.color}`;
@@ -461,7 +458,7 @@ function hydratePhotos(root = document) {
   $$("[data-photo]", root).forEach((el) => {
     const name = el.dataset.photo;
     if (!name) return;
-    const apply = (ok) => { if (ok) el.style.setProperty("--img", `url('assets/foton/${name}.jpg')`); };
+    const apply = (ok) => { if (ok) el.style.setProperty("--img", `url('${absUrl(`assets/foton/${name}.jpg`)}')`); };
     if (name in photoCache) return photoCache[name].then(apply);
     photoCache[name] = new Promise((res) => {
       const img = new Image();
@@ -615,7 +612,7 @@ function burst(x, y) {
    Butik / katalog
    ========================================================= */
 let shopCat = "alla";
-const productName = (p) => p.lines.join(" ").replace(/\s*([↑↓])\s*/g, " $1 ").trim();
+const productName = (p) => p.title || p.lines.join(" ").replace(/\s*([↑↓])\s*/g, " $1 ").trim();
 
 function productCard(p) {
   const custom = p.cat === "egen";
@@ -624,7 +621,7 @@ function productCard(p) {
       <div class="product-visual" data-cursor="${custom ? "Skapa" : "Lägg till"}">
         ${p.tag ? `<span class="product-tag">${esc(p.tag)}</span>` : ""}
         <div class="product-deluxe">${deluxeHTML(p.id, { className: "deluxe--product" })}</div>
-        <div class="mini-sheet" hidden>${(p.lines || ["DIN", "GREJ"]).slice(0, 2).concat(p.sub ? [p.sub] : []).concat(["STICKR"]).flatMap((t, i) => [
+        <div class="mini-sheet" hidden>${p.img ? Array.from({ length: 6 }, () => `<div class="mini-cell"><img class="mini-img" src="${p.img}" alt=""></div>`).join("") : (p.lines || ["DIN", "GREJ"]).slice(0, 2).concat(p.sub ? [p.sub] : []).concat(["STICKR"]).flatMap((t, i) => [
           { t: ["pill", "tag", "star"][i % 3], text: t, bg: i % 2 ? p.fg : p.bg, fg: i % 2 ? p.bg : p.fg },
           { t: ["tag", "pill", "word"][i % 3], text: t, bg: p.accent, fg: p.fg === "#fff" ? "#0b0a0c" : p.fg },
         ]).slice(0, 6).map((sp) => `<div class="mini-cell">${stickerHTML({ ...sp, s: 0.5 }, { positioned: false })}</div>`).join("")}</div>
@@ -972,7 +969,11 @@ function setupBuilder() {
 }
 
 /* ---------- Start ---------- */
-PRODUCTS.forEach((p) => { DELUXE[p.id] = { name: p.lines.join(" "), bg: p.bg, layers: textLayers(p) }; });
+PRODUCTS.forEach((p) => {
+  DELUXE[p.id] = p.img
+    ? { name: p.title, bg: p.bg, layers: [{ k: "ph", img: p.img, g: p.bg, x: 0, y: 0, w: 100, h: 100 }] }
+    : { name: p.lines.join(" "), bg: p.bg, layers: textLayers(p) };
+});
 renderHero();
 renderUses();
 renderProcess();

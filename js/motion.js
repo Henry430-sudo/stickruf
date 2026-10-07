@@ -91,11 +91,11 @@
   } else {
     const num = $("#loaderNum");
     const count = { v: 0 };
-    gsap.set(".loader-word span", { yPercent: 110 });
+    gsap.set(".loader-logo", { yPercent: 110, skewY: 6 });
     gsap.timeline()
-      .to(".loader-word span", { yPercent: 0, duration: 0.9, stagger: 0.06, ease: "expo.out" })
+      .to(".loader-logo", { yPercent: 0, skewY: 0, duration: 1.1, ease: "expo.out" })
       .to(count, { v: 100, duration: 1.4, ease: "power2.inOut", onUpdate: () => { num.textContent = Math.round(count.v); } }, 0)
-      .to(".loader-word span", { yPercent: -110, duration: 0.55, stagger: 0.03, ease: "expo.in" }, ">-0.05")
+      .to(".loader-logo", { yPercent: -110, duration: 0.6, ease: "expo.in" }, ">-0.05")
       .to(loader, { clipPath: "inset(0% 0% 100% 0%)", duration: 1, ease: "expo.inOut" }, ">-0.15")
       .add(heroIntro(), "<0.35")
       .add(done, "<0.5");
@@ -216,10 +216,9 @@
   });
 
   /* ---------- Jättelogga i footern ---------- */
-  const footerSplit = SplitText.create("#footerWord", { type: "chars", charsClass: "char" });
-  gsap.from(footerSplit.chars, {
-    yPercent: 80, rotation: () => gsap.utils.random(-20, 20), opacity: 0, stagger: 0.05, ease: "power3.out",
-    scrollTrigger: { trigger: ".site-footer", start: "top 90%", end: "bottom bottom", scrub: 1 },
+  gsap.from("#footerWord img", {
+    yPercent: 60, scale: 0.9, opacity: 0, ease: "power3.out",
+    scrollTrigger: { trigger: ".site-footer", start: "top 95%", end: "bottom bottom", scrub: 1 },
   });
 
   /* =========================================================

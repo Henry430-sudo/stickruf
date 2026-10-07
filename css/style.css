@@ -65,8 +65,8 @@ html.lenis, html.lenis body { height: auto; }
   position: fixed; inset: 0; z-index: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
   background: var(--bg);
 }
-.loader-word { display: flex; overflow: hidden; font-family: var(--serif); font-style: italic; font-size: clamp(3.5rem, 12vw, 9rem); line-height: 1.05; padding-right: .1em; }
-.loader-word span { display: inline-block; }
+.loader-word { overflow: hidden; padding: 6px 0; }
+.loader-logo { display: block; width: min(70vw, 560px); height: auto; }
 .loader-count { font-size: .8rem; letter-spacing: .3em; color: var(--muted); font-variant-numeric: tabular-nums; }
 
 /* ===== Cursor ===== */
@@ -89,7 +89,8 @@ html.lenis, html.lenis body { height: auto; }
   display: flex; align-items: center; gap: 32px; padding: 22px clamp(16px, 4vw, 48px);
   mix-blend-mode: difference; color: #fff;
 }
-.logo { text-decoration: none; font-size: 1.8rem; line-height: 1; }
+.logo { display: block; line-height: 0; }
+.logo img { height: 24px; width: auto; }
 .logo sup { font-size: .5rem; letter-spacing: .15em; margin-left: 3px; font-family: var(--sans); font-weight: 600; }
 .nav { display: flex; gap: 28px; margin-left: auto; }
 .nav a { position: relative; text-decoration: none; font-size: .92rem; font-weight: 500; }
@@ -537,8 +538,8 @@ html.lenis, html.lenis body { height: auto; }
 .finale-title { font-size: clamp(3.4rem, 11vw, 10rem); margin-bottom: 40px; }
 .finale .hero-cta { justify-content: center; }
 .site-footer { padding: 0 clamp(16px, 4vw, 48px) 30px; overflow: hidden; }
-.footer-word { font-family: var(--serif); font-style: italic; text-align: center; line-height: .95; font-size: clamp(6rem, 32vw, 34rem); letter-spacing: -.04em; color: #3a3540; }
-.footer-word .char { display: inline-block; padding: 0 .12em; margin: 0 -.12em; -webkit-background-clip: text; background-clip: text; color: transparent; background-image: linear-gradient(180deg, var(--cream), #3a3540); }
+.footer-word { display: flex; justify-content: center; padding: clamp(40px, 8vw, 100px) 0 clamp(30px, 5vw, 60px); }
+.footer-word img { width: min(100%, 1200px); height: auto; opacity: .92; }
 .footer-row { display: flex; flex-wrap: wrap; gap: 14px 28px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: .88rem; }
 .footer-row span:first-child { margin-right: auto; }
 .footer-row a { text-decoration: none; }
@@ -616,3 +617,4 @@ html.lenis, html.lenis body { height: auto; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
 }
+.mini-img { width: 82%; aspect-ratio: 3 / 4; object-fit: cover; border: 3px solid #fff; border-radius: 6px; box-shadow: 0 4px 8px rgba(0,0,0,.25); }

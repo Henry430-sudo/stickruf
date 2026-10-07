@@ -8,7 +8,9 @@
 - **Huvudprodukt:** **Sticker Deluxe** – ett helt A4 som en enda sticker. Den kan sitta som schema på skåpet, kollage på laptopens baksida, på pärmen, väggen eller gymskåpet.
 - **Andra produkten:** **Sticker Sheet** – ett A4 fullt med små stickers.
 - **B2B:** **Stickr Business** säljer logga-stickers, monterskyltar och merch till andra UF-företag.
-- **Katalog:** färdiga designer i kategorierna **Hets** (provocerande, rivalpar som NA > SA / SA > NA, KEBAB > PIZZA), **Tröjengelska** (absurd engelska à la "PLEASE ENJOY THE NOTHING"), **Pilar**, **Peppa** och **Egen design**. Varje design finns som Deluxe eller Sheet.
+- **Katalog:** kategorierna **Hets** (provocerande, rivalpar som NA > SA / SA > NA, KEBAB > PIZZA), **Pilar**, **Konst** (bildstickers, första: Napoleon av J-L David 1801 – public domain) och **Egen design**. Varje design finns som Deluxe eller Sheet. Teamet vill INTE ha Tröjengelska eller Peppa.
+- **Logga:** `assets/logo/stickr-light.png` och `stickr-dark.png` (genomskinliga, gjorda från teamets logga). Används i header, laddningsskärm och footer.
+- **Bilder från teamet (Pinterest):** av första batchen användes bara loggan och Napoleon. Avböjda pga upphovsrätt/varumärken: Guinness-"G spot"-affisch (varumärke), "Tutto passa"-gubben (fotografens bild + privatperson), Monaco- och ski-kollagen (andras foton, Porsche/Hermès/Burton/Arc'teryx), Pinterest-kollaget (kändisar, Marlboro, vattenstämpel), Baksmälla-stillbilden (filmbolag + skådespelare), tigrarna (okänd konstnär – ok om källan visar sig vara public domain). Föreslaget: gör egna versioner i samma stil.
 - **Hype:** **Drop 01** – 100 numrerade Deluxe, nedräkning, väntelista och värvning (värva 3 kompisar = gratis Deluxe).
 
 ## 2. Önskemål från teamet (viktigt!)
